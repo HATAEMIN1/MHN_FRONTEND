@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+import "./assets/css/tStyle.scss";
+import "./assets/css/style.scss";
 import UserRegister from "./pages/userPage/registerPage/UserRegister";
 import UserLogin from "./pages/userPage/userLoginPage/UserLogin";
 import DoctorRegister from "./pages/doctorPage/doctorRegisterPage/DoctorRegister";
@@ -25,50 +27,94 @@ import DChatViewList from "./pages/chattingPage/DChatViewList";
 function App() {
     return (
         <>
-            <Routes>
-                <Route path="/user/register" element={<UserRegister />} />
-                <Route path="/user/login" element={<UserLogin />} />
-                <Route path="/user/main" element={<UserMain />} />
-
-                <Route path="/chart/:userId" element={<AccountChartList />} />
-                <Route
-                    path="/chart/:userId/:chartId"
-                    element={<AccountChartView />}
-                />
-
-                <Route path="/chat" element={<ChatList />} />
-                <Route path="/chat/:chatId" element={<ChatView />} />
-                <Route path="/chat/new" element={<ChatAdd />} />
-
-                <Route path="/board" element={<BoardList />} />
-                <Route path="/board/:bdId" element={<BoardView />} />
-                <Route path="/board/new" element={<BoardAdd />} />
-
-                <Route path="/chat" element={<ChatList />} />
-                <Route path="/chat/:chatId" element={<ChatView />} />
-                <Route path="/chat/new" element={<ChatAdd />} />
-
-                <Route path="/hospital/map" element={<HospitalMap />} />
-                <Route path="/hospital/search" element={<HospitalList />} />
-                <Route path="/hospital/:hpId" element={<HospitalView />} />
-                <Route path="/hospital/review" element={<HospitalReview />} />
-
-                <Route path="/doctor/register" element={<DoctorRegister />} />
-                <Route path="/doctor/login" element={<DoctorRegister />} />
-                <Route
-                    path="/doctor/chart/:dctId"
-                    element={<DoctorChartView />}
-                />
-                <Route path="/doctor/chart/new" element={<DoctorChartAdd />} />
-
-                <Route path="/doctor/chat" element={<DChatList />} />
-                <Route path="/doctor/chat/new" element={<DChatAdd />} />
-                <Route path="/doctor/chat/:dctId" element={<DChatViewList />} />
-                <Route
-                    path="/doctor/chat/:dctId/:chatId"
-                    element={<DChatView />}
-                />
-            </Routes>
+            <div className="sm:bg-red-200 w-[100%] h-[100vh] flex justify-center items-center">
+                <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px] sm:h-screen relative flex flex-col ">
+                    <div className="flex-grow overflow-hidden">
+                        <Routes>
+                            <Route
+                                path="/user/register"
+                                element={<UserRegister />}
+                            />
+                            <Route path="/user/login" element={<UserLogin />} />
+                            <Route path="/user/main" element={<UserMain />} />
+                            <Route
+                                path="/chart/:userId"
+                                element={<AccountChartList />}
+                            />
+                            <Route
+                                path="/chart/:userId/:chartId"
+                                element={<AccountChartView />}
+                            />
+                            <Route path="/chat" element={<ChatList />} />
+                            <Route
+                                path="/chat/:chatId"
+                                element={<ChatView />}
+                            />
+                            <Route path="/chat/new" element={<ChatAdd />} />
+                            <Route path="/board" element={<BoardList />} />
+                            <Route
+                                path="/board/:bdId"
+                                element={<BoardView />}
+                            />
+                            <Route path="/board/new" element={<BoardAdd />} />
+                            <Route path="/chat" element={<ChatList />} />
+                            <Route
+                                path="/chat/:chatId"
+                                element={<ChatView />}
+                            />
+                            <Route path="/chat/new" element={<ChatAdd />} />
+                            <Route
+                                path="/hospital/map"
+                                element={<HospitalMap />}
+                            />
+                            <Route
+                                path="/hospital/search"
+                                element={<HospitalList />}
+                            />
+                            <Route
+                                path="/hospital/:hpId"
+                                element={<HospitalView />}
+                            />
+                            <Route
+                                path="/hospital/review"
+                                element={<HospitalReview />}
+                            />
+                            <Route
+                                path="/doctor/register"
+                                element={<DoctorRegister />}
+                            />
+                            <Route
+                                path="/doctor/login"
+                                element={<DoctorRegister />}
+                            />
+                            <Route
+                                path="/doctor/chart/:dctId"
+                                element={<DoctorChartView />}
+                            />
+                            <Route
+                                path="/doctor/chart/new"
+                                element={<DoctorChartAdd />}
+                            />
+                            <Route
+                                path="/doctor/chat"
+                                element={<DChatList />}
+                            />
+                            <Route
+                                path="/doctor/chat/new"
+                                element={<DChatAdd />}
+                            />
+                            <Route
+                                path="/doctor/chat/:dctId"
+                                element={<DChatViewList />}
+                            />
+                            <Route
+                                path="/doctor/chat/:dctId/:chatId"
+                                element={<DChatView />}
+                            />
+                        </Routes>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
