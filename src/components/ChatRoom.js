@@ -31,6 +31,7 @@ const ChatRoom = () => {
         console.log("Error:", error);
     }
     const onConnected = () => {
+        console.log('connected to chat...');
         setUserData({...userData, "connected":true});
         stompClient.subscribe("/user" + userData.userId + "/private" + onPrivateMessage);
         userJoin();
