@@ -5,9 +5,8 @@ import NavBar from "../../layouts/nav/NavBar";
 function BoardList() {
     return (
         <>
-            {/* <div className="pr-4"> */}
             <Header />
-            <div>이게아마안나오겠지?</div>
+            <div className="mini">이게아마안나오겠지?</div>
             <div>maintest</div>
             <div>maintest</div>
             <div>maintest</div>
@@ -69,7 +68,6 @@ function BoardList() {
             <div>maintest</div>
             <div>maintest</div>
             <div>이것도묻히겠지?</div>
-            {/* </div> */}
             <NavBar />
         </>
     );
