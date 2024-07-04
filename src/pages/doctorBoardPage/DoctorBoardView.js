@@ -1,7 +1,13 @@
 import React from "react";
+import Header from "../../layouts/header/Header";
 
 function DoctorBoardView() {
-  return <div>DoctorBoardView</div>;
+    return (
+        <>
+            <Header />
+            <div>AccountChartView</div>
+        </>
+    );
 }
 
 export default DoctorBoardView;

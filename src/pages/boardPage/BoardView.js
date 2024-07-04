@@ -1,7 +1,13 @@
 import React from "react";
+import Header from "../../layouts/header/Header";
 
 function BoardView() {
-  return <div>BoardView</div>;
+    return (
+        <>
+            <Header />
+            <div>BoardView</div>
+        </>
+    );
 }
 
 export default BoardView;

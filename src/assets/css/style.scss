@@ -1,3 +1,26 @@
+/* 기본설정 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: inherit;
+    visibility: inherit;
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+img {
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+}
+
 /* 스크롤바 스타일링  */
 .overflow-y-auto::-webkit-scrollbar {
     width: 0px;
