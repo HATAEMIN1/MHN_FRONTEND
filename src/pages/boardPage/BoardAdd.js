@@ -1,7 +1,13 @@
 import React from "react";
+import Header from "../../layouts/header/Header";
 
 function BoardAdd() {
-  return <div>BoardAdd</div>;
+    return (
+        <>
+            <Header />
+            <div>BoardAdd</div>
+        </>
+    );
 }
 
 export default BoardAdd;
