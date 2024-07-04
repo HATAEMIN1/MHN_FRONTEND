@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
+import Modal from "../../components/Modal";
+import Searchbar from "../../components/Searchbar";
 
 function BoardAdd() {
     const [title, setTitle] = useState("");
@@ -8,6 +10,7 @@ function BoardAdd() {
     const [contentError, setContentError] = useState("");
     const [images, setImages] = useState([]);
     const [imageError, setImageError] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleTitleChange = (event) => {
         const value = event.target.value;
@@ -43,9 +46,19 @@ function BoardAdd() {
         setImages(images.filter((_, i) => i !== index));
     };
 
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     const containerStyle = {
         position: "relative",
-        marginBottom: "0",
+        marginBottom: "20px",
+        borderBottom: "1px solid #e0e0e0",
+        paddingBottom: "10px",
     };
 
     const charCounterStyle = {
@@ -65,7 +78,8 @@ function BoardAdd() {
     const imageContainerStyle = {
         display: "flex",
         flexWrap: "wrap",
-        marginTop: "10px",
+        marginTop: "30px",
+        paddingBottom: "10px",
     };
 
     const imageStyle = {
@@ -81,7 +95,7 @@ function BoardAdd() {
         position: "absolute",
         top: "0",
         right: "0",
-        background: "red",
+        background: "#ccc",
         color: "white",
         border: "none",
         borderRadius: "50%",
@@ -106,6 +120,31 @@ function BoardAdd() {
         display: images.length === 0 ? "block" : "none",
     };
 
+    const inputStyle = {
+        color: "black",
+        backgroundColor: "white",
+        padding: "10px",
+        width: "100%",
+        border: "none",
+        borderBottom: "1px solid #e0e0e0", // 연한 회색 하단 경계선
+        outline: "none",
+        fontSize: "16px",
+        boxSizing: "border-box",
+    };
+
+    const textareaStyle = {
+        width: "100%",
+        height: "500px",
+        padding: "10px",
+        border: "none",
+        borderBottom: "1px solid #e0e0e0", // 연한 회색 하단 경계선
+        outline: "none",
+        resize: "none",
+        fontSize: "16px",
+        backgroundColor: "white",
+        boxSizing: "border-box",
+    };
+
     return (
         <div
             style={{
@@ -119,45 +158,34 @@ function BoardAdd() {
                 backgroundColor: "white",
             }}
         >
-            <Header title="자유게시판" />
-            <div style={containerStyle}>
+            <Header title="게시글 등록" button="완료" />
+            <Searchbar />
+            <div style={{ ...containerStyle, borderBottom: "none" }}>
                 <input
                     type="text"
                     placeholder="제목쓰기"
                     value={title}
                     onChange={handleTitleChange}
-                    style={{
-                        color: "black",
-                        backgroundColor: "white",
-                        padding: "10px",
-                        marginTop: "20px",
-                        width: "100%",
-                        borderBottom: "1px solid #e0e0e0",
-                        outline: "none",
-                        fontSize: "16px",
-                    }}
+                    style={inputStyle}
                 />
                 {titleError && <p style={errorStyle}>{titleError}</p>}
             </div>
-            <div style={containerStyle}>
+            <div style={{ ...containerStyle, borderBottom: "none" }}>
                 <textarea
                     placeholder="내용쓰기"
                     value={content}
                     onChange={handleContentChange}
-                    style={{
-                        width: "100%",
-                        height: "600px",
-                        padding: "10px",
-                        borderBottom: "1px solid #e0e0e0",
-                        outline: "none",
-                        resize: "none",
-                        fontSize: "16px",
-                        backgroundColor: "white",
-                    }}
+                    style={textareaStyle}
                 />
                 {contentError && <p style={errorStyle}>{contentError}</p>}
                 <p style={charCounterStyle}>{content.length}/1000</p>
             </div>
+            <button onClick={openModal}>모달 열기</button>
+            {isModalOpen && (
+                <Modal onClose={closeModal}>
+                    <p>여기에 모달 내용을 입력하세요</p>
+                </Modal>
+            )}
             <div style={imageContainerStyle}>
                 {images.map((image, index) => (
                     <div key={index} style={imageStyle}>
@@ -187,7 +215,7 @@ function BoardAdd() {
                     {imageError}
                 </p>
             )}
-            <div style={cameraButtonStyle}>
+            <div style={{ ...cameraButtonStyle, borderBottom: "none" }}>
                 <label
                     htmlFor="image-upload"
                     style={{
