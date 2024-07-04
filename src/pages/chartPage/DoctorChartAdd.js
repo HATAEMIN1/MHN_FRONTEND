@@ -3,6 +3,7 @@ import Header from "../../layouts/header/Header";
 import DoctorNavBar from "../../layouts/nav/DoctorNavBar";
 
 function DoctorChartAdd() {
+
     return (
         <>
             <Header />
@@ -10,6 +11,7 @@ function DoctorChartAdd() {
             <DoctorNavBar />
         </>
     );
+
 }
 
 export default DoctorChartAdd;
