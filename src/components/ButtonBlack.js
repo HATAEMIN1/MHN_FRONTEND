@@ -8,6 +8,7 @@ function ButtonBlack({ ...props }) {
                     <button
                         className="bg-sb-900 rounded-[4px] px-[16px] text-white text-center"
                         style={{ width: props.width, height: props.height }}
+                        onClick={props.handleClick}
                     >
                         {props.text1}
                     </button>
@@ -15,7 +16,10 @@ function ButtonBlack({ ...props }) {
             ) : (
                 <>
                     <div className="flex justify-center">
-                        <button className="bg-sb-900 rounded-[4px] px-[16px] py-[4px] text-white text-center">
+                        <button
+                            className="bg-sb-900 rounded-[4px] px-[16px] py-[4px] text-white text-center"
+                            onClick={props.handleClick}
+                        >
                             {props.text1}
                         </button>
                     </div>

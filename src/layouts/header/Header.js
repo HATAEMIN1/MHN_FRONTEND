@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ButtonBlack from "../../components/ButtonBlack";
 
 function Header({ ...props }) {
+    const text1 = props.text1;
     return (
         <>
             {/* <div className="bg-slate-400">{props.title}</div> */}
@@ -15,9 +17,13 @@ function Header({ ...props }) {
                         />
                     </div>
                 </Link>
-                <div>{props.title}</div>
+                <div className="text-[20px]">{props.title}</div>
                 {props.button ? (
-                    <button>{props.button}</button>
+                    // <button>{props.button}</button>
+                    <ButtonBlack
+                        text1={props.button}
+                        handleClick={props.handleClick}
+                    />
                 ) : (
                     <div className="h-[100%] flex items-center">
                         <img
