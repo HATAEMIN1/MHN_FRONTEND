@@ -28,6 +28,7 @@ import DoctorChartList from "./pages/chartPage/DoctorChartList";
 import DoctorBoardAdd from "./pages/doctorBoardPage/DoctorBoardAdd";
 import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
 import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
+import ChatRoom from "./components/ChatRoom";
 
 function App() {
     return (
@@ -37,6 +38,7 @@ function App() {
                     <div className="flex-grow overflow-hidden">
                         <div className="h-full overflow-y-auto bg-white pr-4 px-[16px] py-[65px]">
                             <Routes>
+                                <Route path="/chat" element={<ChatRoom />} />
                                 <Route
                                     path="/user/register"
                                     element={<UserRegister />}
