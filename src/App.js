@@ -38,10 +38,7 @@ function App() {
                     <div className="flex-grow overflow-hidden">
                         <div className="h-full overflow-y-auto bg-white pr-4 px-[16px] py-[65px]">
                             <Routes>
-                                <Route
-                                    path="/chat"
-                                    element={<ChatRoom />}
-                                />
+                                <Route path="/chat" element={<ChatRoom />} />
                                 <Route
                                     path="/user/register"
                                     element={<UserRegister />}

@@ -15,16 +15,18 @@ function Header({ ...props }) {
                         />
                     </div>
                 </Link>
-                <div>테스트</div>
-                <Link to="">
+                <div>{props.title}</div>
+                {props.button ? (
+                    <button>{props.button}</button>
+                ) : (
                     <div className="h-[100%] flex items-center">
                         <img
                             src="/assets/images/backIcon.svg"
                             alt=""
-                            className="w-[30px] h-[30px] hidden"
+                            className="w-[30px] h-[30px] invisible"
                         />
                     </div>
-                </Link>
+                )}
                 {/* 테스트 아이콘36 / 헤더폰트 20px / */}
             </div>
         </>
