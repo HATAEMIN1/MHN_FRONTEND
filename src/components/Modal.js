@@ -1,5 +1,10 @@
 import React from "react";
 
+// 모달 사용하는 페이지에서는 해당 함수를 선언해주셔야합니다
+// const closeModal = () => {
+//     setIsModalOpen(false);
+// };
+
 function Modal({ onClose, children }) {
     function handleOutsideClick(e) {
         if (e.target.classList.contains("modal-overlay")) {
