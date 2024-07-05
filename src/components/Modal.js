@@ -64,7 +64,6 @@ function Modal({ onClose, children }) {
                 <div className="modal-content" style={modalContentStyle}>
                     {children}
                 </div>
-                {/* 확인을 button컴포넌트로 교체예정 */}
                 <div style={confirmButtonStyle} onClick={onClose}>
                     확인
                 </div>
