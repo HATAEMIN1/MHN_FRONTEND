@@ -180,7 +180,7 @@ function BoardAdd() {
                     style={textareaStyle}
                 />
                 {contentError && <p style={errorStyle}>{contentError}</p>}
-                <p style={charCounterStyle}>{content.length}/1000}</p>
+                <p style={charCounterStyle}>{content.length}/1000</p>
             </div>
 
             <div style={imageContainerStyle}>
