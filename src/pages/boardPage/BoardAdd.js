@@ -154,6 +154,7 @@ function BoardAdd({ onAddPost }) {
                         boxSizing: "border-box",
                     }}
                 />
+
                 {contentError && (
                     <p
                         style={{
@@ -176,6 +177,7 @@ function BoardAdd({ onAddPost }) {
                 >
                     {content.length}/1000
                 </p>
+
             </div>
             <div
                 style={{

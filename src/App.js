@@ -30,6 +30,7 @@ import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
 import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
 import ChatRoom from "./components/ChatRoom";
 import { useState } from "react";
+import Account from "./pages/userPage/accountPage/Account";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -61,6 +62,7 @@ function App() {
                                     path="/chart/:userId"
                                     element={<AccountChartList />}
                                 />
+                                <Route path="/account" element={<Account />} />
                                 <Route
                                     path="/chart/:userId/:chartId"
                                     element={<AccountChartView />}
