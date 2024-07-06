@@ -29,6 +29,7 @@ import DoctorBoardAdd from "./pages/doctorBoardPage/DoctorBoardAdd";
 import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
 import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
 import ChatRoom from "./components/ChatRoom";
+import Account from "./pages/userPage/accountPage/Account";
 
 function App() {
     return (
@@ -55,6 +56,7 @@ function App() {
                                     path="/chart/:userId"
                                     element={<AccountChartList />}
                                 />
+                                <Route path="/account" element={<Account />} />
                                 <Route
                                     path="/chart/:userId/:chartId"
                                     element={<AccountChartView />}
