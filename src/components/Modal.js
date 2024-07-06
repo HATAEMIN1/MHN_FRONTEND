@@ -1,9 +1,5 @@
+// Modal.jsx
 import React from "react";
-
-// 모달 사용하는 페이지에서는 해당 함수를 선언해주셔야합니다
-// const closeModal = () => {
-//     setIsModalOpen(false);
-// };
 
 function Modal({ onClose, children }) {
     function handleOutsideClick(e) {
@@ -39,13 +35,6 @@ function Modal({ onClose, children }) {
         border: "none",
     };
 
-    const confirmButtonStyle = {
-        marginTop: "20px",
-        fontSize: "16px",
-        cursor: "pointer",
-        color: "blue",
-    };
-
     const modalContentStyle = {
         fontSize: "20px",
         fontWeight: "bold",
@@ -63,9 +52,6 @@ function Modal({ onClose, children }) {
                 </button>
                 <div className="modal-content" style={modalContentStyle}>
                     {children}
-                </div>
-                <div style={confirmButtonStyle} onClick={onClose}>
-                    확인
                 </div>
             </div>
         </div>

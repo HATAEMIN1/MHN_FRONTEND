@@ -29,8 +29,14 @@ import DoctorBoardAdd from "./pages/doctorBoardPage/DoctorBoardAdd";
 import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
 import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
 import ChatRoom from "./components/ChatRoom";
+import { useState } from "react";
 
 function App() {
+    const [posts, setPosts] = useState([]);
+
+    const handleAddPost = (newPost) => {
+        setPosts([...posts, newPost]);
+    };
     return (
         <>
             <div className="sm:bg-red-200 w-[100%] h-[100vh] flex justify-center items-center">
@@ -59,14 +65,19 @@ function App() {
                                     path="/chart/:userId/:chartId"
                                     element={<AccountChartView />}
                                 />
-                                <Route path="/board" element={<BoardList />} />
+                                <Route
+                                    path="/board"
+                                    element={<BoardList posts={posts} />}
+                                />
                                 <Route
                                     path="/board/:bdId"
-                                    element={<BoardView />}
+                                    element={<BoardView posts={posts} />}
                                 />
                                 <Route
                                     path="/board/new"
-                                    element={<BoardAdd />}
+                                    element={
+                                        <BoardAdd onAddPost={handleAddPost} />
+                                    }
                                 />
                                 <Route path="/chat" element={<ChatList />} />
                                 <Route
