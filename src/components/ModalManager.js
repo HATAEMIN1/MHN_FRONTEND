@@ -1,5 +1,6 @@
+// ModalManager.jsx
 import React, { useState } from "react";
-import Modal from "./Modal"; // 모달 컴포넌트를 임포트
+import Modal from "./Modal";
 
 function ModalManager({ children, modalContent }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
