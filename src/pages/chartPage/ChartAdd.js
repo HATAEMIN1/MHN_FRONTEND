@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
-import DoctorNavBar from "../../layouts/nav/DoctorNavBar";
+import NavBar from "../../layouts/nav/NavBar";
 
 function ChartAdd() {
     return (
         <>
             <Header />
             <div>ChartAdd</div>
-            <DoctorNavBar />
+            <NavBar />
         </>
     );
 }
