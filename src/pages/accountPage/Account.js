@@ -1,13 +1,15 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
+import NavBar from "../../layouts/nav/NavBar";
 
-function DoctorBoardAdd() {
+function Account() {
     return (
         <>
             <Header />
-            <div>DoctorBoardAdd</div>
+            <div>Account</div>
+            <NavBar />
         </>
     );
 }
 
-export default DoctorBoardAdd;
+export default Account;

@@ -4,7 +4,7 @@ import NavBar from "../../layouts/nav/NavBar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../assets/css/style.scss";
-function AccountChartView() {
+function ChartView() {
     const [startDate, setStartDate] = useState(new Date());
     return (
         <>
@@ -47,4 +47,4 @@ function AccountChartView() {
     );
 }
 
-export default AccountChartView;
+export default ChartView;

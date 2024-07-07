@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 
-function AccountChartList() {
+function ChartList() {
     return (
         <>
             <Header />
@@ -75,4 +75,4 @@ function AccountChartList() {
     );
 }
 
-export default AccountChartList;
+export default ChartList;

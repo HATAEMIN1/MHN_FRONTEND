@@ -6,26 +6,26 @@ function NavBar() {
     const navMenu = [
         {
             title: "홈",
-            route: "/user/main",
+            route: "/",
             grayIcon: "home_gray",
             blackIcon: "home_black",
         },
         {
             title: "진료기록",
-            route: "/chart/:userId",
+            route: "/charts/:userId",
             grayIcon: "medicalHistory_gray",
             blackIcon: "medicalHistory_black",
         },
         {
             title: "병원찾기",
-            route: "/hospital/map",
+            route: "/hospitals/map",
             grayIcon: "search_gray",
             blackIcon: "search_black",
         },
 
         {
             title: "게시판",
-            route: "/board",
+            route: "/boards",
             grayIcon: "board_gray",
             blackIcon: "board_black",
         },

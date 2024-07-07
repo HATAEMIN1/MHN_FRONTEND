@@ -2,14 +2,14 @@ import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 
-function ChatList() {
+function HospitalSearch() {
     return (
         <>
             <Header />
-            <div>ChatList</div>
+            <div>HospitalSearch</div>
             <NavBar />
         </>
     );
 }
 
-export default ChatList;
+export default HospitalSearch;
