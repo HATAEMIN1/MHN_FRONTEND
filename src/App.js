@@ -30,6 +30,7 @@ import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
 import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
 import ChatRoom from "./components/ChatRoom";
 import Account from "./pages/userPage/accountPage/Account";
+import AccountLike from "./pages/userPage/accountPage/AccountLike";
 
 function App() {
     return (
@@ -49,6 +50,10 @@ function App() {
                                     element={<UserLogin />}
                                 />
                                 <Route path="/" element={<UserMain />} />
+                                <Route
+                                    path="/account/hospitals"
+                                    element={<AccountLike />}
+                                />
                                 <Route
                                     path="/chart/:userId"
                                     element={<AccountChartList />}

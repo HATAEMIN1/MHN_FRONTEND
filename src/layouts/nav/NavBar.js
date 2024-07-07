@@ -6,7 +6,7 @@ function NavBar() {
     const navMenu = [
         {
             title: "홈",
-            route: "/user/main",
+            route: "/",
             grayIcon: "home_gray",
             blackIcon: "home_black",
         },

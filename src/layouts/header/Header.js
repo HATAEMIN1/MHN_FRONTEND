@@ -18,7 +18,9 @@ function Header({ ...props }) {
                         }}
                     />
                 </div>
-                <div className="text-[20px]">{props.title}</div>
+                <div className="text-[20px] title text-primary-300">
+                    {props.title}
+                </div>
                 {props.button ? (
                     // <button>{props.button}</button>
                     <ButtonBlack
