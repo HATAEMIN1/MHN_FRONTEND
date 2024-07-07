@@ -96,11 +96,19 @@ img {
     background: #555;
   } */
 
+/* tailwind.css 또는 별도의 CSS 파일 */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* 스크롤바 스타일링 e */
 
 /* 달력 */
 .react-datepicker-wrapper {
     padding: 0;
     border: 0;
-
 }
-

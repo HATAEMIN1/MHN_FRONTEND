@@ -48,10 +48,7 @@ function App() {
                                     path="/user/login"
                                     element={<UserLogin />}
                                 />
-                                <Route
-                                    path="/user/main"
-                                    element={<UserMain />}
-                                />
+                                <Route path="/" element={<UserMain />} />
                                 <Route
                                     path="/chart/:userId"
                                     element={<AccountChartList />}
