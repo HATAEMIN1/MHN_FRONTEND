@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import "../../assets/css/style.scss";
 function ChartView() {
     return (
         <>
@@ -52,9 +49,13 @@ function ChartView() {
                         </p>
                     </div>
                 </div>
+                {/*스와이퍼 들어가는 자리*/}
                 <div className="flex flex-wrap justify-center">
-                    <div className="p-2 w-[576px]">
-                        <img src="/assets/logoColor.png" className="w-full" />
+                    <div className="p-2 w-[576px] ">
+                        <img
+                            src="/assets/logoColor.png"
+                            className="w-full rounded-md"
+                        />
                     </div>
                 </div>
             </div>
