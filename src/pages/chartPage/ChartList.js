@@ -1,73 +1,69 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
+import { Link } from "react-router-dom";
 
 function ChartList() {
+    const chartId = "1";
     return (
         <>
-            <Header />
+            <Header title="진료기록" />
             <div className=" mt-10  ">
-                <div className="mb-8 flex gap-4 flex-wrap sm:justify-start justify-center px-5">
-                    <div className="cardWrap">
-                        <div className="w-[230px] ">
-                            <img
-                                src="/assets/logoColor.png"
-                                className="w-[100%] h-[100%] rounded-[4px]"
-                            />
+                <div className="mb-8 flex gap-4 flex-wrap  justify-between px-5">
+                    <Link
+                        to={`/charts/${chartId}`}
+                        className="col-span-1 justify-self-start"
+                    >
+                        <div className="cardWrap">
+                            <div className="w-[230px] ">
+                                <img
+                                    src="/assets/logoColor.png"
+                                    className="w-[100%] h-[100%] rounded-[4px]"
+                                />
+                            </div>
+                            <div className="p-2">
+                                <h2>김츄츄</h2>
+                                <p>말티즈 구토</p>
+                                <p>3일 전</p>
+                            </div>
                         </div>
-                        <div className="p-2">
-                            <h3>말티즈 구토</h3>
-                            <p>3일 전</p>
+                    </Link>
+                    <Link
+                        to={`/charts/${chartId}`}
+                        className="col-span-1 justify-self-start"
+                    >
+                        <div className="cardWrap">
+                            <div className="w-[230px] ">
+                                <img
+                                    src="/assets/logoColor.png"
+                                    className="w-[100%] h-[100%] rounded-[4px]"
+                                />
+                            </div>
+                            <div className="p-2">
+                                <h2>김츄츄</h2>
+                                <p>말티즈 구토</p>
+                                <p>3일 전</p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="cardWrap">
-                        <div className="w-[230px] ">
-                            <img
-                                src="/assets/logoColor.png"
-                                className="w-[100%] h-[100%]"
-                            />
+                    </Link>
+                    <Link
+                        to={`/charts/${chartId}`}
+                        className="col-span-1 justify-self-start"
+                    >
+                        <div className="cardWrap">
+                            <div className="w-[230px] ">
+                                <img
+                                    src="/assets/logoColor.png"
+                                    className="w-[100%] h-[100%] rounded-[4px]"
+                                />
+                            </div>
+                            <div className="p-2">
+                                <h2>김츄츄</h2>
+                                <p>말티즈 구토</p>
+                                <p>3일 전</p>
+                            </div>
                         </div>
-                        <div className="p-2">
-                            <h3>말티즈 구토</h3>
-                            <p>3일 전</p>
-                        </div>
-                    </div>
-                    <div className="cardWrap">
-                        <div className="w-[230px] ">
-                            <img
-                                src="/assets/logoColor.png"
-                                className="w-[100%] h-[100%]"
-                            />
-                        </div>
-                        <div className="p-2">
-                            <h3>말티즈 구토</h3>
-                            <p>3일 전</p>
-                        </div>
-                    </div>
-                    <div className="cardWrap">
-                        <div className="w-[230px] ">
-                            <img
-                                src="/assets/logoColor.png"
-                                className="w-[100%] h-[100%]"
-                            />
-                        </div>
-                        <div className="p-2">
-                            <h3>말티즈 구토</h3>
-                            <p>3일 전</p>
-                        </div>
-                    </div>
-                    <div className="cardWrap">
-                        <div className="w-[230px] ">
-                            <img
-                                src="/assets/logoColor.png"
-                                className="w-[100%] h-[100%]"
-                            />
-                        </div>
-                        <div className="p-2">
-                            <h3>말티즈 구토</h3>
-                            <p>3일 전</p>
-                        </div>
-                    </div>
+                    </Link>
                 </div>
             </div>
             <NavBar />

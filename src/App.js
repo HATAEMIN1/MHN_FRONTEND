@@ -120,16 +120,13 @@ function App() {
                                     element={<HospitalReview />}
                                 />
                                 {/*진료기록*/}
-                                <Route
-                                    path="/charts/:userId"
-                                    element={<ChartList />}
-                                />
+                                <Route path="/charts" element={<ChartList />} />
                                 <Route
                                     path="/charts/new"
                                     element={<ChartAdd />}
                                 />
                                 <Route
-                                    path="/charts/chartId"
+                                    path="/charts/:chartId"
                                     element={<ChartView />}
                                 />
                                 {/*마이페이지*/}

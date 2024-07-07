@@ -12,7 +12,7 @@ function NavBar() {
         },
         {
             title: "진료기록",
-            route: "/charts/:userId",
+            route: "/charts",
             grayIcon: "medicalHistory_gray",
             blackIcon: "medicalHistory_black",
         },
