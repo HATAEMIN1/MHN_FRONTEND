@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ButtonBlack from "../../components/ButtonBlack";
+import ButtonBlack from "../../components/button/ButtonBlack";
 
 function Header({ ...props }) {
     const text1 = props.text1;
@@ -22,11 +22,17 @@ function Header({ ...props }) {
                     {props.title}
                 </div>
                 {props.button ? (
-                    // <button>{props.button}</button>
                     <ButtonBlack
                         text1={props.button}
                         handleClick={props.handleClick}
                     />
+                ) : props.write ? (
+                    <Link to={`/${props.write}`}>
+                        <img
+                            src="/assets/images/editIcon.svg"
+                            className="w-[24px] h-[24px]"
+                        />
+                    </Link>
                 ) : (
                     <div className="h-[100%] flex items-center">
                         <img

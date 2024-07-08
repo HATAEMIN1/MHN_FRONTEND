@@ -1,39 +1,47 @@
 import { Route, Routes } from "react-router-dom";
 import "./assets/css/tStyle.scss";
 import "./assets/css/style.scss";
-import UserRegister from "./pages/userPage/registerPage/UserRegister";
-import UserLogin from "./pages/userPage/userLoginPage/UserLogin";
-import DoctorRegister from "./pages/doctorPage/doctorRegisterPage/DoctorRegister";
-import DoctorLogin from "./pages/doctorPage/doctorLoginPage/DoctorLogin";
-import UserMain from "./pages/userPage/userMainPage/UserMain";
+import UserRegister from "./pages/registerPage/UserRegister";
+import UserLogin from "./pages/loginPage/UserLogin";
+import DoctorRegister from "./pages/registerPage/DoctorRegister";
+import DoctorLogin from "./pages/loginPage/DoctorLogin";
 import BoardList from "./pages/boardPage/BoardList";
 import BoardView from "./pages/boardPage/BoardView";
 import BoardAdd from "./pages/boardPage/BoardAdd";
-import ChatList from "./pages/chattingPage/ChatList";
-import ChatView from "./pages/chattingPage/ChatView";
-import ChatAdd from "./pages/chattingPage/ChatAdd";
-import HospitalList from "./pages/hospitalPage/HospitalList";
+import ChattingList from "./pages/chattingPage/ChattingList";
+import ChattingView from "./pages/chattingPage/ChattingView";
+import ChattingAdd from "./pages/chattingPage/ChattingAdd";
+import HospitalSearch from "./pages/hospitalPage/HospitalSearch";
 import HospitalView from "./pages/hospitalPage/HospitalView";
 import HospitalReview from "./pages/hospitalPage/HospitalReview";
 import HospitalMap from "./pages/hospitalPage/HospitalMap";
-import AccountChartList from "./pages/chartPage/AccountChartList";
-import AccountChartView from "./pages/chartPage/AccountChartView";
-import DoctorChartView from "./pages/chartPage/DoctorChartView";
-import DoctorChartAdd from "./pages/chartPage/DoctorChartAdd";
-import DChatReqList from "./pages/chattingPage/DChatReqList";
-import DChatAdd from "./pages/chattingPage/DChatAdd";
-import DChatView from "./pages/chattingPage/DChatView";
-import DChatViewList from "./pages/chattingPage/DChatViewList";
-import DoctorChartList from "./pages/chartPage/DoctorChartList";
-import DoctorBoardAdd from "./pages/doctorBoardPage/DoctorBoardAdd";
-import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
-import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
-import ChatRoom from "./components/ChatRoom";
-import Account from "./pages/userPage/accountPage/Account";
-import AccountChat from "./pages/userPage/accountPage/AccountChat";
-import AccountLike from "./pages/userPage/accountPage/AccountLike";
+import ChartList from "./pages/chartPage/ChartList";
+import ChartView from "./pages/chartPage/ChartView";
+import ChartAdd from "./pages/chartPage/ChartAdd";
+import DChattingReqList from "./pages/chattingPage/DChattingReqList";
+import ChatRoom from "./components/chat/ChatRoom";
+import { useState } from "react";
+import Account from "./pages/accountPage/Account";
+import Intro from "./pages/mainPage/Intro";
+import Main from "./pages/mainPage/Main";
+import AccountEdit from "./pages/accountPage/AccountEdit";
+import AccountChatting from "./pages/accountPage/AccountChatting";
+import AccountChattingView from "./pages/accountPage/AccountChattingView";
+import AccountHospital from "./pages/accountPage/AccountHospital";
+import AccountBoard from "./pages/accountPage/AccountBoard";
+import AccountPetList from "./pages/accountPage/AccountPetList";
+import AccountPetAdd from "./pages/accountPage/AccountPetAdd";
+import Promotion from "./pages/subscriptionPage/Promotion";
+import Payment from "./pages/subscriptionPage/Payment";
+import SubscriptionManage from "./pages/subscriptionPage/SubscriptionManage";
+import Test from "./components/test/Test";
 
 function App() {
+    const [posts, setPosts] = useState([]);
+
+    const handleAddPost = (newPost) => {
+        setPosts([...posts, newPost]);
+    };
     return (
         <>
             <div className="sm:bg-red-200 w-[100%] h-[100vh] flex justify-center items-center">
@@ -41,51 +49,69 @@ function App() {
                     <div className="flex-grow overflow-hidden">
                         <div className="h-full overflow-y-auto bg-white pr-4 px-[16px] py-[85px]">
                             <Routes>
-                                <Route path="/chat" element={<ChatRoom />} />
                                 <Route
-                                    path="/user/register"
+                                    path="/intro"
+                                    element={<Intro />}
+                                ></Route>
+                                <Route
+                                    path="/users/login"
+                                    element={<UserLogin />}
+                                />
+                                <Route
+                                    path="/doctors/login"
+                                    element={<DoctorLogin />}
+                                />
+                                <Route
+                                    path="/users/register"
                                     element={<UserRegister />}
                                 />
                                 <Route
-                                    path="/user/login"
-                                    element={<UserLogin />}
+                                    path="/doctors/register"
+                                    element={<DoctorRegister />}
+                                />
+                                <Route path="/" element={<Main />} />
+                                {/*채팅*/}
+                                <Route path="/chat" element={<ChatRoom />} />
+                                <Route
+                                    path="/chatboards"
+                                    element={<ChattingList />}
                                 />
                                 <Route path="/" element={<UserMain />} />
                                 <Route
-                                    path="/account/hospitals"
-                                    element={<AccountLike />}
+                                    path="/chatboards/:chatId"
+                                    element={<ChattingView />}
                                 />
                                 <Route
-                                    path="/chart/:userId"
-                                    element={<AccountChartList />}
-                                />
-                                <Route path="/account" element={<Account />} />
-                                <Route
-                                    path="/chart/:userId/:chartId"
-                                    element={<AccountChartView />}
-                                />
-                                <Route path="/board" element={<BoardList />} />
-                                <Route
-                                    path="/board/:bdId"
-                                    element={<BoardView />}
+                                    path="/chatboards/new"
+                                    element={<ChattingAdd />}
                                 />
                                 <Route
-                                    path="/board/new"
-                                    element={<BoardAdd />}
+                                    path="/doctor/chat"
+                                    element={<DChattingReqList />}
                                 />
-                                <Route path="/chat" element={<ChatList />} />
+                                {/*자유게시판*/}
                                 <Route
-                                    path="/chat/:chatId"
-                                    element={<ChatView />}
+                                    path="/boards"
+                                    element={<BoardList posts={posts} />}
                                 />
-                                <Route path="/chat/new" element={<ChatAdd />} />
+                                <Route
+                                    path="/boards/:bdId"
+                                    element={<BoardView posts={posts} />}
+                                />
+                                <Route
+                                    path="/boards/new"
+                                    element={
+                                        <BoardAdd onAddPost={handleAddPost} />
+                                    }
+                                />
+                                {/*병원*/}
                                 <Route
                                     path="/hospitals/map"
                                     element={<HospitalMap />}
                                 />
                                 <Route
                                     path="/hospitals/search"
-                                    element={<HospitalList />}
+                                    element={<HospitalSearch />}
                                 />
                                 <Route
                                     path="/hospitals/:hpId"
@@ -95,58 +121,65 @@ function App() {
                                     path="/hospitals/review"
                                     element={<HospitalReview />}
                                 />
+                                {/*진료기록*/}
+                                <Route path="/charts" element={<ChartList />} />
                                 <Route
-                                    path="/doctor/register"
-                                    element={<DoctorRegister />}
+                                    path="/charts/new"
+                                    element={<ChartAdd />}
                                 />
                                 <Route
-                                    path="/doctor/login"
-                                    element={<DoctorLogin />}
+                                    path="/charts/:chartId"
+                                    element={<ChartView />}
                                 />
+                                {/*마이페이지*/}
+                                <Route path="/account" element={<Account />} />
                                 <Route
-                                    path="/doctor/chart/:dctId/:chartId"
-                                    element={<DoctorChartView />}
-                                />
-                                <Route
-                                    path="/doctor/chart/new"
-                                    element={<DoctorChartAdd />}
-                                />
-                                <Route
-                                    path="/doctor/chart/:dctId"
-                                    element={<DoctorChartList />}
-                                />
-                                <Route
-                                    path="/doctor/chat"
-                                    element={<DChatReqList />}
-                                />
-                                <Route
-                                    path="/doctor/chat/new"
-                                    element={<DChatAdd />}
-                                />
-                                <Route
-                                    path="/doctor/chat/:dctId"
-                                    element={<DChatViewList />}
-                                />
-                                <Route
-                                    path="/doctor/chat/:dctId/:chatId"
-                                    element={<DChatView />}
-                                />
-                                <Route
-                                    path="/doctor/board/new"
-                                    element={<DoctorBoardAdd />}
-                                />
-                                <Route
-                                    path="/doctor/board"
-                                    element={<DoctorBoardList />}
-                                />
-                                <Route
-                                    path="/doctor/board/:dbdId"
-                                    element={<DoctorBoardView />}
+                                    path="/account/edit"
+                                    element={<AccountEdit />}
                                 />
                                 <Route
                                     path="/account/chatting"
-                                    element={<AccountChat />}
+                                    element={<AccountChatting />}
                                 />
+                                <Route
+                                    path="/account/chatting/:chatId"
+                                    element={<AccountChattingView />}
+                                />
+                                <Route
+                                    path="/account/hospitals"
+                                    element={<AccountHospital />}
+                                />
+                                <Route
+                                    path="/account/boards"
+                                    element={<AccountBoard />}
+                                />
+                                <Route
+                                    path="/account/pets"
+                                    element={<AccountPetList />}
+                                />
+                                <Route
+                                    path="/account/pets/new"
+                                    element={<AccountPetAdd />}
+                                />
+                                {/*구독*/}
+                                <Route
+                                    path="/subscription"
+                                    element={
+                                        <div className="h-full w-full overflow-visible">
+                                            <Promotion />
+                                        </div>
+                                    }
+                                />
+                                <Route
+                                    path="/subscription/payment"
+                                    element={<Payment />}
+                                />
+                                <Route
+                                    path="/subscription/:userId"
+                                    element={<SubscriptionManage />}
+                                />
+                                {/*테스트*/}
+                                <Route path="/test" element={<Test />} />
                             </Routes>
                             {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>

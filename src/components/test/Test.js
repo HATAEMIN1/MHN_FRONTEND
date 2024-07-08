@@ -5,11 +5,7 @@ import ButtonBlack from "../../components/button/ButtonBlack";
 import ButtonClear from "../../components/button/ButtonClear";
 // import Modal from "../../components/Modal";
 
-function BoardList() {
-    // const closeModal = () => {
-    //     setIsModalOpen(false);
-    // };
-
+function Test(props) {
     return (
         <>
             {/* gpej 타이틀 px20 */}
@@ -87,4 +83,4 @@ function BoardList() {
     );
 }
 
-export default BoardList;
+export default Test;

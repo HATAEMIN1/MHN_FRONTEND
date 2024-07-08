@@ -1,8 +1,8 @@
 import React from "react";
 import NavBar from "../../layouts/nav/NavBar";
 import Header from "../../layouts/header/Header";
-import HospitalListForm from "../../components/HospitalListForm";
-import SearchInput from "../../components/SearchInput";
+import HospitalListForm from "../../components/Form/HospitalListForm";
+import SearchInput from "../../components/search/SearchInput";
 import { Link } from "react-router-dom";
 
 function HospitalMap() {
