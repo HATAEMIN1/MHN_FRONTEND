@@ -76,7 +76,7 @@ function App() {
                                     path="/chatboards"
                                     element={<ChattingList />}
                                 />
-                                <Route path="/" element={<UserMain />} />
+                                <Route path="/" element={<Main />} />
                                 <Route
                                     path="/chatboards/:chatId"
                                     element={<ChattingView />}
