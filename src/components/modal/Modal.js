@@ -36,8 +36,6 @@ function Modal({ onClose, children }) {
     };
 
     const modalContentStyle = {
-        fontSize: "20px",
-        fontWeight: "bold",
         textAlign: "center",
     };
 
@@ -51,7 +49,7 @@ function Modal({ onClose, children }) {
                     ×
                 </button>
                 <div className="modal-content" style={modalContentStyle}>
-                    {children}
+                    <p className="title">{children}</p>
                 </div>
             </div>
         </div>

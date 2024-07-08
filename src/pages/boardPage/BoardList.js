@@ -1,89 +1,50 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Header from "../../layouts/header/Header";
-import NavBar from "../../layouts/nav/NavBar";
-import ButtonBlack from "../../components/button/ButtonBlack";
-import ButtonClear from "../../components/button/ButtonClear";
-// import Modal from "../../components/Modal";
+import Searchbar from "../../components/search/Searchbar";
+import FilterModal from "../../components/modal/FilterModal";
+import ModalManager from "../../components/modal/ModalManager";
 
-function BoardList() {
-    // const closeModal = () => {
-    //     setIsModalOpen(false);
-    // };
-
+function BoardList({ posts }) {
     return (
-        <>
-            {/* gpej 타이틀 px20 */}
-            {/* <Modal check={closeModal} /> */}
-            <Header button="완료" title="테스트" />
-            <div className="mini">이게아마안나오겠지?</div>
-            <ButtonBlack text1="확인" height="45px" width="100%" />
-            <ButtonBlack text1="중복체크" />
-            <ButtonClear text1="확인" text2="아니오" />
-            <ButtonClear text1="해제하기" />
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>maintest</div>
-            <div>이것도묻히겠지?</div>
-            <NavBar />
-        </>
+        <div>
+            <Header title="자유게시판" write="boards/new" />
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <Searchbar />
+                <ModalManager
+                    modalContent={({ closeModal }) => (
+                        <FilterModal closeModal={closeModal} />
+                    )}
+                >
+                    {({ openModal }) => (
+                        <button
+                            onClick={openModal}
+                            style={{
+                                background: "none",
+                                border: "none",
+                                cursor: "pointer",
+                                marginLeft: "10px",
+                            }}
+                        >
+                            <img
+                                src="/assets/images/filterIcon.svg"
+                                alt="Filter Icon"
+                            />
+                        </button>
+                    )}
+                </ModalManager>
+            </div>
+            <ul>
+                {posts.map((post, index) => (
+                    <li key={index}>
+                        <Link to={`/boards/${index}`} state={{ post }}>
+                            {post.title}
+                        </Link>
+                        {post.content}
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
 

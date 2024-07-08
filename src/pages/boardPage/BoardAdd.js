@@ -4,6 +4,7 @@ import Header from "../../layouts/header/Header";
 import Searchbar from "../../components/search/Searchbar";
 import ModalManager from "../../components/modal/ModalManager";
 import ButtonBlack from "../../components/button/ButtonBlack";
+import NavBar from "../../layouts/nav/NavBar";
 
 function BoardAdd({ onAddPost }) {
     const [title, setTitle] = useState("");
@@ -79,7 +80,7 @@ function BoardAdd({ onAddPost }) {
             <ModalManager
                 modalContent={({ closeModal }) => (
                     <div>
-                        <p>등록완료</p>
+                        <p className="mb-[8px]">등록완료</p>
                         <ButtonBlack
                             handleClick={(e) => {
                                 e.preventDefault(); // 추가: 폼 제출 방지
@@ -109,7 +110,7 @@ function BoardAdd({ onAddPost }) {
                     </div>
                 )}
             </ModalManager>
-            <Searchbar />
+
             <div style={{ borderBottom: "none" }}>
                 <input
                     type="text"
@@ -121,6 +122,7 @@ function BoardAdd({ onAddPost }) {
                         backgroundColor: "white",
                         padding: "10px",
                         width: "100%",
+                        className: "subtitle1",
                         border: "none",
                         borderBottom: "1px solid #e0e0e0",
                         outline: "none",
@@ -145,6 +147,7 @@ function BoardAdd({ onAddPost }) {
                     placeholder="내용쓰기"
                     value={content}
                     onChange={handleContentChange}
+                    className="body2"
                     style={{
                         width: "100%",
                         height: "500px",
@@ -153,7 +156,6 @@ function BoardAdd({ onAddPost }) {
                         borderBottom: "1px solid #e0e0e0",
                         outline: "none",
                         resize: "none",
-                        fontSize: "16px",
                         backgroundColor: "white",
                         boxSizing: "border-box",
                     }}
@@ -260,8 +262,9 @@ function BoardAdd({ onAddPost }) {
                     display: "flex",
                     alignItems: "center",
                     marginTop: "10px",
+                    bottom: "80px",
                     cursor: "pointer",
-                    borderBottom: "none",
+                    position: "absolute",
                 }}
             >
                 <label
@@ -273,7 +276,7 @@ function BoardAdd({ onAddPost }) {
                     }}
                 >
                     <img
-                        src="camera-icon-url"
+                        src="/assets/images/cameraIcon.svg"
                         alt="camera"
                         style={{
                             width: "24px",
@@ -281,7 +284,7 @@ function BoardAdd({ onAddPost }) {
                             marginRight: "10px",
                         }}
                     />
-                    이미지 첨부
+                    <p className="body2">이미지 첨부</p>
                 </label>
                 <input
                     id="image-upload"
@@ -292,6 +295,7 @@ function BoardAdd({ onAddPost }) {
                     style={{ display: "none" }}
                 />
             </div>
+            <NavBar />
         </form>
     );
 }

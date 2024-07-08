@@ -20,8 +20,8 @@ function Searchbar({ onSearch }) {
     const iconStyle = {
         position: "absolute",
         left: "10px",
-        width: "20px",
-        height: "20px",
+        width: "30px",
+        height: "30px",
         cursor: "pointer",
     };
 
@@ -39,7 +39,7 @@ function Searchbar({ onSearch }) {
     return (
         <div style={containerStyle}>
             <img
-                src="path/to/your/icon.png"
+                src="/assets/images/searchIcon.svg"
                 alt="search icon"
                 style={iconStyle}
                 onClick={handleSearch}
