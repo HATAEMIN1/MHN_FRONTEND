@@ -76,6 +76,7 @@ function App() {
                                     path="/chatboards"
                                     element={<ChattingList />}
                                 />
+                                <Route path="/" element={<UserMain />} />
                                 <Route
                                     path="/chatboards/:chatId"
                                     element={<ChattingView />}
@@ -163,7 +164,11 @@ function App() {
                                 {/*구독*/}
                                 <Route
                                     path="/subscription"
-                                    element={<Promotion />}
+                                    element={
+                                        <div className="h-full w-full overflow-visible">
+                                            <Promotion />
+                                        </div>
+                                    }
                                 />
                                 <Route
                                     path="/subscription/payment"
@@ -176,6 +181,7 @@ function App() {
                                 {/*테스트*/}
                                 <Route path="/test" element={<Test />} />
                             </Routes>
+                            {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>
                     </div>
                 </div>
