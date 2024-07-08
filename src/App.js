@@ -163,7 +163,11 @@ function App() {
                                 {/*구독*/}
                                 <Route
                                     path="/subscription"
-                                    element={<Promotion />}
+                                    element={
+                                        <div className="h-full w-full overflow-visible">
+                                            <Promotion />
+                                        </div>
+                                    }
                                 />
                                 <Route
                                     path="/subscription/payment"

@@ -1,0 +1,11 @@
+//promotion.js파일에서 배경색상추가 s
+.promotion-container {
+    background-color: #cad9d2;
+    min-height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10; // 다른 요소들 위에 오도록 설정
+}
+//promotion.js파일에서 배경색상추가 e

@@ -34,7 +34,7 @@ function Account() {
             </div>
             {/* 마이페이지 메뉴 시작 */}
             <ul>
-                <Link to="/">
+                <Link to="/subscription">
                     <li className="w-full flex justify-between py-[16px]">
                         <p>구독 관리 페이지</p>
                         <img src="/assets/images/nextIcon.svg" />
@@ -46,19 +46,19 @@ function Account() {
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
-                <Link>
+                <Link to="/account/hospitals">
                     <li className="w-full flex justify-between py-[16px]">
                         <p>즐겨찾기 한 병원</p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
-                <Link>
+                <Link to="/account/boards">
                     <li className="w-full flex justify-between py-[16px]">
                         <p>내가 쓴 글 목록</p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
-                <Link>
+                <Link to="/account/pets">
                     <li className="w-full flex justify-between py-[16px]">
                         <p>펫 리스트</p>
                         <img src="/assets/images/nextIcon.svg" />

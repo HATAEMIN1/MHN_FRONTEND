@@ -19,7 +19,7 @@ function ChartAdd() {
     const [startDate, setStartDate] = useState(new Date());
     return (
         <>
-            <Header title="진료기록 등록" />
+            <Header title="진료기록 등록" button="작성하기" />
             <div>
                 <input
                     type="text"

@@ -7,7 +7,7 @@ function ChartList() {
     const chartId = "1";
     return (
         <>
-            <Header title="진료기록" />
+            <Header title="진료기록" write="charts/new" />
             <div className=" mt-10  ">
                 <div className="mb-8 flex gap-4 flex-wrap  justify-between px-5">
                     <Link
