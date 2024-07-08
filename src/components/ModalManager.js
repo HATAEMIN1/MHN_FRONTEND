@@ -1,4 +1,3 @@
-// ModalManager.jsx
 import React, { useState } from "react";
 import Modal from "./Modal";
 
@@ -18,7 +17,13 @@ function ModalManager({ children, modalContent }) {
             {typeof children === "function"
                 ? children({ openModal })
                 : children}
-            {isModalOpen && <Modal onClose={closeModal}>{modalContent}</Modal>}
+            {isModalOpen && (
+                <Modal onClose={closeModal}>
+                    {typeof modalContent === "function"
+                        ? modalContent({ closeModal })
+                        : modalContent}
+                </Modal>
+            )}
         </>
     );
 }

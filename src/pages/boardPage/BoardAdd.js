@@ -1,4 +1,3 @@
-// BoardAdd.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../layouts/header/Header";
@@ -49,8 +48,7 @@ function BoardAdd({ onAddPost }) {
         setImages(images.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = (closeModal) => {
         if (title && content) {
             const newPost = {
                 title,
@@ -60,13 +58,13 @@ function BoardAdd({ onAddPost }) {
             };
             onAddPost(newPost);
             console.log("Submitted Post:", newPost); // 콘솔에 데이터 출력
+            closeModal(); // 모달 닫기
             navigate("/board"); // 리스트 페이지로 이동
         }
     };
 
     return (
         <form
-            onSubmit={handleSubmit}
             style={{
                 display: "flex",
                 flexDirection: "column",
@@ -79,11 +77,14 @@ function BoardAdd({ onAddPost }) {
             }}
         >
             <ModalManager
-                modalContent={
+                modalContent={({ closeModal }) => (
                     <div>
                         <p>등록완료</p>
                         <ButtonBlack
-                            handleClick={handleSubmit}
+                            handleClick={(e) => {
+                                e.preventDefault(); // 추가: 폼 제출 방지
+                                handleSubmit(closeModal);
+                            }}
                             text1="확인"
                             style={{
                                 marginTop: "20px",
@@ -93,14 +94,17 @@ function BoardAdd({ onAddPost }) {
                             }}
                         />
                     </div>
-                }
+                )}
             >
                 {({ openModal }) => (
                     <div>
                         <Header
                             title="게시글 등록"
                             button="완료"
-                            handleClick={openModal}
+                            handleClick={(e) => {
+                                e.preventDefault(); // 추가: 폼 제출 방지
+                                openModal();
+                            }}
                         />
                     </div>
                 )}
@@ -177,7 +181,6 @@ function BoardAdd({ onAddPost }) {
                 >
                     {content.length}/1000
                 </p>
-
             </div>
             <div
                 style={{
