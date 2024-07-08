@@ -18,7 +18,7 @@ function NavBar() {
         },
         {
             title: "병원찾기",
-            route: "/hospital/map",
+            route: "/hospitals/map",
             grayIcon: "search_gray",
             blackIcon: "search_black",
         },

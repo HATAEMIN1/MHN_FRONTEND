@@ -30,6 +30,7 @@ import DoctorBoardList from "./pages/doctorBoardPage/DoctorBoardList";
 import DoctorBoardView from "./pages/doctorBoardPage/DoctorBoardView";
 import ChatRoom from "./components/ChatRoom";
 import Account from "./pages/userPage/accountPage/Account";
+import AccountChat from "./pages/userPage/accountPage/AccountChat";
 import AccountLike from "./pages/userPage/accountPage/AccountLike";
 
 function App() {
@@ -79,19 +80,19 @@ function App() {
                                 />
                                 <Route path="/chat/new" element={<ChatAdd />} />
                                 <Route
-                                    path="/hospital/map"
+                                    path="/hospitals/map"
                                     element={<HospitalMap />}
                                 />
                                 <Route
-                                    path="/hospital/search"
+                                    path="/hospitals/search"
                                     element={<HospitalList />}
                                 />
                                 <Route
-                                    path="/hospital/:hpId"
+                                    path="/hospitals/:hpId"
                                     element={<HospitalView />}
                                 />
                                 <Route
-                                    path="/hospital/review"
+                                    path="/hospitals/review"
                                     element={<HospitalReview />}
                                 />
                                 <Route
@@ -142,7 +143,12 @@ function App() {
                                     path="/doctor/board/:dbdId"
                                     element={<DoctorBoardView />}
                                 />
+                                <Route
+                                    path="/account/chatting"
+                                    element={<AccountChat />}
+                                />
                             </Routes>
+                            {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>
                     </div>
                 </div>

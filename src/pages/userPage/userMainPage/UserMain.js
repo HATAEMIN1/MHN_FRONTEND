@@ -87,7 +87,7 @@ function userMain() {
                         <p>가까운 병원</p>
                     </div>
                     {/* 병원정보 카드섹션 s */}
-                    <div className="scroll-container no-scrollbar">
+                    <div className="scroll-container ">
                         <div className="card-list m-auto">
                             <CardSlide
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
