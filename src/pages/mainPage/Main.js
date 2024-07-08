@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "../../layouts/nav/NavBar";
-import MainSlider from "../../../components/MainSlider";
-import CardSlide from "../../../components/CardSlide";
+import MainSlider from "../../components/MainSlider";
+import CardSlider from "../../components/CardSlider";
 import { Link } from "react-router-dom";
-import PlusButton from "../../../components/PlusButton";
+import PlusButton from "../../components/PlusButton";
 
 function Main() {
     return (
@@ -29,17 +29,17 @@ function Main() {
                         {/* 자유게시판 카드섹션 s */}
                         <div className="scroll-container no-scrollbar">
                             <div className="card-list m-auto">
-                                <CardSlide
+                                <CardSlider
                                     imgRoute={
                                         "/assets/images/likeIcon_color.svg"
                                     }
                                 />
-                                <CardSlide
+                                <CardSlider
                                     imgRoute={
                                         "/assets/images/likeIcon_color.svg"
                                     }
                                 />
-                                <CardSlide
+                                <CardSlider
                                     imgRoute={
                                         "/assets/images/likeIcon_color.svg"
                                     }
@@ -89,13 +89,13 @@ function Main() {
                     {/* 병원정보 카드섹션 s */}
                     <div className="scroll-container ">
                         <div className="card-list m-auto">
-                            <CardSlide
+                            <CardSlider
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
                             />
-                            <CardSlide
+                            <CardSlider
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
                             />
-                            <CardSlide
+                            <CardSlider
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
                             />
                         </div>

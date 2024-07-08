@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../../../layouts/header/Header";
-import HospitalListForm from "../../../components/HospitalListForm";
-import NavBar from "../../../layouts/nav/NavBar";
+import Header from "../../layouts/header/Header";
+import HospitalListForm from "../../components/HospitalListForm";
+import NavBar from "../../layouts/nav/NavBar";
 
 function AccountHospital({ ...props }) {
     const hospitalExam = [

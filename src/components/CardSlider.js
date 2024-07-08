@@ -1,6 +1,6 @@
 import React from "react";
 
-function CardSlider() {
+function CardSlider({ ...props }) {
     return (
         <>
             <div className="bg-white w-[300px] py-[8px] rounded-[8px] border px-[16px]">

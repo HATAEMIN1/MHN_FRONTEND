@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../../../layouts/header/Header";
-import NavBar from "../../../layouts/nav/NavBar";
-import ButtonBlack from "../../../components/ButtonBlack";
+import Header from "../../layouts/header/Header";
+import NavBar from "../../layouts/nav/NavBar";
+import ButtonBlack from "../../components/ButtonBlack";
 import { Link } from "react-router-dom";
 
 function Account() {
@@ -12,7 +12,7 @@ function Account() {
                 <div className="flex justify-between">
                     <div className="flex items-center gap-[8px]">
                         <img
-                            src="/assets/images/testDog_.svg"
+                            src="/assets/images/testDog.svg"
                             className="w-[56px] h-[56px] rounded-[50px] "
                         />
                         <div>

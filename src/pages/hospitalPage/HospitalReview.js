@@ -52,7 +52,7 @@ function HospitalReview() {
                 <div className="flex justify-between items-center">
                     <div className="flex items-center w-full gap-[10px]">
                         <img
-                            src="/assets/images/testDog_.svg"
+                            src="/assets/images/testDog.svg"
                             className="w-[50px] h-[50px] rounded-[50px]"
                         />
                         <div>
