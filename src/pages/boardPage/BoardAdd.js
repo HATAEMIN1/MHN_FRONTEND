@@ -59,7 +59,7 @@ function BoardAdd({ onAddPost }) {
             onAddPost(newPost);
             console.log("Submitted Post:", newPost); // 콘솔에 데이터 출력
             closeModal(); // 모달 닫기
-            navigate("/board"); // 리스트 페이지로 이동
+            navigate("/boards"); // 리스트 페이지로 이동
         }
     };
 
