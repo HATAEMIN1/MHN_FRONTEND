@@ -1,12 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
+import { Link } from "react-router-dom";
 
 function HospitalView() {
+    const [bookmark, setBookmark] = useState(false);
+    function handleOnclick() {
+        setBookmark(!bookmark);
+        console.log(bookmark);
+    }
+
     return (
         <>
-            <Header />
-            <div>HospitalView</div>
+            <Header title="병원 상세 정보" />
+            <div>
+                <img
+                    src="/assets/images/testHospital.svg"
+                    className="m-auto w-full mb-[24px]"
+                />
+            </div>
+            {/* 정보/후기 선택탭 s */}
+            <div className="py-[16px]">
+                <ul className="flex justify-around gap-[2px]">
+                    <li className="border-b-2 w-full text-center body2">
+                        병원정보
+                    </li>
+                    <Link to="/hospitals/review" className="border-b w-full">
+                        <li className=" text-center body2">진료후기</li>
+                    </Link>
+                </ul>
+            </div>
+            {/* 병원정보 s */}
+            <div className="mb-[24px]">
+                <div className="flex gap-[2px]8">
+                    <div onClick={handleOnclick}>
+                        {bookmark ? (
+                            <img src="/assets/images/bmkIcon_color.svg" />
+                        ) : (
+                            <img src="/assets/images/bmkIcon_clear.svg" />
+                        )}
+                    </div>
+                    <p className="subtitle2">24시간 코드랩 동물병원</p>
+                </div>
+                <div className="pl-[24px]">
+                    <p className="body2 text-sub-200">서울금천구 어쩌구</p>
+                    <p className="body2 text-sub-100">02-123-4567</p>
+                </div>
+            </div>
+            <div>
+                <p className="subtitle1">병원 지도</p>
+                <img
+                    src="/assets/images/testMapMini.svg"
+                    className="w-full m-auto"
+                />
+            </div>
             <NavBar />
         </>
     );

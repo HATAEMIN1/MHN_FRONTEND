@@ -12,7 +12,7 @@ function NavBar() {
         },
         {
             title: "진료기록",
-            route: "/charts",
+            route: "/charts/:userId",
             grayIcon: "medicalHistory_gray",
             blackIcon: "medicalHistory_black",
         },
@@ -41,6 +41,8 @@ function NavBar() {
             <ul className="flex justify-around items-center w-full">
                 {navMenu.map((item, idx) => {
                     const isActive = location.pathname === item.route;
+                    console.log(location.pathname);
+
                     return (
                         <Link to={item.route} key={idx}>
                             <li className="text-center mini">
