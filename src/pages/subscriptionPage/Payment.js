@@ -1,9 +1,10 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
+import ButtonBlack from "../../components/button/ButtonBlack";
 
 const { IMP } = window;
-IMP.init("imp05251176"); // 'imp00000000' 대신 발급받은 가맹점 식별코드를 사용합니다.
+// IMP.init("imp05251176"); // 'imp00000000' 대신 발급받은 가맹점 식별코드를 사용합니다.
 function Payment() {
     function onClickPayment() {
         /* 1. 가맹점 식별하기 */
@@ -54,8 +55,68 @@ function Payment() {
     return (
         <>
             <Header></Header>
-            <div>Payment</div>
-            <button onClick={onClickPayment}>결제하기</button>
+            <form>
+                <div className="flex justify-between items-center p-4 border-b ">
+                    <h2 className="subtitle1">주문 고객</h2>
+                    <div className="flex">
+                        <p className="body2">김츄츄</p>
+                        <p className="body2">(010-1234-5678)</p>
+                    </div>
+                </div>
+                <div>
+                    <div className="flex justify-between items-center p-4 ">
+                        <h2 className="subtitle1">멤버십 정보</h2>
+                        <div className="flex">
+                            <p>1개월 / </p>
+                            <p>8,900원</p>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4  px-4 border-b ">
+                        <div className="w-[50px] mb-4">
+                            <img
+                                src="/assets/logoColor.png"
+                                className="w-full block rounded-md"
+                            />
+                        </div>
+                        <p className="subtitle2">멍햄냥 멤버십(구독형)</p>
+                    </div>
+                </div>
+                <div className="subtitle1 p-4 ">정기 결제수단</div>
+                <div className="px-4 border-b pb-4">
+                    <select className="w-full p-2 border-2 rounded-md">
+                        <option value="kakaopay">카카오 페이</option>
+                    </select>
+                </div>
+                <div className="subtitle1 p-2 px-4  ">멤버십 기간</div>
+                <div className="px-4 flex justify-between items-center">
+                    <div className="subtitle2">혜택 기간</div>
+                    <div className="flex">
+                        <p>2024.06.25</p>
+                        <p>~</p>
+                        <p>2024.07.25</p>
+                    </div>
+                </div>
+                <div className="p-4 font-semibold border-b pb-8">
+                    가입일 기준으로 매월 자동 결제 되며,언제든지 해제
+                    가능합니다.
+                </div>
+                <div className="subtitle1 p-2 px-4  ">결제 정보</div>
+                <div className="flex justify-between items-center">
+                    <div className="px-4 subtitle2">결제 금액</div>
+                    <p className="body2">8,900원</p>
+                </div>
+                <div className="flex p-4 justify-between items-center">
+                    <div className="subtitle2">다음 결제 예정일</div>
+                    <p className="body2">2024.07.24</p>
+                </div>
+            </form>
+            <ButtonBlack
+                text1="8,900원 정기 결제하기"
+                height="45px"
+                width="100%"
+                handleClick={onClickPayment}
+            ></ButtonBlack>
             <NavBar></NavBar>
         </>
     );
