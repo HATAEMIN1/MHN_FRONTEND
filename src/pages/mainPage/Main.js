@@ -1,9 +1,9 @@
 import React from "react";
 import NavBar from "../../layouts/nav/NavBar";
-import MainSlider from "../../components/MainSlider";
-import CardSlider from "../../components/CardSlider";
+import MainSlider from "../../components/slider/MainSlider";
+import CardSlider from "../../components/slider/CardSlider";
 import { Link } from "react-router-dom";
-import PlusButton from "../../components/PlusButton";
+import PlusButton from "../../components/button/PlusButton";
 
 function Main() {
     return (

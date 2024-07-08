@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ButtonBlack from "../../components/ButtonBlack";
+import ButtonBlack from "../../components/button/ButtonBlack";
 
 function Header({ ...props }) {
     const text1 = props.text1;

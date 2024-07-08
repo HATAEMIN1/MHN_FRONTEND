@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import ButtonBlack from "../../components/ButtonBlack";
+import ButtonBlack from "../../components/button/ButtonBlack";
 import { Link } from "react-router-dom";
 
 function Account() {

@@ -3,7 +3,7 @@ import Slider from "react-slick";
 // slick-carousel에서 기본 스타일과 테마 스타일을 가져옴
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "../assets/css/sliderCustom.scss";
+import "../../assets/css/sliderCustom.scss";
 
 function MainSlider() {
     const settings = {

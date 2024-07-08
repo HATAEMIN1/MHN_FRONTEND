@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import ButtonBlack from "../../components/ButtonBlack";
-import ButtonClear from "../../components/ButtonClear";
+import ButtonBlack from "../../components/button/ButtonBlack";
+import ButtonClear from "../../components/button/ButtonClear";
 // import Modal from "../../components/Modal";
 
 function BoardList() {

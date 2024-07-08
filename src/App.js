@@ -19,7 +19,7 @@ import ChartList from "./pages/chartPage/ChartList";
 import ChartView from "./pages/chartPage/ChartView";
 import ChartAdd from "./pages/chartPage/ChartAdd";
 import DChattingReqList from "./pages/chattingPage/DChattingReqList";
-import ChatRoom from "./components/ChatRoom";
+import ChatRoom from "./components/chat/ChatRoom";
 import { useState } from "react";
 import Account from "./pages/accountPage/Account";
 import Intro from "./pages/mainPage/Intro";
@@ -34,6 +34,7 @@ import AccountPetAdd from "./pages/accountPage/AccountPetAdd";
 import Promotion from "./pages/subscriptionPage/Promotion";
 import Payment from "./pages/subscriptionPage/Payment";
 import SubscriptionManage from "./pages/subscriptionPage/SubscriptionManage";
+import Test from "./components/test/Test";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -172,6 +173,8 @@ function App() {
                                     path="/subscription/:userId"
                                     element={<SubscriptionManage />}
                                 />
+                                {/*테스트*/}
+                                <Route path="/test" element={<Test />} />
                             </Routes>
                         </div>
                     </div>

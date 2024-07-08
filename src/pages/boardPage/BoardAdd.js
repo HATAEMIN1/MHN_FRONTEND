@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../layouts/header/Header";
-import Searchbar from "../../components/Searchbar";
-import ModalManager from "../../components/ModalManager";
-import ButtonBlack from "../../components/ButtonBlack";
+import Searchbar from "../../components/search/Searchbar";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonBlack from "../../components/button/ButtonBlack";
 
 function BoardAdd({ onAddPost }) {
     const [title, setTitle] = useState("");

@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import HospitalListForm from "../../components/HospitalListForm";
-import SearchInput from "../../components/SearchInput";
+import HospitalListForm from "../../components/Form/HospitalListForm";
+import SearchInput from "../../components/search/SearchInput";
 
 function HospitalSearch() {
     const hospitalExam = [
