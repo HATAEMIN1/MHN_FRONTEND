@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Header from "../../layouts/header/Header";
+import NavBar from "../../layouts/nav/NavBar";
 
 function timeAgo(date) {
     const now = new Date();
@@ -14,18 +15,18 @@ function timeAgo(date) {
         return `${Math.floor(secondsPast)}초 전`;
     }
     if (secondsPast < 3600) {
-        return `${Math.floor(secondsPast / 60)}분 전}`;
+        return `${Math.floor(secondsPast / 60)}분 전`;
     }
     if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전}`;
+        return `${Math.floor(secondsPast / 3600)}시간 전`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전}`;
+        return `${Math.floor(secondsPast / 86400)}일 전`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전}`;
+    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function BoardView({ posts }) {
@@ -123,7 +124,7 @@ function BoardView({ posts }) {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div style={{ paddingTop: "20px", paddingBottom: "30px" }}>
             <Header title="자유게시판" />
             <div
                 style={{
@@ -132,9 +133,9 @@ function BoardView({ posts }) {
                     marginBottom: "20px",
                 }}
             >
-                <div>작성자: {authorName}</div>
+                <div> {authorName}</div>
                 <div style={{ marginLeft: "10px" }}>
-                    작성 시간: {timeAgo(post.createdAt)}
+                    {timeAgo(post.createdAt)}
                 </div>
             </div>
             <div style={{ marginBottom: "20px" }}>
@@ -353,8 +354,8 @@ function BoardView({ posts }) {
             </div>
             <div
                 style={{
-                    position: "fixed",
-                    bottom: 0,
+                    position: "absolute",
+                    bottom: "65px",
                     left: 0,
                     width: "100%",
                     padding: "10px 20px",
@@ -365,30 +366,53 @@ function BoardView({ posts }) {
                     boxSizing: "border-box",
                 }}
             >
-                <input
-                    type="text"
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="댓글을 입력하세요"
+                <div
                     style={{
-                        flex: 1,
-                        marginRight: "10px",
-                        padding: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        border: "1px solid #ddd",
+                        borderRadius: "15px", // 테두리를 둥글게 설정
+                        padding: "5px 10px",
                         boxSizing: "border-box",
                     }}
-                />
-                <button
-                    onClick={handleCommentSubmit}
-                    style={{
-                        border: "none",
-                        background: "none",
-                        color: "#888",
-                        cursor: "pointer",
-                    }}
                 >
-                    댓글 달기
-                </button>
+                    <input
+                        type="text"
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        placeholder="댓글을 입력하세요"
+                        style={{
+                            flex: 1,
+                            marginRight: "10px",
+                            border: "none", // 입력창의 기본 테두리 제거
+                            outline: "none", // 입력창에 포커스 시 생기는 테두리 제거
+                            padding: "5px",
+                            boxSizing: "border-box",
+                        }}
+                    />
+                    <button
+                        onClick={handleCommentSubmit}
+                        style={{
+                            border: "none",
+                            background: "none",
+                            color: "#888",
+                            cursor: "pointer",
+                            padding: "0",
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <img
+                            src="/assets/images/enterIcon.svg"
+                            alt="댓글 달기"
+                            style={{ width: "20px", height: "20px" }}
+                        />
+                    </button>
+                </div>
             </div>
+
+            <NavBar />
         </div>
     );
 }
