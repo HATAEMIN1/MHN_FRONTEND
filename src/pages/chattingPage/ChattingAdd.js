@@ -1,13 +1,13 @@
 import React from "react";
 import Header from "../../layouts/header/Header";
 
-function DoctorBoardAdd() {
+function ChattingAdd() {
     return (
         <>
             <Header />
-            <div>DoctorBoardAdd</div>
+            <div>ChattingAdd</div>
         </>
     );
 }
 
-export default DoctorBoardAdd;
+export default ChattingAdd;
