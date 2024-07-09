@@ -25,7 +25,7 @@ function NavBar() {
 
         {
             title: "게시판",
-            route: "/boards",
+            route: "/chatboards",
             grayIcon: "board_gray",
             blackIcon: "board_black",
         },

@@ -23,7 +23,20 @@ function Test({ ...props }) {
             <ButtonClear text1="확인" text2="아니오" />
             <ButtonClear text1="해제하기" />
 
-            <FilterModalManager />
+            <div className="text-gray-100">테에에스트으으으</div>
+            <div className="text-gray-200">테에에스트으으으</div>
+            <div className="text-gray-300">테에에스트으으으</div>
+            <div className="text-gray-400">테에에스트으으으</div>
+            <FilterModalManager
+                modalOpen={
+                    <ButtonClear
+                        text1="모달버튼"
+                        handleClick={() => {
+                            console.log("모달 버튼 클릭됨");
+                        }}
+                    />
+                }
+            />
 
             <NavBar />
         </>
