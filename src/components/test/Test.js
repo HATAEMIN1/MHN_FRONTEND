@@ -12,6 +12,7 @@ function Test({ ...props }) {
     //         onClose();
     //     }
     // }
+
     return (
         <>
             {/* gpej 타이틀 px20 */}
@@ -23,8 +24,16 @@ function Test({ ...props }) {
             <ButtonClear text1="확인" text2="아니오" />
             <ButtonClear text1="해제하기" />
 
-            <FilterModalManager />
-
+            <FilterModalManager
+                modalOpen={
+                    <ButtonClear
+                        text1="모달버튼"
+                        handleClick={() => {
+                            console.log("모달 버튼 클릭됨");
+                        }}
+                    />
+                }
+            />
             <NavBar />
         </>
     );

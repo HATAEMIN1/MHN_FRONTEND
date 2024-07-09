@@ -38,6 +38,7 @@ function FilterModal({ ...props }) {
                     >
                         좋아요순
                     </li>
+
                     <li
                         className="text-center cursor-pointer w-full"
                         onClick={() => {

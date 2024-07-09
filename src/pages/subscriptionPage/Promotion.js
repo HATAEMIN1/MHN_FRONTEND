@@ -10,11 +10,11 @@ function Promotion(props) {
         <>
             <div className="promotion-container pt-[100px]">
                 <Header title="구독권 결제" />
-                <div className="h-[80vh] px-[100px]">
+                <div className="h-[80%] px-[100px]">
                     <div>
                         <img
                             src="/assets/images/promotion.svg"
-                            className="block m-auto w-full"
+                            className="m-auto w-full"
                         />
                     </div>
                     <div className="py-[40px]">
@@ -46,7 +46,7 @@ function Promotion(props) {
                         </Link> */}
                     </div>
                 </div>
-                <NavBar></NavBar>
+                <NavBar />
             </div>
         </>
     );
