@@ -191,7 +191,7 @@ function BoardView({ posts }) {
                 </button>
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/commentIcon (2).svg`}
+                        src={`${process.env.PUBLIC_URL}/assets/images/commentIcon.svg`}
                         alt="comment"
                         style={{
                             width: "20px",
