@@ -28,6 +28,7 @@ import Send from "../assets/images/send.svg";
 import Star from "../assets/images/star.svg";
 import WriteU from "../assets/images/writeU.svg";
 import WriteD from "../assets/images/writeD.svg";
+import ArrowRightW from "../assets/images/arrow_rightW.svg";
 
 const Icons = {
     add: Add,
@@ -60,6 +61,7 @@ const Icons = {
     star: Star,
     writeU: WriteU,
     writeD: WriteD,
+    arrowRightW: ArrowRightW,
 };
 
 export default Icons;
