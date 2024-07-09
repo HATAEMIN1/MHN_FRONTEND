@@ -18,7 +18,7 @@ function AccountPetAdd() {
                 <div className="flex gap-3 my-16 items-center">
                     <img src={Icons.pets} className="w-10" />
                     <h2 className="subtitle1 text-primary-300">
-                        펫 정보를 입력해주세요
+                        펫 정보를 입력해주세요.
                     </h2>
                 </div>
                 <div className="h-[300px]  flex flex-col border rounded-lg px-5 py-4 gap-8 justify-center text-primary-300">
