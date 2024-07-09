@@ -39,7 +39,7 @@ function Searchbar({ onSearch }) {
     return (
         <div style={containerStyle}>
             <img
-                src="path/to/your/icon.png"
+                src="/assets/images/searchIcon.svg"
                 alt="search icon"
                 style={iconStyle}
                 onClick={handleSearch}

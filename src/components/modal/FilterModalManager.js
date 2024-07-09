@@ -14,14 +14,7 @@ function FilterModalManager({ modalOpen }) {
 
     return (
         <>
-            {React.cloneElement(modalOpen, {
-                handleClick: () => {
-                    openModal();
-                    if (modalOpen.props.handleClick) {
-                        modalOpen.props.handleClick();
-                    }
-                },
-            })}
+            {React.cloneElement(modalOpen, { onClick: openModal })}
             {isModalOpen && <FilterModal onClose={closeModal} />}
         </>
     );

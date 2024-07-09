@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import "../../assets/css/promotion.scss";
 
-function Promotion(props) {
+function Promotion({ ...props }) {
     return (
         <>
             <div className="promotion-container pt-[100px]">
