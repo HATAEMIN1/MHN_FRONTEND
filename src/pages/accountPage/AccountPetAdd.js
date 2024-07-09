@@ -14,19 +14,19 @@ function AccountPetAdd() {
     return (
         <>
             <Header title="펫 등록" />
-            <div className="h-full mx-7">
-                <div className="flex gap-3 my-16 items-center">
-                    <img src={Icons.pets} className="w-10" />
+            <div className="h-full">
+                <div className="flex gap-3 my-14 items-center">
+                    <img src={Icons.pets} className="w-8" />
                     <h2 className="subtitle1 text-primary-300">
                         펫 정보를 입력해주세요.
                     </h2>
                 </div>
-                <div className="h-[300px]  flex flex-col border rounded-lg px-5 py-4 gap-8 justify-center text-primary-300">
-                    <p className="flex border-b px-2 py-3 justify-between gap-2">
+                <div className="flex flex-col border border-gray-200 rounded-lg px-5 py-4 gap-8 justify-center text-primary-300">
+                    <p className="flex border-b border-gray-500 px-2 py-3 gap-2">
                         <span className="subtitle1">이름</span>
-                        <input className="body2" />
+                        <input className="body2 flex-grow text-sub-100" />
                     </p>
-                    <p className="flex border-b px-2 py-3 justify-between gap-2">
+                    <p className="flex border-b border-gray-500 px-2 py-3 justify-between">
                         <span className="subtitle1">종</span>
                         <select
                             value={selectedPet}
@@ -38,7 +38,7 @@ function AccountPetAdd() {
                             <option>고양이</option>
                         </select>
                     </p>
-                    <p className="flex border-b px-2 py-3 justify-between gap-2">
+                    <p className="flex border-b border-gray-500 px-2 py-3 justify-between">
                         <span className="subtitle1">생일</span>
                         <input type="date" className="body2" />
                     </p>
