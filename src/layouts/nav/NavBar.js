@@ -25,7 +25,7 @@ function NavBar() {
 
         {
             title: "게시판",
-            route: "/boards",
+            route: "/chatboards",
             grayIcon: "board_gray",
             blackIcon: "board_black",
         },
@@ -37,7 +37,7 @@ function NavBar() {
         },
     ];
     return (
-        <div className="bg-white bottom-0 z-50 fixed w-[100%] left-0 right-0 absolute h-[65px] px-[16px] border-t flex">
+        <div className="bg-white bottom-0 z-49 fixed w-[100%] left-0 right-0 absolute h-[65px] px-[16px] border-t flex">
             <ul className="flex justify-around items-center w-full">
                 {navMenu.map((item, idx) => {
                     const isActive = location.pathname === item.route;
