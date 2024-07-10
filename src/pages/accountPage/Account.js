@@ -29,7 +29,9 @@ function Account() {
                     </div>
                 </div>
                 <div className="ml-[56px] mb-[18px]">
-                    <ButtonBlack text1="프로필 수정" />
+                    <Link to="/account/edit">
+                        <ButtonBlack text1="프로필 수정" />
+                    </Link>
                 </div>
             </div>
             {/* 마이페이지 메뉴 시작 */}

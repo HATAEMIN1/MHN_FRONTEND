@@ -45,7 +45,7 @@ function App() {
     return (
         <>
             <div className="sm:bg-red-200 w-[100%] h-[100vh] flex justify-center items-center">
-                <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px] sm:h-screen relative flex flex-col ">
+                <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px]  sm:h-screen relative flex flex-col">
                     <div className="flex-grow overflow-hidden">
                         <div className="h-full overflow-y-auto bg-white pr-4 px-[16px] py-[85px]">
                             <Routes>

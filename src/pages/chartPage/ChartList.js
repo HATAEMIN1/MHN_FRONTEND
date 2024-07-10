@@ -8,8 +8,8 @@ function ChartList() {
     return (
         <>
             <Header title="진료기록" write="charts/new" />
-            <div className=" mt-10  ">
-                <div className="mb-8 flex gap-4 flex-wrap  justify-between px-5">
+            <div className=" mt-10 ">
+                <div className="mb-8 flex gap-4 flex-wrap justify-center px-5 sm:justify-between">
                     <Link
                         to={`/charts/${chartId}`}
                         className="col-span-1 justify-self-start"
