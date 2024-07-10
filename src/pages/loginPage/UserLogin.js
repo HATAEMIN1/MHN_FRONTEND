@@ -30,7 +30,13 @@ function UserLogin() {
                 <input
                     type="password"
                     placeholder="Password"
-                    {...register("Password", {})}
+                    {...register("Password", {
+                        max: 15,
+                        min: 8,
+                        maxLength: 15,
+                        pattern:
+                            /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/i,
+                    })}
                     className="border-b w-full p-4"
                 />
 
