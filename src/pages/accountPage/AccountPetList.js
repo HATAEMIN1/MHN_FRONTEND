@@ -1,12 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/ButtonBlack";
 import "../../assets/css/style.scss";
 import { useNavigate } from "react-router-dom";
+import Modal from "../../components/Modal";
+import ModalManager from "../../components/ModalManager";
 
 function AccountPetList() {
     const navigate = useNavigate();
+
+    const handleDeleteClick = (openModal) => {
+        if (typeof openModal === "function") {
+            console.log("게시물이 삭제되었습니다.");
+            openModal();
+        } else {
+            console.error("openModal is not a function");
+        }
+    };
+
+    const handleClose = (closeModal) => {
+        if (typeof closeModal === "function") {
+            closeModal();
+        } else {
+            console.error("closeModal is not a function");
+        }
+    };
+
+    const modalContent = (
+        <div>
+            <p>삭제되었습니다.</p>
+            <button
+                onClick={(closeModal) => {
+                    handleClose(closeModal);
+                }}
+            >
+                확인
+            </button>
+        </div>
+    );
+
     return (
         <>
             <Header title="펫 리스트" />
@@ -20,10 +53,30 @@ function AccountPetList() {
                     />
                     <p className="subtitle1 text-primary-300">김츄츄</p>
                     <span className="body2 block text-sub-100">2024.02.15</span>
-                    <button className="body2 inline-block text-gray-300">
+                    <button
+                        onClick={handleDeleteClick}
+                        className="body2 inline-block text-gray-300"
+                    >
                         삭제하기
                     </button>
                 </div>
+
+                <ModalManager modalContent={modalContent}>
+                    {({ openModal }) => {
+                        if (typeof openModal !== "function") {
+                            console.error("openModal is not a function");
+                            return null;
+                        }
+                        return (
+                            <button
+                                onClick={() => handleDeleteClick(openModal)}
+                            >
+                                삭제하기
+                            </button>
+                        );
+                    }}
+                </ModalManager>
+
                 {/* pet1 e  */}
 
                 {/* pet2 s  */}
