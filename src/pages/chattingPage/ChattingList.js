@@ -26,7 +26,7 @@ function ChattingList() {
                     </Link>
                 </ul>
             </div>
-            <div className="flex items-center gap-[8px]">
+            <div className="flex items-center gap-[8px] mb-[20px]">
                 <Searchbar />
                 <FilterModalManager
                     modalOpen={
@@ -45,6 +45,7 @@ function ChattingList() {
                     onOpenModal={handleModalOpen}
                 />
             </div>
+            {/* tab메뉴 end */}
             <div>ChattingList</div>
             <NavBar />
         </>
