@@ -1,4 +1,15 @@
-//promotion.js파일에서 배경색상추가 s
+// //promotion.js파일에서 배경색상추가 s
+// .promotion-container {
+//     background-color: #cad9d2;
+//     min-height: 100vh;
+//     width: 100%;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     z-index: 10; // 다른 요소들 위에 오도록 설정
+// }
+// //promotion.js파일에서 배경색상추가 e
+
 .promotion-container {
     background-color: #cad9d2;
     min-height: 100vh;
@@ -6,6 +17,43 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 10; // 다른 요소들 위에 오도록 설정
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .h-80 {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .py-20 {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
 }
-//promotion.js파일에서 배경색상추가 e
+
+@media (max-width: 768px) {
+    .promotion-container {
+        .py-100 {
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .px-100 {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .h-80 {
+            height: auto;
+        }
+    }
+}
