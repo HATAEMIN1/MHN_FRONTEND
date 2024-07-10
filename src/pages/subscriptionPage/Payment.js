@@ -21,6 +21,7 @@ function Payment() {
             buyer_email: "gkxoals33@gmail.com", // 구매자 이메일
             // buyer_addr: "서울특별시 강남구 삼성동",
             // buyer_postcode: "123-456",
+            // m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}",
         };
 
         /* 4. 결제 창 호출하기 */
@@ -35,7 +36,7 @@ function Payment() {
         //         buyer_email: "test@portone.io",
         //         buyer_name: "포트원",
         //         buyer_tel: "02-1234-1234",
-        //         m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}",
+        //
         //     },
         //     callback
         // );
@@ -102,13 +103,22 @@ function Payment() {
                     가능합니다.
                 </div>
                 <div className="subtitle1 p-2 px-4  ">결제 정보</div>
-                <div className="flex justify-between items-center">
-                    <div className="px-4 subtitle2">결제 금액</div>
+                <div className="flex justify-between items-center px-4">
+                    <div className=" subtitle2">결제 금액</div>
                     <p className="body2">8,900원</p>
                 </div>
-                <div className="flex p-4 justify-between items-center">
+                <div className="flex p-4 justify-between items-center border-b">
                     <div className="subtitle2">다음 결제 예정일</div>
                     <p className="body2">2024.07.24</p>
+                </div>
+                <div className="flex p-4 justify-between items-center border-b">
+                    <div className="subtitle2">최종 결제 금액</div>
+                    <p className="body2">8,900원</p>
+                </div>
+                <div className="p-4 justify-center flex">
+                    <p>
+                        위 내용을 확인하였으며, 멍햄냥 멤버십 가입에 동의합니다.
+                    </p>
                 </div>
             </form>
             <ButtonBlack
