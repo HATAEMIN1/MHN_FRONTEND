@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../../layouts/header/Header";
 import Searchbar from "../../components/search/Searchbar";
 import NavBar from "../../layouts/nav/NavBar";
+import FilterModalManager from "../../components/modal/FilterModalManager";
 
 function timeSince(date) {
     const now = new Date();
@@ -27,12 +28,46 @@ function timeSince(date) {
 }
 
 function BoardList({ posts }) {
+    const handleModalOpen = () => {
+        console.log("모달 버튼 클릭됨");
+    };
     return (
         <div>
             <Header title="자유게시판" write="boards/new" />
-            <div style={{ display: "flex", alignItems: "center" }}>
-                <Searchbar />
+            {/* tab메뉴 */}
+            <div className="py-[16px] ">
+                <ul className="flex justify-around gap-[2px]">
+                    <Link to="/chatboards" className=" w-full">
+                        <li className=" text-center body2 border-b w-full">
+                            1:1 채팅 게시판
+                        </li>
+                    </Link>
+
+                    <li className="border-b-2 w-full text-center body2">
+                        자유 게시판
+                    </li>
+                </ul>
             </div>
+            <div className="flex items-center gap-[8px] mb-[20px]">
+                <Searchbar />
+                <FilterModalManager
+                    modalOpen={
+                        <div
+                            onClick={handleModalOpen}
+                            style={{ cursor: "pointer" }}
+                        >
+                            <img
+                                src="/assets/images/filterIcon.svg"
+                                alt="Filter"
+                                className="w-[24px]"
+                                // style={{ marginLeft: "auto" }}
+                            />
+                        </div>
+                    }
+                    onOpenModal={handleModalOpen}
+                />
+            </div>
+            {/* tab메뉴 end */}
             <ul
                 style={{
                     display: "grid",
