@@ -2,18 +2,59 @@ import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import "../../assets/css/style.scss";
+import ModalManager from "../../components/modal/ModalManager";
+import { useNavigate } from "react-router-dom";
+import ButtonBlack from "../../components/button/ButtonBlack";
 
 function AccountPetAdd() {
+    const navigate = useNavigate();
     const [selectedPet, setSelectedPet] = useState("");
     const [hasValue, setHasValue] = useState(false);
 
     const handleChange = (event) => {
         setSelectedPet(event.target.value);
     };
+    const handleSubmit = (closeModal) => {
+        closeModal();
+        navigate("/account/pets");
+    };
 
     return (
-        <>
-            <Header title="펫 등록" button="완료" />
+        <form>
+            <ModalManager
+                modalContent={({ closeModal }) => (
+                    <div>
+                        <p>등록완료</p>
+                        <ButtonBlack
+                            handleClick={(e) => {
+                                e.preventDefault(); // 추가: 폼 제출 방지
+                                handleSubmit(closeModal);
+                            }}
+                            text1="확인"
+                            style={{
+                                marginTop: "20px",
+                                fontSize: "16px",
+                                cursor: "pointer",
+                                color: "blue",
+                            }}
+                        />
+                    </div>
+                )}
+            >
+                {({ openModal }) => (
+                    <div>
+                        <Header
+                            title="펫 등록"
+                            button="완료"
+                            handleClick={(e) => {
+                                e.preventDefault(); // 추가: 폼 제출 방지
+                                openModal();
+                            }}
+                        />
+                    </div>
+                )}
+            </ModalManager>
+
             <div className="h-full flex flex-col items-center ">
                 {/* <div className="flex gap-3 items-center">
                     <img src="/assets/images/pets.svg" className="w-7" />
@@ -79,7 +120,7 @@ function AccountPetAdd() {
                 {/* input e  */}
             </div>
             <NavBar />
-        </>
+        </form>
     );
 }
 
