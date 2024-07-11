@@ -63,7 +63,9 @@ function AccountPetList() {
                                         handleDelete(pet.id, closeModal);
                                     }}
                                 >
-                                    <p>정말로 삭제하시겠습니까?</p>
+                                    <p className="mb-3">
+                                        정말로 삭제하시겠습니까?
+                                    </p>
                                     <ButtonBlack
                                         type="submit"
                                         text1="확인"
@@ -72,6 +74,7 @@ function AccountPetList() {
                                             fontSize: "16px",
                                             cursor: "pointer",
                                             color: "blue",
+                                            font: "body2",
                                         }}
                                     />
                                 </form>

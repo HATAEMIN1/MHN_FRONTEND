@@ -5,15 +5,12 @@ import "../../assets/css/style.scss";
 import ModalManager from "../../components/modal/ModalManager";
 import { useNavigate } from "react-router-dom";
 import ButtonBlack from "../../components/button/ButtonBlack";
+import PetDropDown from "../../components/PetDropDown";
 
 function AccountPetAdd() {
     const navigate = useNavigate();
-    const [selectedPet, setSelectedPet] = useState("");
     const [hasValue, setHasValue] = useState(false);
 
-    const handleChange = (event) => {
-        setSelectedPet(event.target.value);
-    };
     const handleSubmit = (closeModal) => {
         closeModal();
         navigate("/account/pets");
@@ -24,13 +21,14 @@ function AccountPetAdd() {
             <ModalManager
                 modalContent={({ closeModal }) => (
                     <div>
-                        <p>등록완료</p>
+                        <p className="mb-3">등록되었습니다.</p>
                         <ButtonBlack
                             handleClick={(e) => {
                                 e.preventDefault(); // 추가: 폼 제출 방지
                                 handleSubmit(closeModal);
                             }}
                             text1="확인"
+                            className="body2"
                             style={{
                                 marginTop: "20px",
                                 fontSize: "16px",
@@ -56,15 +54,15 @@ function AccountPetAdd() {
             </ModalManager>
 
             <div className="h-full flex flex-col items-center ">
-                {/* <div className="flex gap-3 items-center">
-                    <img src="/assets/images/pets.svg" className="w-7" />
+                <div className="flex gap-3 items-center my-14">
+                    <img src="/assets/images/petsIcon.svg" className="w-7" />
                     <h2 className="subtitle1 text-primary-300">
                         펫 정보를 입력해주세요
                     </h2>
-                </div> */}
+                </div>
 
                 {/* img s */}
-                <div className="relative my-14">
+                {/* <div className="relative my-14">
                     <img
                         src="/assets/images/dog44.png"
                         className="w-24 h-24 rounded-full"
@@ -75,7 +73,7 @@ function AccountPetAdd() {
                             className="w-5 h-5"
                         />
                     </button>
-                </div>
+                </div> */}
                 {/* img e */}
 
                 {/* input s */}
@@ -86,21 +84,7 @@ function AccountPetAdd() {
                         <input className="body2 flex-grow text-sub-100 focus:outline-none" />
                     </p>
                     {/* name e  */}
-
-                    {/* sel s  */}
-                    <p className="flex border-b border-gray-500 px-2 py-3 justify-between">
-                        <span className="subtitle1">종</span>
-                        <select
-                            value={selectedPet}
-                            onChange={handleChange}
-                            className="body2 focus:outline-none text-sub-100"
-                        >
-                            <option disabled>목록</option>
-                            <option>강아지</option>
-                            <option>고양이</option>
-                        </select>
-                    </p>
-                    {/* sel e  */}
+                    <PetDropDown />
 
                     {/* date s  */}
                     <p className="flex border-b border-gray-500 px-2 py-3 justify-between">
