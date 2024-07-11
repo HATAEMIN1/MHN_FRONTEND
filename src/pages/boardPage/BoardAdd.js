@@ -109,7 +109,7 @@ function BoardAdd({ onAddPost }) {
                     </div>
                 )}
             </ModalManager>
-            <Searchbar />
+            {/* <Searchbar /> */}
             <div style={{ borderBottom: "none" }}>
                 <input
                     type="text"
@@ -147,7 +147,7 @@ function BoardAdd({ onAddPost }) {
                     onChange={handleContentChange}
                     style={{
                         width: "100%",
-                        height: "500px",
+                        height: "300px",
                         padding: "10px",
                         border: "none",
                         borderBottom: "1px solid #e0e0e0",
@@ -157,6 +157,7 @@ function BoardAdd({ onAddPost }) {
                         backgroundColor: "white",
                         boxSizing: "border-box",
                     }}
+                    className="no-scrollbar"
                 />
 
                 {contentError && (
@@ -273,7 +274,7 @@ function BoardAdd({ onAddPost }) {
                     }}
                 >
                     <img
-                        src="camera-icon-url"
+                        src="/assets/images/cameraIcon.svg"
                         alt="camera"
                         style={{
                             width: "24px",
