@@ -7,6 +7,7 @@ function ButtonBlack({ ...props }) {
                 <>
                     <button
                         className="bg-primary-300 rounded-[8px] px-[16px] text-white text-center whitespace-nowrap"
+
                         style={{ width: props.width, height: props.height }}
                         // 대부분 width="100%" height="45px"로 맞춰주시면 됩니다
                         onClick={props.handleClick}
@@ -18,6 +19,7 @@ function ButtonBlack({ ...props }) {
                 <>
                     <button
                         className="bg-primary-300 rounded-[8px] whitespace-nowrap px-[16px] py-[4px] text-white text-center"
+
                         onClick={props.handleClick}
                     >
                         {props.text1}
