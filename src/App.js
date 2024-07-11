@@ -86,7 +86,7 @@ function App() {
                                     element={<ChattingAdd />}
                                 />
                                 <Route
-                                    path="/doctor/chat"
+                                    path="/doctors/chatting"
                                     element={<DChattingReqList />}
                                 />
                                 {/*자유게시판*/}
