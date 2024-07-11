@@ -32,7 +32,7 @@ function BoardList({ posts }) {
         console.log("모달 버튼 클릭됨");
     };
     return (
-        <div>
+        <div className="w-full">
             <Header title="자유게시판" write="boards/new" />
             {/* tab메뉴 */}
             <div className="py-[16px] ">
@@ -71,91 +71,104 @@ function BoardList({ posts }) {
             <ul
                 style={{
                     display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fill, minmax(250px, 1fr))",
-                    gap: "20px",
+                    gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+                    gap: "8px",
+                    width: "100%",
+                    padding: 0, // ul의 기본 패딩 제거
+                    margin: 0, // ul의 기본 마진 제거
+                    listStyle: "none", // ul의 기본 리스트 스타일 제거
                 }}
             >
                 {posts.map((post, index) => (
-                    <li
-                        key={index}
-                        style={{
-                            padding: "10px",
-                            borderRadius: "8px",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "start",
-                            minHeight: "350px",
-                        }}
-                    >
-                        <div
+                    <Link to={`/boards/${index}`} state={{ post }}>
+                        <li
+                            key={index}
                             style={{
-                                width: "100%",
-                                height: "200px",
-                                marginBottom: "10px",
-                                overflow: "hidden",
-                            }}
-                        >
-                            {post.images && post.images.length > 0 && (
-                                <img
-                                    src={URL.createObjectURL(post.images[0])}
-                                    alt="Post Image"
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            )}
-                        </div>
-                        <div
-                            style={{
+                                border: "1px solid #ddd",
+                                // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                                padding: "10px",
+                                borderRadius: "8px",
                                 display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                width: "100%",
+                                flexDirection: "column",
+                                alignItems: "start",
+                                // minHeight: "350px",
                             }}
+                            className="w-full"
                         >
-                            <Link
-                                to={`/boards/${index}`}
-                                state={{ post }}
+                            <div
                                 style={{
-                                    fontWeight: "bold",
-                                    fontSize: "16px",
+                                    width: "100%",
+                                    aspectRatio: "1 / 1",
+                                    marginBottom: "10px",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                {post.images && post.images.length > 0 && (
+                                    <img
+                                        src={URL.createObjectURL(
+                                            post.images[0]
+                                        )}
+                                        alt="Post Image"
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                        }}
+                                    />
+                                )}
+                            </div>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "center",
+                                    width: "100%",
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "16px",
+                                        textAlign: "left",
+                                        color: "black",
+                                        textDecoration: "none",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                    }}
+                                >
+                                    {post.title}
+                                </div>
+                                <span
+                                    style={{
+                                        fontSize: "12px",
+                                        color: "#666",
+                                        whiteSpace: "nowrap",
+                                    }}
+                                >
+                                    {timeSince(post.createdAt)}
+                                </span>
+                            </div>
+                            <p
+                                style={{
+                                    fontSize: "14px",
                                     textAlign: "left",
-                                    color: "black",
-                                    textDecoration: "none",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
                                     whiteSpace: "nowrap",
+                                    width: "100%",
                                 }}
                             >
-                                {post.title}
-                            </Link>
-                            <span
-                                style={{
-                                    fontSize: "12px",
-                                    color: "#666",
-                                    whiteSpace: "nowrap",
-                                }}
-                            >
-                                {timeSince(post.createdAt)}
-                            </span>
-                        </div>
-                        <p
-                            style={{
-                                fontSize: "14px",
-                                textAlign: "left",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                                width: "100%",
-                            }}
-                        >
-                            {post.content.substring(0, 10) +
-                                (post.content.length > 10 ? "..." : "")}
-                        </p>
-                    </li>
+                                {post.content.substring(0, 10) +
+                                    (post.content.length > 10 ? "..." : "")}
+                            </p>
+                            <div className="flex gap-[4px]">
+                                <p className="mini text-gray-300">좋아요 13</p>
+                                <p className="mini text-gray-300">|</p>
+                                <p className="mini text-gray-300">댓글 12</p>
+                            </div>
+                        </li>
+                    </Link>
                 ))}
             </ul>
             <NavBar />
