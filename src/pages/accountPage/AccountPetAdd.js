@@ -6,6 +6,7 @@ import ModalManager from "../../components/modal/ModalManager";
 import { useNavigate } from "react-router-dom";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import PetDropDown from "../../components/PetDropDown";
+import ImageUploader from "../../components/ImageUploader";
 
 function AccountPetAdd() {
     const navigate = useNavigate();
@@ -54,12 +55,12 @@ function AccountPetAdd() {
             </ModalManager>
 
             <div className="h-full flex flex-col items-center ">
-                <div className="flex gap-3 items-center my-14">
+                {/* <div className="flex gap-3 items-center my-14">
                     <img src="/assets/images/petsIcon.svg" className="w-7" />
                     <h2 className="subtitle1 text-primary-300">
                         펫 정보를 입력해주세요
                     </h2>
-                </div>
+                </div> */}
 
                 {/* img s */}
                 {/* <div className="relative my-14">
@@ -74,6 +75,7 @@ function AccountPetAdd() {
                         />
                     </button>
                 </div> */}
+                <ImageUploader />
                 {/* img e */}
 
                 {/* input s */}
