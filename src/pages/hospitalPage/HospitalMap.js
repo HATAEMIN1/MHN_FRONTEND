@@ -24,8 +24,8 @@ function HospitalMap() {
             <div className="mb-[20px]">
                 <SearchInput />
             </div>
-            <div className="mb-[10px]">
-                <KakaoMapSearch width="100%" height="550px" />
+            <div className="mb-[10px] kakao-map-container">
+                <KakaoMapSearch width="100%" height="100%" />
             </div>
             <div>
                 <HospitalListForm hospitalList={hospitalExam} />
