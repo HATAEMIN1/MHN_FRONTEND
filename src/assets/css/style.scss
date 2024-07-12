@@ -146,3 +146,10 @@ img {
 .custom-scroll-bar::-webkit-scrollbar-thumb:hover {
     background: #bbb; /* 스크롤바 썸 호버 시 배경색 */
 }
+
+// hospitalView에서만 navbar 속성 조정
+
+.hospital-view-navbar {
+    position: relative; /* position 속성을 설정 */
+    z-index: 99; /* 낮은 z-index 값 설정 */
+}

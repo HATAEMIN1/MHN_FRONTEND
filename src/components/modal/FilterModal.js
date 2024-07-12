@@ -14,12 +14,16 @@ function FilterModal({ ...props }) {
 
     return (
         <div
-            className="w-full fixed inset-0 bg-black bg-opacity-50 z-20 flex items-end justify-center modal-overlay"
+            className="w-full fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center modal-overlay"
             onClick={handleOutsideClick}
+            style={{ zIndex: 999 }}
         >
             <div
-                style={modalContainerStyle}
-                className="w-full sm:w-[576px] z-50 rounded-t-[12px] px-[16px]"
+                style={{
+                    ...modalContainerStyle,
+                    zIndex: 1000,
+                }}
+                className="w-full sm:w-[576px] rounded-t-[12px] px-[16px]"
             >
                 <ul className="flex flex-col justify-around items-center h-full">
                     <li

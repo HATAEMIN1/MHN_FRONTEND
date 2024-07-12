@@ -109,8 +109,8 @@ function KakaoMapSearch({ ...props }) {
 
         // };
         // document.head.appendChild(script);
-        console.log("현재위치 좌표값::", location);
     }, []);
+    console.log("현재위치 좌표값::", location);
 
     return (
         <>

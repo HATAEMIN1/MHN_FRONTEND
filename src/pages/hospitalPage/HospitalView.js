@@ -50,13 +50,9 @@ function HospitalView() {
             </div>
             <div>
                 <p className="subtitle1">병원 지도</p>
-                {/* <img
-                    src="/assets/images/testMapMini.svg"
-                    className="w-full m-auto"
-                /> */}
                 <KakaoMapSearch width="90%" height="180px" radius="4px" />
             </div>
-            <NavBar />
+            <NavBar className="hospital-view-navbar" />
         </>
     );
 }
