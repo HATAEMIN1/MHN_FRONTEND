@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link } from "react-router-dom";
+import KakaoMapSearch from "../../components/kakaomap/KakaoMapSearch";
 
 function HospitalView() {
     const [bookmark, setBookmark] = useState(false);
@@ -49,10 +50,11 @@ function HospitalView() {
             </div>
             <div>
                 <p className="subtitle1">병원 지도</p>
-                <img
+                {/* <img
                     src="/assets/images/testMapMini.svg"
                     className="w-full m-auto"
-                />
+                /> */}
+                <KakaoMapSearch width="90%" height="180px" radius="4px" />
             </div>
             <NavBar />
         </>
