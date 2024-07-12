@@ -46,7 +46,7 @@ function Promotion({ ...props }) {
                         </Link> */}
                     </div>
                 </div>
-                <NavBar></NavBar>
+                <NavBar />
             </div>
         </>
     );

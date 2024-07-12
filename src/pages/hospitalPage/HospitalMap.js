@@ -4,6 +4,7 @@ import Header from "../../layouts/header/Header";
 import HospitalListForm from "../../components/Form/HospitalListForm";
 import SearchInput from "../../components/search/SearchInput";
 import { Link } from "react-router-dom";
+import KakaoMapSearch from "../../components/kakaomap/KakaoMapSearch";
 
 function HospitalMap() {
     const hospitalExam = [
@@ -23,11 +24,8 @@ function HospitalMap() {
             <div className="mb-[20px]">
                 <SearchInput />
             </div>
-            <div className="mb-[10px]">
-                <img
-                    src="/assets/images/testMap.svg"
-                    style={{ width: "90%", margin: "auto" }}
-                />
+            <div className="mb-[10px] kakao-map-container">
+                <KakaoMapSearch width="100%" height="100%" />
             </div>
             <div>
                 <HospitalListForm hospitalList={hospitalExam} />
