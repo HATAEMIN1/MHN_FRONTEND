@@ -24,7 +24,7 @@ function ChartAdd() {
                 <input
                     type="text"
                     placeholder="병원이름"
-                    className="border-b w-full px-4"
+                    className="border-b w-full px-4 focus:outline-none focus:ring-0"
                 />
             </div>
 
@@ -32,7 +32,7 @@ function ChartAdd() {
                 <div className="p-2 ">
                     <h2 className="py-2">펫 선택</h2>
                     <select
-                        className="h-[52px] w-full rounded-md border-2 px-4 appearance-none"
+                        className="h-[52px] w-full rounded-md border-2 px-4 appearance-none focus:outline-none focus:ring-0"
                         value={selectedPet}
                         onChange={handlePetChange}
                     >
@@ -57,7 +57,7 @@ function ChartAdd() {
                     <h2 className="py-2">병명</h2>
                     <input
                         type="text"
-                        className="h-[52px] w-full rounded-md border-2 cursor-auto px-4 "
+                        className="h-[52px] w-full rounded-md border-2 cursor-auto px-4 focus:outline-none focus:ring-0 "
                         value={dig}
                         readOnly
                     />
@@ -76,7 +76,7 @@ function ChartAdd() {
                         </div>
                     </div>
 
-                    <textarea className="h-[184px] w-full rounded-md border-2 p-4 " />
+                    <textarea className="h-[184px] w-full rounded-md border-2 p-4 focus:outline-none focus:ring-0" />
                 </div>
 
                 {/*스와이퍼 들어가는 자리*/}
