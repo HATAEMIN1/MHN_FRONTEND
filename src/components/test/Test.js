@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
@@ -30,6 +30,7 @@ function Test({ ...props }) {
     //         onClose();
     //     }
     // }
+
     return (
         <>
             {/* gpej 타이틀 px20 */}

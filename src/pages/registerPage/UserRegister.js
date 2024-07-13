@@ -14,6 +14,7 @@ function UserRegister() {
 
     return (
         <>
+
             <Header title="회원가입"></Header>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between items-center border-b mt-16 mb-8">

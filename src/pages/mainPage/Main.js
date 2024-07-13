@@ -20,14 +20,15 @@ function Main() {
                 <div className="mb-[28px]">
                     <MainSlider />
                 </div>
-                <div className="bg-white rounded-t-[8px] rounded-r-[8px] shadow-lg">
+                <div className="bg-white rounded-t-[8px] rounded-r-[8px] ">
                     <div className="mb-[45px]">
                         <div className="flex items-center">
                             <p className="title">자유게시판</p>
                             <img src="/assets/images/nextIcon.svg" />
                         </div>
                         {/* 자유게시판 카드섹션 s */}
-                        <div className="scroll-container no-scrollbar">
+                        {/* <div className="scroll-container"> */}
+                        <div className="scroll-container custom-scroll-bar">
                             <div className="card-list m-auto">
                                 <CardSlider
                                     imgRoute={
@@ -87,8 +88,10 @@ function Main() {
                         <p>가까운 병원</p>
                     </div>
                     {/* 병원정보 카드섹션 s */}
-                    <div className="scroll-container ">
-                        <div className="card-list m-auto">
+                    {/* <div className="scroll-container "> */}
+                    <div className="scroll-container custom-scroll-bar">
+                        {/* <div className="scroll-container no-scrollbar"> */}
+                        <div className="card-list m-auto ">
                             <CardSlider
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
                             />
