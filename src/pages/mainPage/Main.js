@@ -4,7 +4,11 @@ import MainSlider from "../../components/slider/MainSlider";
 import CardSlider from "../../components/slider/CardSlider";
 import { Link } from "react-router-dom";
 import PlusButton from "../../components/button/PlusButton";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 function Main() {
     return (
         <>
@@ -28,23 +32,28 @@ function Main() {
                         </div>
                         {/* 자유게시판 카드섹션 s */}
                         {/* <div className="scroll-container"> */}
-                        <div className="scroll-container custom-scroll-bar">
-                            <div className="card-list m-auto">
-                                <CardSlider
-                                    imgRoute={
-                                        "/assets/images/likeIcon_color.svg"
-                                    }
-                                />
-                                <CardSlider
-                                    imgRoute={
-                                        "/assets/images/likeIcon_color.svg"
-                                    }
-                                />
-                                <CardSlider
-                                    imgRoute={
-                                        "/assets/images/likeIcon_color.svg"
-                                    }
-                                />
+                        <div className="px-[4px]">
+                            <div className="overflow-hidden">
+                                <Swiper
+                                    // modules={[Pagination]}
+                                    spaceBetween={8}
+                                    slidesPerView={"auto"}
+                                    // pagination={{ clickable: true }}
+                                    className="mySwiper"
+                                >
+                                    <SwiperSlide className="!w-auto">
+                                        <CardSlider imgRoute="/assets/images/likeIcon_color.svg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide className="!w-auto">
+                                        <CardSlider imgRoute="/assets/images/likeIcon_color.svg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide className="!w-auto">
+                                        <CardSlider imgRoute="/assets/images/likeIcon_color.svg" />
+                                    </SwiperSlide>
+                                    <SwiperSlide className="!w-auto">
+                                        <CardSlider imgRoute="/assets/images/likeIcon_color.svg" />
+                                    </SwiperSlide>
+                                </Swiper>
                             </div>
                         </div>
                     </div>
@@ -89,8 +98,32 @@ function Main() {
                     </div>
                     {/* 병원정보 카드섹션 s */}
                     {/* <div className="scroll-container "> */}
-                    <div className="scroll-container custom-scroll-bar">
-                        {/* <div className="scroll-container no-scrollbar"> */}
+                    <div className="px-[4px]">
+                        <div className="overflow-hidden">
+                            <Swiper
+                                // modules={[Pagination]}
+                                spaceBetween={8}
+                                slidesPerView={"auto"}
+                                // pagination={{ clickable: true }}
+                                className="mySwiper"
+                            >
+                                <SwiperSlide className="!w-auto">
+                                    <CardSlider imgRoute="/assets/images/ratingIcon_color.svg" />
+                                </SwiperSlide>
+                                <SwiperSlide className="!w-auto">
+                                    <CardSlider imgRoute="/assets/images/ratingIcon_color.svg" />
+                                </SwiperSlide>
+                                <SwiperSlide className="!w-auto">
+                                    <CardSlider imgRoute="/assets/images/ratingIcon_color.svg" />
+                                </SwiperSlide>
+                                <SwiperSlide className="!w-auto">
+                                    <CardSlider imgRoute="/assets/images/ratingIcon_color.svg" />
+                                </SwiperSlide>
+                            </Swiper>
+                        </div>
+                    </div>
+                    {/* <div className="scroll-container no-scrollbar"> */}
+                    {/* <div className="scroll-container custom-scroll-bar">
                         <div className="card-list m-auto ">
                             <CardSlider
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
@@ -98,11 +131,8 @@ function Main() {
                             <CardSlider
                                 imgRoute={"/assets/images/ratingIcon_color.svg"}
                             />
-                            <CardSlider
-                                imgRoute={"/assets/images/ratingIcon_color.svg"}
-                            />
                         </div>
-                    </div>
+                    </div> */}
                     {/* 병원정보 카드섹션 e */}
                 </div>
 
