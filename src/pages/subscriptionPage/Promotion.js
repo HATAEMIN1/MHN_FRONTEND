@@ -8,16 +8,16 @@ import "../../assets/css/promotion.scss";
 function Promotion({ ...props }) {
     return (
         <>
-            <div className="promotion-container pt-[100px]">
+            <div className="promotion-container pt-[100px] pb-[70px] ">
                 <Header title="구독권 결제" />
-                <div className="h-[80vh] px-[100px]">
+                <div className="h-[80%] px-[100px]">
                     <div>
                         <img
                             src="/assets/images/promotion.svg"
                             className="block m-auto w-full"
                         />
                     </div>
-                    <div className="py-[40px]">
+                    <div className="py-[20px]">
                         <p className="text-center subtitle2">
                             대략적인 구독권 추가 설명
                         </p>
@@ -46,7 +46,7 @@ function Promotion({ ...props }) {
                         </Link> */}
                     </div>
                 </div>
-                <NavBar></NavBar>
+                <NavBar />
             </div>
         </>
     );
