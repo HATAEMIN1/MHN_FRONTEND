@@ -20,12 +20,14 @@ function ImageUploader() {
         <div className="flex flex-col items-center my-10">
             <div className="w-24 h-24 mb-4">
                 {image ? (
+                    // 업로드 된 이미지
                     <img
                         src={image}
                         alt="Uploaded"
                         className="w-full h-full object-cover rounded-full"
                     />
                 ) : (
+                    // 기본 이미지
                     <div className="w-full h-full bg-gray-500 border border-gray-200 rounded-full flex items-center justify-center">
                         <img
                             width="30"
@@ -36,7 +38,7 @@ function ImageUploader() {
                     </div>
                 )}
             </div>
-            <label className="cursor-pointer bg-primary-300 text-primary-400 flex items-center justify-center rounded py-2 px-7">
+            <label className="cursor-pointer bg-primary-300 text-primary-400 flex items-center justify-center rounded py-2 px-8">
                 <span className="mini">
                     {image ? "사진 선택하기 " : "사진 선택하기"}
                 </span>

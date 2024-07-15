@@ -55,26 +55,7 @@ function AccountPetAdd() {
             </ModalManager>
 
             <div className="h-full flex flex-col items-center ">
-                {/* <div className="flex gap-3 items-center my-14">
-                    <img src="/assets/images/petsIcon.svg" className="w-7" />
-                    <h2 className="subtitle1 text-primary-300">
-                        펫 정보를 입력해주세요
-                    </h2>
-                </div> */}
-
                 {/* img s */}
-                {/* <div className="relative my-14">
-                    <img
-                        src="/assets/images/dog44.png"
-                        className="w-24 h-24 rounded-full"
-                    />
-                    <button className="bg-primary-300 w-8 h-8 rounded-full flex items-center justify-center absolute bottom-[-5px] right-[-10px]">
-                        <img
-                            src="/assets/images/camera_W.svg"
-                            className="w-5 h-5"
-                        />
-                    </button>
-                </div> */}
                 <ImageUploader />
                 {/* img e */}
 
