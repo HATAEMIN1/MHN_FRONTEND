@@ -21,19 +21,22 @@ function AccountPetList() {
         {
             id: 1,
             name: "김츄츄",
-            date: "2024.02.15",
+            kind: "강아지",
+            age: "2024.02.15",
             imgSrc: "/assets/images/petDogIcon.svg",
         },
         {
             id: 2,
             name: "김챠챠",
-            date: "2018.11.20",
+            kind: "고양이",
+            age: "2018.11.20",
             imgSrc: "/assets/images/petCatIcon.svg",
         },
         {
             id: 3,
             name: "김퓨퓨",
-            date: "2021.03.07",
+            kind: "강아지",
+            age: "2021.03.07",
             imgSrc: "/assets/images/petDogIcon.svg",
         },
     ];
@@ -75,7 +78,7 @@ function AccountPetList() {
                         /> */}
                         <p className="subtitle1 text-primary-300">{pet.name}</p>
                         <span className="body2 block text-sub-100">
-                            {pet.date}
+                            {pet.age}
                         </span>
 
                         <ModalManager
