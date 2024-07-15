@@ -1,48 +1,52 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 function ImageUploader() {
-    const [imageUrl, setImageUrl] = useState("");
-    const fileInputRef = useRef(null);
+    const [image, setImage] = useState(null);
 
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        if (file) {
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type.substr(0, 5) === "image") {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImageUrl(reader.result);
+                setImage(reader.result);
             };
             reader.readAsDataURL(file);
+        } else {
+            setImage(null);
         }
     };
 
-    const handleCameraClick = () => {
-        fileInputRef.current.click();
-    };
-
     return (
-        <div className="relative my-14">
-            <img
-                src={imageUrl || ""}
-                className="w-24 h-24 rounded-full border"
-                alt="Uploaded image"
-            />
-            <button
-                className="bg-primary-300 w-8 h-8 rounded-full flex items-center justify-center absolute bottom-[-5px] right-[-10px]"
-                onClick={handleCameraClick}
-            >
-                <img
-                    src="/assets/images/camera_W.svg"
-                    className="w-5 h-5"
-                    alt="Camera icon"
+        <div className="flex flex-col items-center my-10">
+            <div className="w-24 h-24 mb-4">
+                {image ? (
+                    <img
+                        src={image}
+                        alt="Uploaded"
+                        className="w-full h-full object-cover rounded-full"
+                    />
+                ) : (
+                    <div className="w-full h-full bg-gray-500 border border-gray-200 rounded-full flex items-center justify-center">
+                        <img
+                            width="30"
+                            height="30"
+                            src="https://img.icons8.com/ios-glyphs/30/737373/dog-muzzle.png"
+                            alt="dog-muzzle"
+                        />
+                    </div>
+                )}
+            </div>
+            <label className="cursor-pointer bg-primary-300 text-primary-400 flex items-center justify-center rounded py-2 px-7">
+                <span className="mini">
+                    {image ? "사진 선택하기 " : "사진 선택하기"}
+                </span>
+                <input
+                    type="file"
+                    className="hidden"
+                    onChange={handleImageChange}
+                    accept="image/*"
                 />
-            </button>
-            <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleImageUpload}
-                accept="image/*"
-                style={{ display: "none" }}
-            />
+            </label>
         </div>
     );
 }
