@@ -75,6 +75,7 @@ function KakaoMapSearch({ ...props }) {
                 console.log("lat::", lat);
                 console.log("lon::", lon);
                 setLocation({ lat: lat, lon: lon });
+                props.onLocationChange({ lat: lat, lon: lon }); // 부모 컴포넌트에 위치 정보 전달
             });
         } else {
             // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
@@ -116,6 +117,13 @@ function KakaoMapSearch({ ...props }) {
         // document.head.appendChild(script);
     }, []);
     console.log("현재위치 좌표값::", location);
+
+    useEffect(() => {
+        if (location) {
+            console.log("현재위치 좌표값::", location);
+            props.onLocationChange(location); // 위치가 변경될 때마다 부모 컴포넌트에 알림
+        }
+    }, []);
 
     return (
         <>
