@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 function KakaoMapSearch({ ...props }) {
     const [location, setLocation] = useState(null);
+    const [mapInfo, setMapInfo] = useState(null);
     useEffect(() => {
         // 카카오 지도 API를 비동기로 로드
         // const script = document.createElement("script");
@@ -79,7 +80,7 @@ function KakaoMapSearch({ ...props }) {
             });
         } else {
             // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-            const locPosition = new kakao.maps.LatLng(33.450701, 126.570667),
+            const locPosition = new kakao.maps.LatLng(37.4809349, 126.87949),
                 message = "geolocation을 사용할수 없어요..";
 
             displayMarker(locPosition, message);
@@ -113,6 +114,30 @@ function KakaoMapSearch({ ...props }) {
             map.setCenter(locPosition);
         }
 
+        // 새로 추가된 getInfo 함수
+        function getInfo() {
+            const center = map.getCenter();
+            const level = map.getLevel();
+            const mapTypeId = map.getMapTypeId();
+            const bounds = map.getBounds();
+            const swLatLng = bounds.getSouthWest();
+            const neLatLng = bounds.getNorthEast();
+
+            const info = {
+                center: { lat: center.getLat(), lng: center.getLng() },
+                level: level,
+                mapTypeId: mapTypeId,
+                bounds: {
+                    sw: { lat: swLatLng.getLat(), lng: swLatLng.getLng() },
+                    ne: { lat: neLatLng.getLat(), lng: neLatLng.getLng() },
+                },
+            };
+
+            setMapInfo(info);
+        }
+
+        // 지도 이동 끝났을 때 이벤트 리스너
+        kakao.maps.event.addListener(map, "idle", getInfo);
         // };
         // document.head.appendChild(script);
     }, []);
@@ -124,6 +149,13 @@ function KakaoMapSearch({ ...props }) {
             props.onLocationChange(location); // 위치가 변경될 때마다 부모 컴포넌트에 알림
         }
     }, []);
+
+    useEffect(() => {
+        if (mapInfo) {
+            console.log("지도 정보::", mapInfo);
+            // 여기에서 필요한 작업을 수행하세요 (예: props로 부모 컴포넌트에 전달)
+        }
+    }, [mapInfo]);
 
     return (
         <>

@@ -25,7 +25,7 @@ function HospitalMap() {
             if (location) {
                 try {
                     const response = await axiosInstance.get(
-                        `/api/v1/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                        `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
                     );
                     console.log(response);
                     setHospitals(response.data);
@@ -40,6 +40,35 @@ function HospitalMap() {
 
     console.log("Map에서 location:::", location);
     console.log("병원 목록:", hospitals);
+
+    //===========gpt 거리 계산식
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+        const latDiff = Math.abs(lat2 - lat1);
+        const lonDiff = Math.abs(lon2 - lon1);
+        return Math.sqrt(latDiff * latDiff + lonDiff * lonDiff) * 111; // 1도는 약 111km
+    };
+
+    const formatDistance = (distance) => {
+        if (distance < 1) {
+            return `${(distance * 1000).toFixed(0)}m`;
+        } else {
+            return `${distance.toFixed(1)}km`;
+        }
+    };
+
+    const hospitalsWithDistance = hospitals.map((hospital) => ({
+        ...hospital,
+        distance: location
+            ? formatDistance(
+                  calculateDistance(
+                      location.lat,
+                      location.lon,
+                      hospital.latitude,
+                      hospital.longitude
+                  )
+              )
+            : "거리 계산 중",
+    }));
     return (
         <>
             <div className="mb-[10px]">
@@ -56,7 +85,7 @@ function HospitalMap() {
                 />
             </div>
             <div>
-                <HospitalListForm hospitalList={hospitals} />
+                <HospitalListForm hospitalList={hospitalsWithDistance} />
             </div>
             <NavBar />
         </>
