@@ -58,7 +58,8 @@ function HospitalSearch() {
                 nn개의 병원이 검색되었습니다.
             </p>
             <hr className="mb-[16px]" />
-            <HospitalListForm hospitalList={hospitalExam} />
+            {/* <HospitalListForm hospitalList={hospitalExam} /> */}
+            <HospitalListForm />
             <NavBar />
         </>
     );

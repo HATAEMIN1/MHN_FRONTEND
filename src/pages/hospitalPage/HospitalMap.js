@@ -14,7 +14,7 @@ function HospitalMap() {
 
     const handleLocationChange = (newLocation) => {
         setLocation(newLocation);
-        console.log("부모 컴포넌트에서 받은 위치:", newLocation);
+        // console.log("부모 컴포넌트에서 받은 위치:", newLocation);
         // 여기서 location 정보를 활용하여 원하는 작업을 수행할 수 있습니다.
     };
 
@@ -38,8 +38,8 @@ function HospitalMap() {
         fetchHospitals();
     }, [location]);
 
-    console.log("Map에서 location:::", location);
-    console.log("병원 목록:", hospitals);
+    // console.log("Map에서 location:::", location);
+    // console.log("병원 목록:", hospitals);
 
     //===========gpt 거리 계산식
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -77,11 +77,12 @@ function HospitalMap() {
             <div className="mb-[20px]">
                 <SearchInput />
             </div>
-            <div className="mb-[10px] kakao-map-container">
+            <div className="mb-[30px] kakao-map-container">
                 <KakaoMapSearch
                     width="100%"
                     height="100%"
                     onLocationChange={handleLocationChange}
+                    hospitalList={hospitalsWithDistance}
                 />
             </div>
             <div>
