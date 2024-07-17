@@ -1,6 +1,5 @@
 // 병원 찾기 맵에 들어갈 지도
 import React, { useEffect, useRef, useState } from "react";
-import { info } from "sass";
 
 function KakaoMapSearch({ ...props }) {
     const [location, setLocation] = useState(null);
@@ -13,7 +12,7 @@ function KakaoMapSearch({ ...props }) {
         const mapContainer = document.getElementById("map"); // 지도를 표시할 div
         const mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 3, // 지도의 확대 레벨
+            level: 6, // 지도의 확대 레벨
         };
         const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
@@ -32,8 +31,6 @@ function KakaoMapSearch({ ...props }) {
 
                 // 마커와 인포윈도우를 표시합니다
                 displayMarker(locPosition, message);
-                // console.log("lat::", lat);
-                // console.log("lon::", lon);
                 setLocation({ lat: lat, lon: lon });
             });
         } else {
@@ -81,26 +78,9 @@ function KakaoMapSearch({ ...props }) {
             // 현재 지도의 확대 레벨을 가져옵니다.
             const level = map.getLevel();
 
-            // 현재 지도의 타입 (일반 지도, 위성 지도 등)을 가져옵니다.
-            // const mapTypeId = map.getMapTypeId();
-
-            // 현재 지도 영역의 경계를 가져옵니다.
-            // const bounds = map.getBounds();
-
-            // 지도 영역의 남서쪽 좌표를 가져옵니다.
-            // const swLatLng = bounds.getSouthWest();
-
-            // // 지도 영역의 북동쪽 좌표를 가져옵니다.
-            // const neLatLng = bounds.getNorthEast();
-
             const info = {
                 center: { lat: center.getLat(), lng: center.getLng() },
                 level: level,
-                // mapTypeId: mapTypeId,
-                // bounds: {
-                //     sw: { lat: swLatLng.getLat(), lng: swLatLng.getLng() },
-                //     ne: { lat: neLatLng.getLat(), lng: neLatLng.getLng() },
-                // },
             };
 
             setMapInfo(info);
@@ -108,8 +88,6 @@ function KakaoMapSearch({ ...props }) {
 
         // 지도 이동 끝났을 때 이벤트 리스너
         kakao.maps.event.addListener(map, "idle", getInfo);
-        // };
-        // document.head.appendChild(script);
     }
 
     // 병원 마커 생성 함수
@@ -152,18 +130,8 @@ function KakaoMapSearch({ ...props }) {
         });
     }
 
-    // console.log("현재위치 좌표값::", location);
-    // console.log(mapInfo.center);
-    // console.log("Hospital List:", props.hospitalList);
     console.log("프롭스값이멀까용", props.hospitalList);
 
-    // useEffect(() => {
-    //     if (location) {
-    //         // console.log("현재위치 좌표값::", location);
-    //         props.onLocationChange(location); // 위치가 변경될 때마다 부모 컴포넌트에 알림
-    //     }
-    // }, []);
-    // 내위치로 이동하기 버튼 구현 함수
     const setCenter = () => {
         if (mapRef.current) {
             const moveLatLon = new window.kakao.maps.LatLng(

@@ -31,27 +31,48 @@ function KakaoMapView({ ...props }) {
         if (hospitals && hospitals.latitude && hospitals.longitude) {
             const kakao = window.kakao;
 
+            const mapOption = {
+                center: new kakao.maps.LatLng(
+                    hospitals.latitude,
+                    hospitals.longitude
+                ),
+                level: 3,
+            };
+
+            const map = new kakao.maps.Map(mapRef.current, mapOption);
+
             const markerPosition = new kakao.maps.LatLng(
-                `${hospitals.latitude}`,
-                `${hospitals.longitude}`
+                hospitals.latitude,
+                hospitals.longitude
             );
 
-            // 이미지 지도에 표시할 마커입니다
-            const marker = {
+            const hospitalImageSrc = "/assets/images/testMarkerIcon.svg";
+            const imageSize = new kakao.maps.Size(50, 50);
+            const markerImage = new kakao.maps.MarkerImage(
+                hospitalImageSrc,
+                imageSize
+            );
+
+            const marker = new kakao.maps.Marker({
                 position: markerPosition,
+                image: markerImage,
+            });
+
+            marker.setMap(map);
+            const setDraggable = (draggable) => {
+                if (map) {
+                    map.setDraggable(draggable);
+                }
             };
 
-            const staticMapOption = {
-                center: new kakao.maps.LatLng(
-                    `${hospitals.latitude}`,
-                    `${hospitals.longitude}`
-                ), // 이미지 지도의 중심좌표
-                level: 3, // 이미지 지도의 확대 레벨
-                marker: marker, // 이미지 지도에 표시할 마커
+            const setZoomable = (zoomable) => {
+                if (map) {
+                    map.setZoomable(zoomable);
+                }
             };
 
-            // 이미지 지도를 생성합니다
-            new kakao.maps.StaticMap(mapRef.current, staticMapOption);
+            setDraggable(false);
+            setZoomable(false);
         }
     }, [hospitals]);
 
