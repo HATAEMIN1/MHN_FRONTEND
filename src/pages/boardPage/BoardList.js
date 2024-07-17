@@ -68,97 +68,33 @@ function BoardList({ posts }) {
                 />
             </div>
             {/* tab메뉴 end */}
-            <ul
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
-                    gap: "8px",
-                    width: "100%",
-                    padding: 0, // ul의 기본 패딩 제거
-                    margin: 0, // ul의 기본 마진 제거
-                    listStyle: "none", // ul의 기본 리스트 스타일 제거
-                }}
-            >
+            <ul className="grid grid-cols-2 gap-2 w-full p-0 m-0 list-none">
                 {posts.map((post, index) => (
                     <Link to={`/boards/${index}`} state={{ post }}>
                         <li
                             key={index}
-                            style={{
-                                border: "1px solid #ddd",
-                                // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                                padding: "10px",
-                                borderRadius: "8px",
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "start",
-                                // minHeight: "350px",
-                            }}
-                            className="w-full"
+                            className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start"
                         >
-                            <div
-                                style={{
-                                    width: "100%",
-                                    aspectRatio: "1 / 1",
-                                    marginBottom: "10px",
-                                    overflow: "hidden",
-                                }}
-                            >
+                            <div className="w-full aspect-w-1 aspect-h-1 mb-4 overflow-hidden">
                                 {post.images && post.images.length > 0 && (
                                     <img
                                         src={URL.createObjectURL(
                                             post.images[0]
                                         )}
                                         alt="Post Image"
-                                        style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "cover",
-                                        }}
+                                        className="w-full h-full object-cover"
                                     />
                                 )}
                             </div>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                    width: "100%",
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        fontWeight: "bold",
-                                        fontSize: "16px",
-                                        textAlign: "left",
-                                        color: "black",
-                                        textDecoration: "none",
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        whiteSpace: "nowrap",
-                                    }}
-                                >
+                            <div className="flex justify-between items-center w-full">
+                                <div className="font-bold text-base text-left text-black truncate">
                                     {post.title}
                                 </div>
-                                <span
-                                    style={{
-                                        fontSize: "12px",
-                                        color: "#666",
-                                        whiteSpace: "nowrap",
-                                    }}
-                                >
+                                <span className="text-sm text-gray-600 whitespace-nowrap">
                                     {timeSince(post.createdAt)}
                                 </span>
                             </div>
-                            <p
-                                style={{
-                                    fontSize: "14px",
-                                    textAlign: "left",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap",
-                                    width: "100%",
-                                }}
-                            >
+                            <p className="text-sm text-left overflow-hidden truncate">
                                 {post.content.substring(0, 10) +
                                     (post.content.length > 10 ? "..." : "")}
                             </p>
