@@ -35,6 +35,7 @@ import Promotion from "./pages/subscriptionPage/Promotion";
 import Payment from "./pages/subscriptionPage/Payment";
 import SubscriptionManage from "./pages/subscriptionPage/SubscriptionManage";
 import Test from "./components/test/Test";
+import Test2 from "./components/test/Test2";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -180,6 +181,7 @@ function App() {
                                 />
                                 {/*테스트*/}
                                 <Route path="/test" element={<Test />} />
+                                <Route path="/test2" element={<Test2 />} />
                             </Routes>
                             {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>

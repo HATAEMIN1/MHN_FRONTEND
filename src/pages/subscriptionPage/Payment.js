@@ -2,25 +2,27 @@ import React from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
+import axiosInstance from "../../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const { IMP } = window;
 // IMP.init("imp05251176"); // 'imp00000000' 대신 발급받은 가맹점 식별코드를 사용합니다.
 function Payment() {
+    const navigate = useNavigate();
     function onClickPayment() {
         /* 1. 가맹점 식별하기 */
-        IMP.init("imp05251176");
+        const imp_uid = "imp05251176";
+        IMP.init(imp_uid); //imp_uid
         /* 2. 결제 데이터 정의하기 */
         const data = {
             pg: "kakaopay", // PG사 (필수)
-            merchant_uid: "order_monthly_0001", // 주문번호 (필수)
-            name: "주문명:결제테스트",
-            amount: 10, // 결제금액 (필수) 숫자타입이여야함
-            customer_uid: "gkxoals33@gmail.com",
-            buyer_name: "포트원", // 구매자 이름
+            merchant_uid: "order_monthly_12", // 주문번호 (필수)
+            name: "gkxoals33@gmail.com", //필수
+            amount: 8900, // 결제금액 (필수) 숫자타입이여야함
+            // customer_uid: "gkxoals33@gmail.com",
+            // buyer_name: "포트원", // 구매자 이름
             buyer_tel: "02-1234-1234", // 구매자 전화번호
-            buyer_email: "gkxoals33@gmail.com", // 구매자 이메일
-            // buyer_addr: "서울특별시 강남구 삼성동",
-            // buyer_postcode: "123-456",
+            // buyer_email: "gkxoals33@gmail.com", // 구매자 이메일
             // m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}",
         };
 
@@ -44,15 +46,80 @@ function Payment() {
 
     /* 3. 콜백 함수 정의하기 */
     function callback(response) {
-        const { success, merchant_uid, error_msg } = response;
-
-        if (success) {
-            alert("결제 성공");
+        console.log("리스폰스값들: ");
+        console.log(response);
+        const {
+            success,
+            pg_provider,
+            paid_amount,
+            merchant_uid,
+            name,
+            buyer_tel,
+            imp_uid,
+            error_msg,
+        } = response;
+        // const error_msg = response.error_msg;
+        // const merchant_uid = response.merchant_uid; //주문번호
+        // const imp_uid = response.imp_uid; //고유번호
+        if (response.success) {
+            console.log("결제 성공");
+            checkPayment(imp_uid, merchant_uid); //결제 검증
+            paymentSubmit(
+                imp_uid,
+                pg_provider,
+                paid_amount,
+                merchant_uid,
+                name,
+                buyer_tel
+            ); //결제내역 저장
         } else {
             alert(`결제 실패: ${error_msg}`);
         }
     }
-
+    //백엔드 검증 함수
+    const checkPayment = async (
+        imp_uid,
+        pg,
+        amount,
+        merchant_uid,
+        name,
+        buyer_tel
+    ) => {
+        try {
+            console.log("백엔드 검증 실행");
+            console.log("imp_uid는" + imp_uid);
+            const res = await axiosInstance.get("/verify/" + imp_uid);
+            console.log("결제 검증 완료", res.data);
+            //db에 저장
+            // pointSubmit(merchant_uid);
+        } catch (error) {
+            console.error("결제 검증 실패", error);
+        }
+    };
+    const paymentSubmit = async (
+        imp_uid,
+        pg_provider,
+        paid_amount,
+        merchant_uid,
+        name,
+        buyer_tel
+    ) => {
+        try {
+            const body = {
+                impUid: imp_uid,
+                pg: pg_provider,
+                amount: paid_amount,
+                merchantUid: merchant_uid,
+                email: name,
+                buyer_tel,
+            };
+            const res = await axiosInstance.post("/subscriptions", body);
+            console.log(res.data, "디비저장완료");
+            navigate("/subscription/:userId");
+        } catch (e) {
+            console.log("디비저장실패", e);
+        }
+    };
     return (
         <>
             <Header></Header>
