@@ -31,6 +31,7 @@ function HospitalReview() {
     const [rating, setRating] = useState([true, true, true, true, true]);
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
+    const [shouldRefetch, setShouldRefetch] = useState(false);
     const handleOnclick = (idx) => {
         setRating(rating.map((item, index) => (index > idx ? false : true)));
     };
@@ -86,13 +87,16 @@ function HospitalReview() {
             const trueCount = rating.filter(Boolean).length;
             const newComment = {
                 content: commentText,
-                createdAt: new Date(),
+                // 여기 디비에서 불러올 때 어차피 다시 createAt쓸거니까 주석처리할예정
+                // createdAt: new Date(),
                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
                 likeCount: trueCount,
             };
 
-            // 화면에 댓글 추가
-            setComments([newComment, ...comments]);
+            // // 화면에 댓글 추가
+            // setComments([newComment, ...comments]);
+            // setComments((prevComments) => [newComment, ...prevComments]);
+            // setComments([newComment]);
 
             // DB로 전송 포스트요청
             const body = {
@@ -106,14 +110,30 @@ function HospitalReview() {
                     `/hospitals/review?hospitalId=${hpId}`,
                     body
                 );
-                console.log("프론트에선 전송됐어용");
+                setShouldRefetch(true);
+                setCommentText("");
             } catch (error) {
                 console.error("에러 발생:", error);
             }
-
-            setCommentText("");
         }
     };
+
+    async function fetchHospitalComment() {
+        try {
+            const res = await axiosInstance.get(
+                `/hospitals/review?hospitalId=${hpId}`
+            );
+
+            console.log(res.data);
+            setComments(res.data);
+            setShouldRefetch(false); // 데이터를 가져온 후 리페치 플래그 재설정
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        fetchHospitalComment();
+    }, [shouldRefetch]);
 
     // console.log(commentText);
     // console.log(comments);
@@ -219,16 +239,17 @@ function HospitalReview() {
                                             닉네임
                                         </p>
                                         <p className="body2 text-sub-200">
-                                            {item.content}
+                                            {item.comment}
                                         </p>
                                         <p className="mini text-gray-300">
-                                            {timeAgo(item.createdAt)}
+                                            {/* {timeAgo(item.createdAt)} */}
+                                            {item.createdAt}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex gap-[2px]">
                                     <img src="/assets/images/ratingIcon_color.svg" />
-                                    <p>{item.likeCount}</p>
+                                    <p>{item.rating}</p>
                                 </div>
                             </div>
                         </div>
