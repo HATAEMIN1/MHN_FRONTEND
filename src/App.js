@@ -122,7 +122,7 @@ function App() {
                                     element={<HospitalView />}
                                 />
                                 <Route
-                                    path="/hospitals/review"
+                                    path="/hospitals/review/:hpId"
                                     element={<HospitalReview />}
                                 />
                                 {/*진료기록*/}

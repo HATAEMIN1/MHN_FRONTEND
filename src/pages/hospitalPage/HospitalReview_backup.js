@@ -38,82 +38,47 @@ function HospitalReview() {
     // console.log(rating);
     const { hpId } = useParams();
 
-    // const handleCommentSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (commentText.trim() !== "") {
-    //         const trueCount = rating.filter(Boolean).length;
-    //         setComments([
-    //             {
-    //                 // id: comments.length,
-    //                 // userId: currentUserId,
-    //                 content: commentText,
-    //                 createdAt: new Date(),
-    //                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
-    //                 likeCount: trueCount,
-    //             },
-    //             ...comments,
-    //         ]);
-    //         console.log(comments);
-
-    //         setCommentText("");
-    //     }
-    // };
-
-    // // db로 전송 포스트요청
-    // async function handleSubmit(e) {
-    //     e.preventDefault();
-    //     console.log(comments);
-
-    //     const body = {
-    //         hospitalId: hpId,
-    //         comment: comments.content,
-    //         rating: comments.likeCount,
-    //     };
-    //     try {
-    //         await axiosInstance.post(
-    //             `/hospitals/review?hospitalId=${hpId}`,
-    //             body
-    //         );
-    //         setCommentText("");
-    //         console.log("프론트에선 전송됐어용");
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-    const handleCommentSubmit = async (e) => {
+    const handleCommentSubmit = (e) => {
         e.preventDefault();
         if (commentText.trim() !== "") {
             const trueCount = rating.filter(Boolean).length;
-            const newComment = {
-                content: commentText,
-                createdAt: new Date(),
-                profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
-                likeCount: trueCount,
-            };
-
-            // 화면에 댓글 추가
-            setComments([newComment, ...comments]);
-
-            // DB로 전송 포스트요청
-            const body = {
-                hospitalId: hpId,
-                comment: newComment.content,
-                rating: newComment.likeCount,
-            };
-
-            try {
-                await axiosInstance.post(
-                    `/hospitals/review?hospitalId=${hpId}`,
-                    body
-                );
-                console.log("프론트에선 전송됐어용");
-            } catch (error) {
-                console.error("에러 발생:", error);
-            }
-
+            setComments([
+                {
+                    // id: comments.length,
+                    // userId: currentUserId,
+                    content: commentText,
+                    createdAt: new Date(),
+                    profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
+                    likeCount: trueCount,
+                },
+                ...comments,
+            ]);
+            // console.log(comments);
             setCommentText("");
         }
     };
+
+    // db로 전송 포스트요청
+    async function handleSubmit(e) {
+        e.preventDefault();
+        console.log(comments);
+
+        const body = {
+            hospitalId: hpId,
+            comment: comments.content,
+            rating: comments.likeCount,
+        };
+        try {
+            await axiosInstance.post(
+                `/hospitals/review?hospitalId=${hpId}`,
+                body
+            );
+            setCommentText("");
+            console.log("프론트에선 전송됐어용");
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     // console.log(commentText);
     // console.log(comments);
@@ -136,7 +101,7 @@ function HospitalReview() {
                     </li>
                 </ul>
             </div>
-            <form onSubmit={handleCommentSubmit}>
+            <form onSubmit={handleSubmit}>
                 <div className="flex items-center mb-[20px] gap-[4px]">
                     <p className="mini text-gray-300">
                         {comments.length}개의 후기

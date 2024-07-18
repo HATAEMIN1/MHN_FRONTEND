@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import KakaoMapView from "../../components/kakaomap/KakaoMapView";
 
 function HospitalView() {
@@ -11,6 +11,7 @@ function HospitalView() {
         console.log(bookmark);
     }
     const [hospitalInfo, setHospitalInfo] = useState({});
+    const { hpId } = useParams();
 
     useEffect(() => {
         console.log("부모 hospitalInfo::", hospitalInfo);
@@ -33,7 +34,7 @@ function HospitalView() {
                             병원정보
                         </li>
                         <Link
-                            to="/hospitals/review"
+                            to={`/hospitals/review/${hpId}`}
                             className="border-b w-full"
                         >
                             <li className=" text-center body2">진료후기</li>
