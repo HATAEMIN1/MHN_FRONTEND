@@ -64,18 +64,7 @@ function BoardAdd({ onAddPost }) {
     };
 
     return (
-        <form
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px",
-                maxWidth: "600px",
-                margin: "0 auto",
-                padding: "20px",
-                borderRadius: "8px",
-                backgroundColor: "white",
-            }}
-        >
+        <form className="flex flex-col gap-5 max-w-lg mx-auto p-5 rounded-lg bg-white">
             <ModalManager
                 modalContent={({ closeModal }) => (
                     <div>
@@ -86,12 +75,6 @@ function BoardAdd({ onAddPost }) {
                                 handleSubmit(closeModal);
                             }}
                             text1="확인"
-                            style={{
-                                marginTop: "20px",
-                                fontSize: "16px",
-                                cursor: "pointer",
-                                color: "blue",
-                            }}
                         />
                     </div>
                 )}
@@ -110,125 +93,44 @@ function BoardAdd({ onAddPost }) {
                 )}
             </ModalManager>
             {/* <Searchbar /> */}
-            <div style={{ borderBottom: "none" }}>
+            <div className="border-b-0">
                 <input
                     type="text"
                     placeholder="제목쓰기"
                     value={title}
                     onChange={handleTitleChange}
-                    style={{
-                        color: "black",
-                        backgroundColor: "white",
-                        padding: "10px",
-                        width: "100%",
-                        border: "none",
-                        borderBottom: "1px solid #e0e0e0",
-                        outline: "none",
-                        fontSize: "16px",
-                        boxSizing: "border-box",
-                    }}
+                    className="text-black bg-white p-2 w-full border-b border-gray-300 outline-none text-base box-border"
                 />
                 {titleError && (
-                    <p
-                        style={{
-                            color: "red",
-                            fontSize: "0.875em",
-                            marginTop: "5px",
-                        }}
-                    >
-                        {titleError}
-                    </p>
+                    <p className="text-red-500 text-sm mt-2">{titleError}</p>
                 )}
             </div>
-            <div style={{ borderBottom: "none", position: "relative" }}>
+            <div className="border-b-0 relative">
                 <textarea
                     placeholder="내용쓰기"
                     value={content}
                     onChange={handleContentChange}
-                    style={{
-                        width: "100%",
-                        height: "300px",
-                        padding: "10px",
-                        border: "none",
-                        borderBottom: "1px solid #e0e0e0",
-                        outline: "none",
-                        resize: "none",
-                        fontSize: "16px",
-                        backgroundColor: "white",
-                        boxSizing: "border-box",
-                    }}
-                    className="no-scrollbar"
+                    className="no-scrollbar w-full h-48 p-2 border-b border-gray-300 outline-none resize-none text-base bg-white box-border"
                 />
 
                 {contentError && (
-                    <p
-                        style={{
-                            color: "red",
-                            fontSize: "0.875em",
-                            marginTop: "5px",
-                        }}
-                    >
-                        {contentError}
-                    </p>
+                    <p className="text-red-500 text-xs mt-2">{contentError}</p>
                 )}
-                <p
-                    style={{
-                        position: "absolute",
-                        bottom: "5px",
-                        right: "10px",
-                        fontSize: "0.875em",
-                        color: "gray",
-                    }}
-                >
+                <p className="absolute bottom-5 right-10 text-xs text-gray-500">
                     {content.length}/1000
                 </p>
             </div>
-            <div
-                style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    marginTop: "30px",
-                    paddingBottom: "10px",
-                }}
-            >
+            <div className="flex flex-wrap mt-8 pb-2">
                 {images.map((image, index) => (
-                    <div
-                        key={index}
-                        style={{
-                            width: "100px",
-                            height: "100px",
-                            position: "relative",
-                            marginRight: "10px",
-                            marginBottom: "10px",
-                        }}
-                    >
+                    <div key={index} className="w-24 h-24 relative mr-4 mb-4">
                         <img
                             src={URL.createObjectURL(image)}
                             alt={`uploaded ${index}`}
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                borderRadius: "8px",
-                                objectFit: "cover",
-                            }}
+                            className="w-full h-full rounded-lg object-cover"
                         />
                         <button
                             type="button"
-                            style={{
-                                position: "absolute",
-                                top: "0",
-                                right: "0",
-                                background: "#ccc",
-                                color: "white",
-                                border: "none",
-                                borderRadius: "50%",
-                                cursor: "pointer",
-                                width: "20px",
-                                height: "20px",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
+                            className="absolute top-0 right-0 bg-gray-400 text-white border-none rounded-full cursor-pointer w-5 h-5 flex items-center justify-center"
                             onClick={() => removeImage(index)}
                         >
                             ×
@@ -237,50 +139,23 @@ function BoardAdd({ onAddPost }) {
                 ))}
             </div>
             <p
+                className="text-gray-500 text-xs"
                 style={{
-                    color: "gray",
-                    fontSize: "0.875em",
                     display: images.length === 0 ? "block" : "none",
                 }}
             >
                 이미지는 최대 5개까지 첨부할 수 있습니다.
             </p>
-            {imageError && (
-                <p
-                    style={{
-                        color: "red",
-                        fontSize: "0.875em",
-                        display: "block",
-                    }}
-                >
-                    {imageError}
-                </p>
-            )}
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginTop: "10px",
-                    cursor: "pointer",
-                    borderBottom: "none",
-                }}
-            >
+            {imageError && <p className="text-red-500 text-xs">{imageError}</p>}
+            <div className="flex items-center mt-4 cursor-pointer border-b-0">
                 <label
                     htmlFor="image-upload"
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        cursor: "pointer",
-                    }}
+                    className="flex items-center cursor-pointer"
                 >
                     <img
                         src="/assets/images/cameraIcon.svg"
                         alt="camera"
-                        style={{
-                            width: "24px",
-                            height: "24px",
-                            marginRight: "10px",
-                        }}
+                        className="w-6 h-6 mr-2"
                     />
                     이미지 첨부
                 </label>
@@ -290,7 +165,7 @@ function BoardAdd({ onAddPost }) {
                     multiple
                     accept="image/*"
                     onChange={handleImageChange}
-                    style={{ display: "none" }}
+                    className="hidden"
                 />
             </div>
         </form>

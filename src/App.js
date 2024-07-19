@@ -35,10 +35,12 @@ import Promotion from "./pages/subscriptionPage/Promotion";
 import Payment from "./pages/subscriptionPage/Payment";
 import SubscriptionManage from "./pages/subscriptionPage/SubscriptionManage";
 import Test from "./components/test/Test";
+
 import AdminTest from "./components/test/AdminTest";
 import Approval from "./components/test/Approval";
 import Report from "./components/test/Report";
 import Stats from "./components/test/Stats";
+
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -184,6 +186,7 @@ function App() {
                                 />
                                 {/*테스트*/}
                                 <Route path="/test" element={<Test />} />
+
                                 <Route path="/admin" element={<AdminTest />} />
                                 <Route
                                     path="/admin/approval"
@@ -197,6 +200,7 @@ function App() {
                                     path="/admin/stats"
                                     element={<Stats />}
                                 />
+
                             </Routes>
                             {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>
