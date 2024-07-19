@@ -36,6 +36,7 @@ function ChartAdd() {
     const [images, setImages] = useState([]);
     const [imageError, setImageError] = useState("");
     const [formData, setFormData] = useState({
+        petId: 1,
         hospital: "",
         selectedPet: "",
         dig: "",
@@ -50,15 +51,42 @@ function ChartAdd() {
             [name]: value,
         }));
     };
+    const removeImage = (index) => {
+        setImages(images.filter((_, i) => i !== index));
+    };
     const handleChartSubmit = async (closeModal) => {
-        const body = { formData };
+        // const body = {
+        //     petId: formData.petId,
+        //     hospitalName: formData.hospital,
+        //     petName: formData.petName,
+        //     visitDate: formData.visitDate,
+        //     diseaseName: formData.dig,
+        //     description: formData.description,
+        // };
+        const formDataList = new FormData();
+
+        // 차트 데이터 추가
+        formDataList.append("petId", formData.petId);
+        formDataList.append("hospitalName", formData.hospital);
+        formDataList.append("petName", formData.selectedPet);
+        formDataList.append("visitDate", formData.startDate);
+        formDataList.append("diseaseName", formData.dig);
+        formDataList.append("description", formData.description);
+        // 이미지 파일 추가
+        images.forEach((file, index) => {
+            formDataList.append(`files`, file);
+        });
         try {
-            console.log("54번줄 들어옴");
-            const res = await axiosInstance.post("/charts", body);
-            console.log("56번줄 들어옴");
+            const res = await axiosInstance.post("/charts", formDataList, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             console.log(res.data);
+            setImages([]); // 이미지 상태 초기화
+            setImageError(""); // 에러 메시지 초기화
             closeModal();
-            // navigate("/charts");
+            navigate("/charts");
         } catch (e) {
             console.log("엑시우스 에러", e);
         }
@@ -103,7 +131,7 @@ function ChartAdd() {
                     )}
                 </ModalManager>
                 {/*<Header title="진료기록 등록" button="작성하기" />*/}
-                <div>
+                <div className="px-2">
                     <input
                         type="text"
                         placeholder="병원이름"
@@ -150,6 +178,7 @@ function ChartAdd() {
                             placeholder="병명"
                             className="h-[52px] w-full rounded-md border-2 cursor-auto px-4 focus:outline-none focus:ring-0 "
                             onChange={handleChange}
+                            name="dig"
                         />
                     </div>
                     <div className="p-2 mb-4">
@@ -174,7 +203,7 @@ function ChartAdd() {
                                     multiple
                                     accept="image/*"
                                     onChange={handleImageChange}
-                                    // className="hidden"
+                                    className="hidden"
                                 />
                             </div>
                         </div>
@@ -182,38 +211,30 @@ function ChartAdd() {
                         <textarea
                             className="h-[184px] w-full rounded-md border-2 p-4 focus:outline-none focus:ring-0"
                             onChange={handleChange}
+                            name="description"
                         />
                     </div>
-                    {images.map((image, index) => (
-                        <div
-                            key={index}
-                            className="w-24 h-24 relative mr-2 mb-2"
-                        >
-                            <img
-                                src={URL.createObjectURL(image)}
-                                alt={`uploaded ${index}`}
-                                className="w-full h-full rounded-lg object-cover"
-                            />
-                            <button
-                                type="button"
-                                className="absolute top-0 right-0 bg-gray-400 text-white rounded-full cursor-pointer w-5 h-5 flex items-center justify-center"
-
-                                // onClick={() => removeImage(index)}
+                    <div className="flex flex-wrap gap-8 px-4  ">
+                        {images.map((image, index) => (
+                            <div
+                                key={index}
+                                className="w-24 h-24 relative mr-2 mb-2"
                             >
-                                ×
-                            </button>
-                        </div>
-                    ))}
-
-                    {/*스와이퍼 들어가는 자리*/}
-                    {/*<div className="flex flex-wrap justify-center">*/}
-                    {/*    <div className="p-2 w-[576px] ">*/}
-                    {/*        <img*/}
-                    {/*            src="/assets/logoColor.png"*/}
-                    {/*            className="w-full rounded-md"*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                                <img
+                                    src={URL.createObjectURL(image)}
+                                    alt={`uploaded ${index}`}
+                                    className="w-full h-full rounded-lg object-cover block"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute top-0 right-0 bg-gray-400 text-white rounded-full cursor-pointer w-5 h-5 flex items-center justify-center"
+                                    onClick={() => removeImage(index)}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <NavBar />
             </form>
