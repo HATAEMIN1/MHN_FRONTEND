@@ -6,7 +6,6 @@ function KakaoMapSearch({ ...props }) {
     const [mapInfo, setMapInfo] = useState(null);
     const mapRef = useRef(null);
     const markersRef = useRef([]);
-    const infowindowRef = useRef(null);
 
     function mapSet() {
         const kakao = window.kakao;
@@ -67,8 +66,6 @@ function KakaoMapSearch({ ...props }) {
             // 인포윈도우를 마커위에 표시합니다
             infowindow.open(map, marker);
 
-            // infowindowRef에 현재 인포윈도우 저장
-            infowindowRef.current = infowindow;
             // 지도 중심좌표를 접속위치로 변경합니다
             map.setCenter(locPosition);
         }
@@ -87,12 +84,6 @@ function KakaoMapSearch({ ...props }) {
             };
 
             setMapInfo(info);
-
-            // 지도 이동 시 열려있는 인포윈도우 닫기
-            if (infowindowRef.current) {
-                infowindowRef.current.close();
-                infowindowRef.current = null;
-            }
         }
 
         // 지도 이동 끝났을 때 이벤트 리스너
@@ -148,18 +139,12 @@ function KakaoMapSearch({ ...props }) {
 
                 // 마커에 mouseover 이벤트 등록
                 kakao.maps.event.addListener(marker, "mouseover", () => {
-                    // 기존에 열려있는 인포윈도우 닫기
-                    if (infowindowRef.current) {
-                        infowindowRef.current.close();
-                    }
                     infowindow.open(map, marker);
-                    infowindowRef.current = infowindow;
                 });
 
                 // 마커에 mouseout 이벤트 등록
                 kakao.maps.event.addListener(marker, "mouseout", () => {
                     infowindow.close();
-                    infowindowRef.current = null;
                 });
 
                 //======추가끝
@@ -193,6 +178,7 @@ function KakaoMapSearch({ ...props }) {
                 lon: mapInfo.center.lng,
             }); // 부모 컴포넌트에 중심좌표 위치 정보 전달
         }
+        //infowindow.close();
     }, [mapInfo]);
 
     useEffect(() => {

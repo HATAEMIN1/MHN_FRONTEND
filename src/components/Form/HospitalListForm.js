@@ -7,7 +7,7 @@ function HospitalListForm({ ...props }) {
             {props.hospitalList.map((item) => {
                 return (
                     <div className="mb-[20px]">
-                        <Link to="/hospitals/:hpId">
+                        <Link to={`/hospitals/${item.id}`}>
                             <div className="flex items-center py-[10px] gap-[8px]">
                                 <div>
                                     {/* <img src="여기에 나중에 프롭스해온 병원정보값을 이미지로 출력할 예정입니다." /> */}
@@ -21,10 +21,11 @@ function HospitalListForm({ ...props }) {
                                     <p className="body2">{item.address}</p>
                                     <div className="flex gap-[4px]">
                                         <p className="mini text-gray-300">
-                                            {item.location} |
+                                            {/* {item.latitude} |{item.longitude} | */}
+                                            {item.distance} |
                                         </p>
                                         <p className="mini text-gray-300">
-                                            {item.tel}
+                                            {item.phone}
                                         </p>
                                     </div>
                                 </div>

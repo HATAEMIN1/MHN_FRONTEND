@@ -1,78 +1,96 @@
 // 병원 상세 뷰 페이지에 들어갈 지도
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axiosInstance from "../../utils/axios";
+import { useParams } from "react-router-dom";
 
 function KakaoMapView({ ...props }) {
-    const [map, setMap] = useState(null);
-    const [location, setLocation] = useState(null);
+    const { hpId } = useParams();
+    const [hospitals, setHospitals] = useState([]);
+    const mapRef = useRef(null);
 
     useEffect(() => {
-        const kakao = window.kakao;
-        const mapContainer = document.getElementById("map"); // 지도를 표시할 div
-        const mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-            level: 3, // 지도의 확대 레벨
+        const fetchHospitals = async () => {
+            if (hpId) {
+                try {
+                    const response = await axiosInstance.get(
+                        `/hospitals/view?id=${hpId}`
+                    );
+                    setHospitals(response.data);
+                    console.log(response.data);
+                    props.setHospitalInfo(response.data);
+                } catch (error) {
+                    console.error("병원 정보를 가져오는 중 오류 발생:", error);
+                }
+            }
         };
-        const newMap = new kakao.maps.Map(mapContainer, mapOption);
-        setMap(newMap);
 
-        // 마커를 표시할 위치와 title 객체 배열입니다
-        const positions = [
-            {
-                title: "카카오",
-                latlng: new kakao.maps.LatLng(33.450705, 126.570677),
-            },
-            {
-                title: "생태연못",
-                latlng: new kakao.maps.LatLng(33.450936, 126.569477),
-            },
-            {
-                title: "텃밭",
-                latlng: new kakao.maps.LatLng(33.450879, 126.56994),
-            },
-            {
-                title: "근린공원",
-                latlng: new kakao.maps.LatLng(33.451393, 126.570738),
-            },
-        ];
+        fetchHospitals();
+    }, [hpId, props.setHospitalInfo]);
 
-        // 마커 이미지의 이미지 주소입니다
-        const imageSrc = "/assets/images/testMarkerIcon.svg";
+    useEffect(() => {
+        if (hospitals && hospitals.latitude && hospitals.longitude) {
+            const kakao = window.kakao;
 
-        // 마커를 생성하고 지도에 표시합니다
-        positions.forEach((position) => {
-            const imageSize = new kakao.maps.Size(50, 50); // 마커 이미지의 이미지 크기입니다
-            const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
+            const mapOption = {
+                center: new kakao.maps.LatLng(
+                    hospitals.latitude,
+                    hospitals.longitude
+                ),
+                level: 3,
+            };
 
-            // 마커를 생성합니다
-            new kakao.maps.Marker({
-                map: newMap, // 마커를 표시할 지도
-                position: position.latlng, // 마커를 표시할 위치
-                title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image: markerImage, // 마커 이미지
+            const map = new kakao.maps.Map(mapRef.current, mapOption);
+
+            const markerPosition = new kakao.maps.LatLng(
+                hospitals.latitude,
+                hospitals.longitude
+            );
+
+            const hospitalImageSrc = "/assets/images/testMarkerIcon.svg";
+            const imageSize = new kakao.maps.Size(50, 50);
+            const markerImage = new kakao.maps.MarkerImage(
+                hospitalImageSrc,
+                imageSize
+            );
+
+            const marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage,
             });
-        });
-    }, []);
 
-    const setDraggable = (draggable) => {
-        if (map) {
-            map.setDraggable(draggable);
+            marker.setMap(map);
+            const setDraggable = (draggable) => {
+                if (map) {
+                    map.setDraggable(draggable);
+                }
+            };
+
+            const setZoomable = (zoomable) => {
+                if (map) {
+                    map.setZoomable(zoomable);
+                }
+            };
+
+            setDraggable(false);
+            setZoomable(false);
         }
-    };
+    }, [hospitals]);
 
-    const setZoomable = (zoomable) => {
-        if (map) {
-            map.setZoomable(zoomable);
-        }
-    };
-
-    console.log("현재위치 좌표값::", location);
-    setDraggable(false);
-    setZoomable(false);
-
+    console.log("hospitals.latitude", hospitals.latitude);
+    console.log("hospitals.longitude", hospitals.longitude);
     return (
         <>
-            <div
+            {/* <div
                 id="map"
+                style={{
+                    width: `${props.width}`,
+                    height: `${props.height}`,
+                    borderRadius: `${props.radius}`,
+                    margin: "auto",
+                }}
+            ></div> */}
+            <div
+                ref={mapRef}
                 style={{
                     width: `${props.width}`,
                     height: `${props.height}`,
