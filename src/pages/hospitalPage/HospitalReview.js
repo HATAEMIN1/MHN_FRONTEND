@@ -36,51 +36,8 @@ function HospitalReview() {
         setRating(rating.map((item, index) => (index > idx ? false : true)));
     };
     useEffect(() => {}, [rating]);
-    // console.log(rating);
     const { hpId } = useParams();
 
-    // const handleCommentSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (commentText.trim() !== "") {
-    //         const trueCount = rating.filter(Boolean).length;
-    //         setComments([
-    //             {
-    //                 // id: comments.length,
-    //                 // userId: currentUserId,
-    //                 content: commentText,
-    //                 createdAt: new Date(),
-    //                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
-    //                 likeCount: trueCount,
-    //             },
-    //             ...comments,
-    //         ]);
-    //         console.log(comments);
-
-    //         setCommentText("");
-    //     }
-    // };
-
-    // // db로 전송 포스트요청
-    // async function handleSubmit(e) {
-    //     e.preventDefault();
-    //     console.log(comments);
-
-    //     const body = {
-    //         hospitalId: hpId,
-    //         comment: comments.content,
-    //         rating: comments.likeCount,
-    //     };
-    //     try {
-    //         await axiosInstance.post(
-    //             `/hospitals/review?hospitalId=${hpId}`,
-    //             body
-    //         );
-    //         setCommentText("");
-    //         console.log("프론트에선 전송됐어용");
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         if (commentText.trim() !== "") {
@@ -92,11 +49,6 @@ function HospitalReview() {
                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
                 likeCount: trueCount,
             };
-
-            // // 화면에 댓글 추가
-            // setComments([newComment, ...comments]);
-            // setComments((prevComments) => [newComment, ...prevComments]);
-            // setComments([newComment]);
 
             // DB로 전송 포스트요청
             const body = {
@@ -135,8 +87,6 @@ function HospitalReview() {
         fetchHospitalComment();
     }, [shouldRefetch]);
 
-    // console.log(commentText);
-    // console.log(comments);
     return (
         <>
             <Header title="병원 상세 정보" />
