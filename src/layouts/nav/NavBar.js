@@ -46,7 +46,7 @@ function NavBar() {
                 {navMenu.map((item, idx) => {
                     const isActive = location.pathname === item.route;
                     const isActive2 = location.pathname === item.route2;
-                    console.log(location.pathname);
+                    // console.log(location.pathname);
 
                     return (
                         <Link to={item.route} key={idx}>
