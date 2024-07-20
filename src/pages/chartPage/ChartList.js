@@ -58,7 +58,7 @@ function ChartList() {
                                 <div className="w-[230px] h-[180px] ">
                                     <img
                                         src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item.imgUrl}`}
-                                        className="w-[100%] h-[100%] rounded-[4px] block border "
+                                        className="w-[100%] h-[100%] rounded-[4px] block "
                                     />
                                 </div>
                                 <div className="p-2">

@@ -16,23 +16,6 @@ function ChartAdd() {
         { id: 2, name: "야옹이" },
         { id: 3, name: "짹짹이" },
     ];
-    // const [hospital, setHospital] = useState("");
-    // const [selectedPet, setSelectedPet] = useState("");
-    // const [dig, setDig] = useState("");
-    // const [startDate, setStartDate] = useState(new Date());
-    // const [description, setDescription] = useState("");
-    // const handlePetChange = (event) => {
-    //     setSelectedPet(event.target.value);
-    // };
-    // const handleHospitalChange = (e) => {
-    //     setHospital(e.target.value);
-    // };
-    // const handleDigChange = (e) => {
-    //     setDig(e.target.value);
-    // };
-    // const handleDescriptionChange = (e) => {
-    //     setDescription(e.target.value);
-    // };
     const [images, setImages] = useState([]);
     const [imageError, setImageError] = useState("");
     const [formData, setFormData] = useState({
@@ -54,6 +37,9 @@ function ChartAdd() {
     const removeImage = (index) => {
         setImages(images.filter((_, i) => i !== index));
     };
+    const formatDate = (date) => {
+        return date.toISOString().split("T")[0];
+    };
     const handleChartSubmit = async (closeModal) => {
         // const body = {
         //     petId: formData.petId,
@@ -69,7 +55,7 @@ function ChartAdd() {
         formDataList.append("petId", formData.petId);
         formDataList.append("hospitalName", formData.hospital);
         formDataList.append("petName", formData.selectedPet);
-        formDataList.append("visitDate", formData.startDate);
+        formDataList.append("visitDate", formatDate(formData.startDate));
         formDataList.append("diseaseName", formData.dig);
         formDataList.append("description", formData.description);
         // 이미지 파일 추가
@@ -100,6 +86,7 @@ function ChartAdd() {
         setImages([...images, ...files]);
         setImageError("");
     };
+    console.log(formData.startDate);
     return (
         <>
             <form>
