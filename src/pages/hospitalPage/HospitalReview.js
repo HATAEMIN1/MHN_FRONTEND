@@ -90,6 +90,20 @@ function HospitalReview() {
         fetchHospitalComment();
     }, [shouldRefetch]);
 
+    const handleDeleteComment = async (commentId) => {
+        console.log("댓글 삭제할거임");
+
+        try {
+            const response = await axiosInstance.delete(
+                `/hospitals/review?id=${commentId}`
+            );
+            console.log(comments);
+            setShouldRefetch(true);
+        } catch (error) {
+            console.error("삭제요청실패", error);
+        }
+    };
+
     return (
         <>
             <Header title="병원 상세 정보" />
@@ -195,10 +209,22 @@ function HospitalReview() {
                                         <p className="body2 text-sub-200">
                                             {item.comment}
                                         </p>
-                                        <p className="mini text-gray-300">
-                                            {/* {timeAgo(item.createdAt)} */}
-                                            {getTimeAgo(item.createdAt)}
-                                        </p>
+                                        <div className="flex gap-[4px]">
+                                            <p className="mini text-gray-300">
+                                                {/* {timeAgo(item.createdAt)} */}
+                                                {getTimeAgo(item.createdAt)} |
+                                            </p>
+                                            {/* 나중에 삭제하기버튼은 로그인유저값이랑 댓글작성자 아이디값 동일할때만 보이도록 프론트단에서 처리해야함 삼항연산자 */}
+                                            <div
+                                                onClick={() =>
+                                                    handleDeleteComment(item.id)
+                                                }
+                                            >
+                                                <p className="mini text-gray-300 cursor-pointer">
+                                                    삭제하기
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex gap-[2px]">

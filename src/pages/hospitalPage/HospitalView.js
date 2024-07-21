@@ -1,5 +1,3 @@
-// 내일 해야할 일 - 포스트 요청으로 연결해주고, get해온 응답값 setBookmarkState이 null이면 bookmark가 false값이도록, 있으면 bookmark가 true값이도록 조정
-// 백엔드 delete 요청 만들어야함
 import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
