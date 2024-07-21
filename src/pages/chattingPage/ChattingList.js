@@ -65,7 +65,7 @@ function ChattingList() {
             </div>
             {/* 검색창 + 필터모달버튼 end */}
             {/* 채팅창 리스트 start*/}
-            <div style={{ display: "flex" }}>
+            <div>
                 <ChattingListForm hospitalList={hospitalExam} />
             </div>
             <PlusButton />
