@@ -5,26 +5,29 @@ import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 
 //n분전 구현
-function timeAgo(date) {
+function getTimeAgo(dateString) {
     const now = new Date();
-    const secondsPast = (now.getTime() - new Date(date).getTime()) / 1000;
+    const past = new Date(dateString);
+    const diffInSeconds = Math.floor((now - past) / 1000);
 
-    if (secondsPast < 60) {
-        return `${Math.floor(secondsPast)}초 전`;
+    if (diffInSeconds < 60) {
+        return "방금 전";
+    } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes}분 전`;
+    } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours}시간 전`;
+    } else if (diffInSeconds < 2592000) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days}일 전`;
+    } else if (diffInSeconds < 31536000) {
+        const months = Math.floor(diffInSeconds / 2592000);
+        return `${months}개월 전`;
+    } else {
+        const years = Math.floor(diffInSeconds / 31536000);
+        return `${years}년 전`;
     }
-    if (secondsPast < 3600) {
-        return `${Math.floor(secondsPast / 60)}분 전`;
-    }
-    if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전`;
-    }
-    if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전`;
-    }
-    if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전`;
-    }
-    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function HospitalReview() {
@@ -176,6 +179,7 @@ function HospitalReview() {
                 </div>
                 {/* 댓글입력폼 end */}
                 {comments.map((item) => {
+                    // console.log(item);
                     return (
                         <div className="mb-[20px]">
                             <div className="flex justify-between items-center">
@@ -193,7 +197,7 @@ function HospitalReview() {
                                         </p>
                                         <p className="mini text-gray-300">
                                             {/* {timeAgo(item.createdAt)} */}
-                                            {item.createdAt}
+                                            {getTimeAgo(item.createdAt)}
                                         </p>
                                     </div>
                                 </div>
