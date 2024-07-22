@@ -24,7 +24,7 @@ function ChattingView() {
 
     // Create an Axios instance with a custom base URL
     const api = axios.create({
-        baseURL: 'http://localhost:8080', // Set the base URL for API requests
+        baseURL: 'http://localhost:8080', 
     });
 
     useEffect(() => {
@@ -211,9 +211,9 @@ function ChattingView() {
                         </div>
                     </div>
                 ))}
-                {!hasPreviousMessages && isChatExpired && (
+                {isChatExpired && (
                     <div className="system-message">
-                        채팅이 종료되었습니다.
+                        종료된 채팅입니다.
                     </div>
                 )}
             </div>
