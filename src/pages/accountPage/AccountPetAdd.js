@@ -37,28 +37,6 @@ function AccountPetAdd() {
     };
 
     // 펫 등록
-    // const handleAddPet = () => {
-    //     axios
-    //         .post(
-    //             "http://localhost:8084/api/v1/pets/addpet",
-    //             {
-    //                 name: pet.name,
-    //                 kind: pet.kind,
-    //                 age: pet.age,
-    //             },
-    //             {
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                 },
-    //             }
-    //         )
-    //         .then(() => {
-    //             console.log("펫 등록 완료 !!!!!!");
-    //         })
-    //         .catch((error) => {
-    //             console.error("펫 등록 오류!@@@@@@", error);
-    //         });
-    // };
     const handleAddPet = () => {
         const formData = new FormData();
         formData.append("name", pet.name);
