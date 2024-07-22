@@ -3,19 +3,72 @@ import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link, useParams } from "react-router-dom";
 import KakaoMapView from "../../components/kakaomap/KakaoMapView";
+import axiosInstance from "../../utils/axios";
 
 function HospitalView() {
-    const [bookmark, setBookmark] = useState(false);
-    function handleOnclick() {
-        setBookmark(!bookmark);
-        console.log(bookmark);
-    }
+    // const [bookmark, setBookmark] = useState(false);
+    // 북마크 겟해왔을 때 상태값
+    const [bookmarkState, setBookmarkState] = useState(null);
+    // function handleOnclick() {
+    //     setBookmark(!bookmark);
+    //     console.log(bookmark);
+    // }
     const [hospitalInfo, setHospitalInfo] = useState({});
     const { hpId } = useParams();
 
     useEffect(() => {
         console.log("부모 hospitalInfo::", hospitalInfo);
     }, [hospitalInfo]);
+
+    const addBMK = async () => {
+        // console.log("북마크 추가할거임");
+        const body = {
+            // memberId값 나중엔 로그인 유저 아이디값으로 대체되어야 함
+            memberId: 1,
+            hospitalId: hpId,
+        };
+
+        try {
+            await axiosInstance.post(`/hospitals/bmk`, body);
+            setBookmarkState(1);
+            await fetchBMK();
+        } catch (error) {
+            console.error("에러 발생:", error);
+        }
+    };
+    const deleteBMK = async () => {
+        console.log("북마크 삭제할거임");
+        if (!bookmarkState || !bookmarkState.id) {
+            console.error("북마크 ID가 없습니다.");
+            return;
+        }
+        try {
+            const response = await axiosInstance.delete(
+                `/hospitals/bmk?id=${bookmarkState.id}`
+            );
+            setBookmarkState(null);
+            console.log(response.data);
+        } catch (error) {
+            console.error("삭제요청실패", error);
+        }
+    };
+
+    const fetchBMK = async () => {
+        try {
+            const response = await axiosInstance.get(
+                // `/hospitals/bmk?hospitalId=${hpId}&memberId=${나중에 여기 로그인유저값 들어가야함}`
+                `/hospitals/bmk?hospitalId=${hpId}&memberId=1`
+            );
+            setBookmarkState(response.data);
+            console.log("bmk상태는::", response.data);
+        } catch (error) {
+            console.error("병원 정보를 가져오는 중 오류 발생:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBMK();
+    }, [hpId]);
 
     return (
         <>
@@ -44,12 +97,34 @@ function HospitalView() {
                 {/* 병원정보 s */}
                 <div className="mb-[24px]">
                     <div className="flex gap-[2px]8">
-                        <div onClick={handleOnclick}>
-                            {bookmark ? (
-                                <img src="/assets/images/bmkIcon_color.svg" />
+                        {/* <div onClick={handleOnclick}> */}
+                        <div>
+                            {bookmarkState ? (
+                                <div onClick={deleteBMK}>
+                                    <img
+                                        src="/assets/images/bmkIcon_color.svg"
+                                        alt="Remove Bookmark"
+                                    />
+                                </div>
                             ) : (
-                                <img src="/assets/images/bmkIcon_clear.svg" />
+                                <div onClick={addBMK}>
+                                    <img
+                                        src="/assets/images/bmkIcon_clear.svg"
+                                        alt="Add Bookmark"
+                                    />
+                                </div>
                             )}
+                            {/* {bookmark ? (
+                                // 이거는 누르면 delete axios로 실행되게 해야함
+                                <div onClick={deleteBMK}>
+                                    <img src="/assets/images/bmkIcon_color.svg" />
+                                </div>
+                            ) : (
+                                // 이거 누르면 create axios로 실행되게 해야함
+                                <div onClick={addBMK}>
+                                    <img src="/assets/images/bmkIcon_clear.svg" />
+                                </div>
+                            )} */}
                         </div>
                         <p className="subtitle2">{hospitalInfo.name}</p>
                     </div>

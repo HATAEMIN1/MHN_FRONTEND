@@ -5,94 +5,51 @@ import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 
 //n분전 구현
-function timeAgo(date) {
+function getTimeAgo(dateString) {
     const now = new Date();
-    const secondsPast = (now.getTime() - new Date(date).getTime()) / 1000;
+    const past = new Date(dateString);
+    const diffInSeconds = Math.floor((now - past) / 1000);
 
-    if (secondsPast < 60) {
-        return `${Math.floor(secondsPast)}초 전`;
+    if (diffInSeconds < 60) {
+        return "방금 전";
+    } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes}분 전`;
+    } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours}시간 전`;
+    } else if (diffInSeconds < 2592000) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days}일 전`;
+    } else if (diffInSeconds < 31536000) {
+        const months = Math.floor(diffInSeconds / 2592000);
+        return `${months}개월 전`;
+    } else {
+        const years = Math.floor(diffInSeconds / 31536000);
+        return `${years}년 전`;
     }
-    if (secondsPast < 3600) {
-        return `${Math.floor(secondsPast / 60)}분 전`;
-    }
-    if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전`;
-    }
-    if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전`;
-    }
-    if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전`;
-    }
-    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function HospitalReview() {
     const [rating, setRating] = useState([true, true, true, true, true]);
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
+    const [shouldRefetch, setShouldRefetch] = useState(false);
     const handleOnclick = (idx) => {
         setRating(rating.map((item, index) => (index > idx ? false : true)));
     };
     useEffect(() => {}, [rating]);
-    // console.log(rating);
     const { hpId } = useParams();
 
-    // const handleCommentSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (commentText.trim() !== "") {
-    //         const trueCount = rating.filter(Boolean).length;
-    //         setComments([
-    //             {
-    //                 // id: comments.length,
-    //                 // userId: currentUserId,
-    //                 content: commentText,
-    //                 createdAt: new Date(),
-    //                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
-    //                 likeCount: trueCount,
-    //             },
-    //             ...comments,
-    //         ]);
-    //         console.log(comments);
-
-    //         setCommentText("");
-    //     }
-    // };
-
-    // // db로 전송 포스트요청
-    // async function handleSubmit(e) {
-    //     e.preventDefault();
-    //     console.log(comments);
-
-    //     const body = {
-    //         hospitalId: hpId,
-    //         comment: comments.content,
-    //         rating: comments.likeCount,
-    //     };
-    //     try {
-    //         await axiosInstance.post(
-    //             `/hospitals/review?hospitalId=${hpId}`,
-    //             body
-    //         );
-    //         setCommentText("");
-    //         console.log("프론트에선 전송됐어용");
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         if (commentText.trim() !== "") {
             const trueCount = rating.filter(Boolean).length;
             const newComment = {
                 content: commentText,
-                createdAt: new Date(),
                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
                 likeCount: trueCount,
             };
-
-            // 화면에 댓글 추가
-            setComments([newComment, ...comments]);
 
             // DB로 전송 포스트요청
             const body = {
@@ -106,17 +63,45 @@ function HospitalReview() {
                     `/hospitals/review?hospitalId=${hpId}`,
                     body
                 );
-                console.log("프론트에선 전송됐어용");
+                setShouldRefetch(true);
+                setCommentText("");
             } catch (error) {
                 console.error("에러 발생:", error);
             }
-
-            setCommentText("");
         }
     };
 
-    // console.log(commentText);
-    // console.log(comments);
+    async function fetchHospitalComment() {
+        try {
+            const res = await axiosInstance.get(
+                `/hospitals/review?hospitalId=${hpId}`
+            );
+
+            console.log(res.data);
+            setComments(res.data);
+            setShouldRefetch(false); // 데이터를 가져온 후 리페치 플래그 재설정
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        fetchHospitalComment();
+    }, [shouldRefetch]);
+
+    const handleDeleteComment = async (commentId) => {
+        console.log("댓글 삭제할거임");
+
+        try {
+            const response = await axiosInstance.delete(
+                `/hospitals/review?id=${commentId}`
+            );
+            console.log(comments);
+            setShouldRefetch(true);
+        } catch (error) {
+            console.error("삭제요청실패", error);
+        }
+    };
+
     return (
         <>
             <Header title="병원 상세 정보" />
@@ -206,6 +191,7 @@ function HospitalReview() {
                 </div>
                 {/* 댓글입력폼 end */}
                 {comments.map((item) => {
+                    // console.log(item);
                     return (
                         <div className="mb-[20px]">
                             <div className="flex justify-between items-center">
@@ -219,16 +205,28 @@ function HospitalReview() {
                                             닉네임
                                         </p>
                                         <p className="body2 text-sub-200">
-                                            {item.content}
+                                            {item.comment}
                                         </p>
-                                        <p className="mini text-gray-300">
-                                            {timeAgo(item.createdAt)}
-                                        </p>
+                                        <div className="flex gap-[4px]">
+                                            <p className="mini text-gray-300">
+                                                {getTimeAgo(item.createdAt)} |
+                                            </p>
+                                            {/* 나중에 삭제하기버튼은 로그인유저값이랑 댓글작성자 아이디값 동일할때만 보이도록 프론트단에서 처리해야함 삼항연산자 */}
+                                            <div
+                                                onClick={() =>
+                                                    handleDeleteComment(item.id)
+                                                }
+                                            >
+                                                <p className="mini text-gray-300 cursor-pointer">
+                                                    삭제하기
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex gap-[2px]">
                                     <img src="/assets/images/ratingIcon_color.svg" />
-                                    <p>{item.likeCount}</p>
+                                    <p>{item.rating}</p>
                                 </div>
                             </div>
                         </div>
