@@ -6,21 +6,21 @@ function ChattingListForm() {
         senderId: 1,
         recipientId: 2,
         title: "코드랩아카데미병원1",
-        content: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층",
+        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층",
         like: 333,
     },
     {
         senderId: 2,
         recipientId: 3,
         title: "코드랩아카데미병원2",
-        content: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 19층",
+        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 19층",
         like: 10,
     },
     {
         senderId: 4,
         recipientId: 1,
         title: "코드랩아카데미병원3",
-        content: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 18층",
+        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 18층",
         like: 88,
     }];
     return (
@@ -42,7 +42,7 @@ function ChattingListForm() {
                                         {pair.title}
                                     </div>
                                     <div className="body2 text-sub-100">
-                                        {pair.content}
+                                        {pair.address}
                                     </div>
                                 </div>
                             </div>

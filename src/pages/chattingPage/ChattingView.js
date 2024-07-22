@@ -6,6 +6,7 @@ import NavBar from "../../layouts/nav/NavBar";
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import "./chattingview.css";
+import { v4 as uuidv4 } from 'uuid';
 
 const WS_ENDPOINT = "http://localhost:8080/ws"; // Update with your WebSocket endpoint
 const CHAT_SEND_MESSAGE_URL = "/app/chat.sendMessage";
@@ -196,7 +197,7 @@ function ChattingView() {
                     </div>
                 )}
                 {hasPreviousMessages && messages.map((msg) => (
-                    <div key={msg.id} className={`message ${msg.senderId === parseInt(senderId) ? "sent" : "received"}`}>
+                    <div key={`${msg.id}-${uuidv4()}`} className={`message ${msg.senderId === parseInt(senderId) ? "sent" : "received"}`}>
                         {msg.senderId !== parseInt(senderId) && (
                             <img
                                 src="/assets/images/petDogIcon.svg"
