@@ -149,7 +149,7 @@ function Payment() {
             };
 
             const response = await axiosInstance.post(
-                "/billing",
+                "payments/billing",
                 billingKeyRequestData
             );
             console.log("결제 예약 성공:", response.data);
