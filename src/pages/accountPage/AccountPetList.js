@@ -1,127 +1,142 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-// import ButtonBlack from "../../components/ButtonBlack";
 import "../../assets/css/style.scss";
-import { useNavigate } from "react-router-dom";
-// import Modal from "../../components/Modal";
-// import ModalManager from "../../components/ModalManager";
+import { useNavigate, useParams } from "react-router-dom";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonBlack from "../../components/button/ButtonBlack";
+import ImageUploader from "../../components/ImageUploader";
+import axios from "axios";
 
 function AccountPetList() {
     const navigate = useNavigate();
+    const [image, setImage] = useState(null);
+    const [pets, setPets] = useState([]);
 
-    // const handleDeleteClick = (openModal) => {
-    //     if (typeof openModal === "function") {
-    //         console.log("게시물이 삭제되었습니다.");
-    //         openModal();
-    //     } else {
-    //         console.error("openModal is not a function");
-    //     }
-    // };
+    // 모든 펫 정보 가져오기
+    useEffect(() => {
+        axios
+            .get("http://localhost:8084/api/v1/pets/allpet")
+            .then((response) => {
+                setPets(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching pets:", error);
+            });
+    }, []);
 
-    // const handleClose = (closeModal) => {
-    //     if (typeof closeModal === "function") {
-    //         closeModal();
-    //     } else {
-    //         console.error("closeModal is not a function");
-    //     }
-    // };
-
-    // const modalContent = (
-    //     <div>
-    //         <p>삭제되었습니다.</p>
-    //         <button
-    //             onClick={(closeModal) => {
-    //                 handleClose(closeModal);
-    //             }}
-    //         >
-    //             확인
-    //         </button>
-    //     </div>
-    // );
-
+    // 펫 삭제
+    const handleDelete = (id, closeModal) => {
+        axios
+            .delete(`http://localhost:8084/api/v1/pets/${id}`)
+            .then(() => {
+                setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));
+                closeModal();
+            })
+            .catch((error) => {
+                console.error(`Error deleting pet ${id}:`, error);
+            });
+    };
+    //
     return (
         <>
             <Header title="펫 리스트" />
 
-            <div className="h-full flex flex-col items-center justify-evenly">
-                {/* pet1 s */}
-                <div className="w-full flex flex-col items-center gap-2 py-4 border-b border-gray-100">
-                    <img
-                        src="/assets/images/petDogIcon.svg"
-                        className="inline-block w-7 h-7"
-                    />
-                    <p className="subtitle1 text-primary-300">김츄츄</p>
-                    <span className="body2 block text-sub-100">2024.02.15</span>
-                    <button
-                        // onClick={handleDeleteClick}
-                        className="body2 inline-block text-gray-300"
-                    >
-                        삭제하기
-                    </button>
-                </div>
+            <div className="flex flex-col items-center">
+                {pets.map((pet) => {
+                    console.log("Pet Image URL:", pet.petImage);
 
-                {/* <ModalManager modalContent={modalContent}>
-                    {({ openModal }) => {
-                        if (typeof openModal !== "function") {
-                            console.error("openModal is not a function");
-                            return null;
-                        }
-                        return (
-                            <button
-                                onClick={() => handleDeleteClick(openModal)}
+                    return (
+                        <div
+                            key={pet.id}
+                            className="w-full flex flex-col items-center gap-2 py-4 my-2 border-b border-gray-100"
+                        >
+                            <div className="w-24 h-24 mb-4">
+                                {pet.petImage ? (
+                                    <img
+                                        src={`http://localhost:8084/api/v1/pets/image/${pet.petImage}`}
+                                        alt={pet.name}
+                                        className="w-full h-full object-cover rounded-full"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gray-500 border border-gray-200 rounded-full flex items-center justify-center">
+                                        <img
+                                            width="30"
+                                            height="30"
+                                            src="https://img.icons8.com/ios-glyphs/30/737373/dog-muzzle.png"
+                                            alt="dog-muzzle"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                            <p className="subtitle1 text-primary-300">
+                                {pet.name}
+                            </p>
+                            <span className="body2 block text-sub-100">
+                                {pet.kind}
+                            </span>
+                            <span className="body2 block text-sub-100">
+                                {pet.age}
+                            </span>
+
+                            <ModalManager
+                                modalContent={({ closeModal }) => (
+                                    <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            handleDelete(pet.id, closeModal);
+                                        }}
+                                    >
+                                        <p className="mb-3">
+                                            정말로 삭제하시겠습니까?
+                                        </p>
+                                        <ButtonBlack
+                                            type="submit"
+                                            text1="확인"
+                                            style={{
+                                                marginTop: "20px",
+                                                fontSize: "16px",
+                                                cursor: "pointer",
+                                                color: "blue",
+                                                font: "body2",
+                                            }}
+                                        />
+                                    </form>
+                                )}
                             >
-                                삭제하기
-                            </button>
-                        );
-                    }}
-                </ModalManager> */}
+                                {({ openModal }) => (
+                                    <button
+                                        type="button"
+                                        onClick={openModal}
+                                        className="body2 inline-block text-gray-300"
+                                    >
+                                        삭제하기
+                                    </button>
+                                )}
+                            </ModalManager>
+                        </div>
+                    );
+                })}
 
-                {/* pet1 e  */}
-
-                {/* pet2 s  */}
-                <div className="w-full flex flex-col items-center gap-2 py-4 border-b border-gray-100">
-                    <img
-                        src="/assets/images/petCatIcon.svg"
-                        className="inline-block w-7 h-7"
-                    />
-                    <p className="subtitle1 text-primary-300">김챠챠</p>
-                    <span className="body2 block text-sub-100">2018.11.20</span>
-                    <button className="body2 inline-block text-gray-300">
-                        삭제하기
+                {pets.length < 3 && (
+                    <button
+                        type="button"
+                        className="w-full flex justify-center py-1 my-6 bg-primary-300 rounded-lg text-primary-400"
+                        onClick={() => navigate("/account/pets/new")}
+                    >
+                        <span className="ml-4">펫 등록하기 </span>
+                        <img
+                            src="/assets/images/arrow_rightW.svg"
+                            alt="arrow right"
+                        />
                     </button>
-                </div>
-                {/* pet2 e  */}
+                )}
 
-                {/* pet3 s */}
-                <div className="w-full flex flex-col items-center gap-2 py-4 border-b border-gray-100">
-                    <img
-                        src="/assets/images/petDogIcon.svg"
-                        className="inline-block w-7 h-7"
-                    />
-                    <p className="subtitle1 text-primary-300">김퓨퓨</p>
-                    <span className="body2 block text-sub-100">2021.03.07</span>
-                    <button className="body2 inline-block text-gray-300">
-                        삭제하기
-                    </button>
-                </div>
-                {/* pet3 e */}
-
-                {/* btn s  */}
-                <button
-                    className="w-full flex justify-center py-1 bg-primary-300 rounded-lg text-primary-400"
-                    onClick={() => navigate("/account/pets/new")}
-                >
-                    <span className="ml-4">펫 등록하기 </span>
-                    <img src="/assets/images/arrow_rightW.svg" />
-                </button>
-                {/* btn e  */}
-
-                {/* text s */}
-                <p className="mini text-sub-100">
-                    펫은 최대 3마리까지 등록 가능합니다.
-                </p>
-                {/* text e  */}
+                {pets.length >= 3 && (
+                    <p className="mini text-sub-100 my-6">
+                        펫은 최대 3마리까지 등록 가능합니다.
+                    </p>
+                )}
             </div>
 
             <NavBar />
