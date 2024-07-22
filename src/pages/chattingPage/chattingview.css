@@ -58,6 +58,7 @@
     color: #aaa;
     text-align: right;
     margin-top: 5px;
+    white-space: nowrap;
 }
 
 .chat-footer {
