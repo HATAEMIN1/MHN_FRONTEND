@@ -8,20 +8,6 @@ import ChattingListForm from "../../components/Form/ChattingListForm";
 import PlusButton from "../../components/button/PlusButton";
 
 function ChattingList() {
-    const hospitalExam = [
-        {
-            title: "코드랩아카데미병원",
-            content:
-                "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층 가나다라마바사아자차 자잗자ㅣ겆디",
-            like: 333,
-        },
-        {
-            title: "코드랩아카데미병원22",
-            content: "어쩌구저쩌구어어어어어어ㅏ",
-            like: 10,
-        },
-    ];
-
     const handleModalOpen = () => {
         console.log("모달 버튼 클릭됨");
     };
@@ -66,7 +52,7 @@ function ChattingList() {
             {/* 검색창 + 필터모달버튼 end */}
             {/* 채팅창 리스트 start*/}
             <div>
-                <ChattingListForm hospitalList={hospitalExam} />
+                <ChattingListForm />
             </div>
             <PlusButton />
             <NavBar />
