@@ -37,7 +37,7 @@ function AccountPetList() {
                 console.error(`Error deleting pet ${id}:`, error);
             });
     };
-
+    //
     return (
         <>
             <Header title="펫 리스트" />
