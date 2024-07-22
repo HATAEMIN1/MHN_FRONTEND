@@ -130,7 +130,9 @@ function ChattingView() {
 
             console.log("Successfully subscribed to:", `/user/${currentUserId}/private`);
 
-            // Join room logic here
+            // Join room
+            // Sends a message to the server indicating that the user has joined the chat room.
+            // this creates a chat room id in backend if it doesn't already exist
             const joinRoomRequest = {
                 senderId: currentUserId,
                 recipientId
@@ -138,7 +140,7 @@ function ChattingView() {
             stompClientRef.current.send(CHAT_JOIN_ROOM_URL, {}, JSON.stringify(joinRoomRequest));
 
             console.log("Successfully joined room - chatRoomId created");
-            
+
         }, (error) => {
             console.error("WebSocket connection error: ", error);
         });
