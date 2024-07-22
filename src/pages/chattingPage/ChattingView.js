@@ -11,7 +11,28 @@ const CHAT_SEND_MESSAGE_URL = "/app/chat.sendMessage";
 const CHAT_JOIN_ROOM_URL = "/app/chat.joinRoom";
 
 function ChattingView() {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([
+        {
+            text: "얘가 고기만 먹고 사료를 안 먹는데 어떻게 해야돼여???",
+            timestamp: "오후 13:23",
+            type: "received",
+        },
+        {
+            text: "안녕하세요. 코드랩 동물병원입니다.",
+            timestamp: "오후 13:25",
+            type: "sent",
+        },
+        {
+            text: "어떻게 하나요?????????",
+            timestamp: "오후 13:26",
+            type: "received",
+        },
+        {
+            text: "더 이상 질문이 없으시면 잠시 후 채팅이 종료됩니다.",
+            timestamp: "오후 13:27",
+            type: "sent",
+        },
+    ]);
     const [inputValue, setInputValue] = useState("");
     const [isChatExpired, setIsChatExpired] = useState(false);
     const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
