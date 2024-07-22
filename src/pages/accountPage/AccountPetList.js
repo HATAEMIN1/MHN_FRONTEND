@@ -7,6 +7,7 @@ import ModalManager from "../../components/modal/ModalManager";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import ImageUploader from "../../components/ImageUploader";
 import axios from "axios";
+import axiosInstance from "../../utils/axios";
 
 function AccountPetList() {
     const navigate = useNavigate();
@@ -15,8 +16,8 @@ function AccountPetList() {
 
     // 모든 펫 정보 가져오기
     useEffect(() => {
-        axios
-            .get("http://localhost:8084/api/v1/pets/allpet")
+        axiosInstance
+            .get("/pets/allpet")
             .then((response) => {
                 setPets(response.data);
             })
@@ -27,8 +28,8 @@ function AccountPetList() {
 
     // 펫 삭제
     const handleDelete = (id, closeModal) => {
-        axios
-            .delete(`http://localhost:8084/api/v1/pets/${id}`)
+        axiosInstance
+            .delete(`/pets/${id}`)
             .then(() => {
                 setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));
                 closeModal();
@@ -54,7 +55,7 @@ function AccountPetList() {
                             <div className="w-24 h-24 mb-4">
                                 {pet.petImage ? (
                                     <img
-                                        src={`http://localhost:8084/api/v1/pets/image/${pet.petImage}`}
+                                        src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${pet.petImage}`}
                                         alt={pet.name}
                                         className="w-full h-full object-cover rounded-full"
                                     />

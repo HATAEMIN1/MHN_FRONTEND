@@ -15,7 +15,7 @@ function HospitalView() {
     // }
     const [hospitalInfo, setHospitalInfo] = useState({});
     const { hpId } = useParams();
-
+    const memberId = 4;
     useEffect(() => {
         console.log("부모 hospitalInfo::", hospitalInfo);
     }, [hospitalInfo]);
@@ -24,7 +24,7 @@ function HospitalView() {
         // console.log("북마크 추가할거임");
         const body = {
             // memberId값 나중엔 로그인 유저 아이디값으로 대체되어야 함
-            memberId: 1,
+            memberId: memberId,
             hospitalId: hpId,
         };
 
@@ -57,7 +57,7 @@ function HospitalView() {
         try {
             const response = await axiosInstance.get(
                 // `/hospitals/bmk?hospitalId=${hpId}&memberId=${나중에 여기 로그인유저값 들어가야함}`
-                `/hospitals/bmk?hospitalId=${hpId}&memberId=1`
+                `/hospitals/bmk?hospitalId=${hpId}&memberId=${memberId}`
             );
             setBookmarkState(response.data);
             console.log("bmk상태는::", response.data);

@@ -8,6 +8,7 @@ import ButtonBlack from "../../components/button/ButtonBlack";
 import PetDropDown from "../../components/PetDropDown";
 import ImageUploader from "../../components/ImageUploader";
 import axios from "axios";
+import axiosInstance from "../../utils/axios";
 
 function AccountPetAdd() {
     const navigate = useNavigate();
@@ -46,8 +47,8 @@ function AccountPetAdd() {
             formData.append("petImage", petImage);
         }
 
-        axios
-            .post("http://localhost:8084/api/v1/pets/addpet", formData, {
+        axiosInstance
+            .post("pets/addpet", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
