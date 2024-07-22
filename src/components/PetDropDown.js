@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const PetDropDowm = () => {
+const PetDropDown = ({ onSelect }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -22,6 +22,7 @@ const PetDropDowm = () => {
     const handleItemClick = (item) => {
         setSelectedItem(item);
         setIsOpen(false);
+        onSelect(item.name); // 선택된 항목을 부모 컴포넌트로 전달
     };
 
     return (
@@ -35,7 +36,10 @@ const PetDropDowm = () => {
                 <p className="flex gap-2">
                     {selectedItem ? (
                         <span className="flex gap-2 body2 text-sub-100">
-                            <img src={selectedItem.imgSrc} />
+                            <img
+                                src={selectedItem.imgSrc}
+                                alt={selectedItem.name}
+                            />
                             {selectedItem.name}
                         </span>
                     ) : (
@@ -48,6 +52,7 @@ const PetDropDowm = () => {
                                 ? "/assets/images/arrow_up.svg"
                                 : "/assets/images/arrow_down.svg"
                         }
+                        alt={isOpen ? "위쪽 화살표 열림" : "아래쪽 화살표 닫힘"}
                     />
                 </p>
             </div>
@@ -68,7 +73,7 @@ const PetDropDowm = () => {
                                     "✓"}
                             </span>
                             <div className="flex items-center gap-2 ml-auto">
-                                <img src={item.imgSrc} />
+                                <img src={item.imgSrc} alt={item.name} />
                                 <span className="body2 text-sub-100">
                                     {item.name}
                                 </span>
@@ -82,4 +87,4 @@ const PetDropDowm = () => {
     );
 };
 
-export default PetDropDowm;
+export default PetDropDown;

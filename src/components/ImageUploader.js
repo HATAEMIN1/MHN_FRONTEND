@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 
-function ImageUploader() {
+function ImageUploader({ onImageChange }) {
     const [image, setImage] = useState(null);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file && file.type.substr(0, 5) === "image") {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+            setImage(URL.createObjectURL(file));
+            onImageChange(file); // 부모 컴포넌트에 파일 전달
         } else {
             setImage(null);
+            onImageChange(null);
         }
     };
 

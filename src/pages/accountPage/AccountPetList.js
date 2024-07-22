@@ -1,45 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import "../../assets/css/style.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ModalManager from "../../components/modal/ModalManager";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import ImageUploader from "../../components/ImageUploader";
+import axios from "axios";
 
 function AccountPetList() {
     const navigate = useNavigate();
     const [image, setImage] = useState(null);
+    const [pets, setPets] = useState([]);
 
-    const handleDelete = (petId, closeModal) => {
-        // 서버에 삭제 요청 전송
-        console.log(`펫 ${petId} 삭제 요청`);
-        closeModal();
+    // 모든 펫 정보 가져오기
+    useEffect(() => {
+        axios
+            .get("http://localhost:8084/api/v1/pets/allpet")
+            .then((response) => {
+                setPets(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching pets:", error);
+            });
+    }, []);
+
+    // 한마리 펫 정보 가져오기
+    // useEffect(() => {
+    //     axios
+    //         .get(`http://localhost:8084/api/v1/pets/${id}`)
+    //         .then((response) => {
+    //             console.log(response.data); // 서버에서 받은 데이터 처리
+    //             // 필요한 경우 상태에 저장하거나 다른 작업 수행
+    //         })
+    //         .catch((error) => {
+    //             console.error(`Error fetching pet ${id}:`, error);
+    //         });
+    // }, [id]); // id가 변경될 때마다 다시 요청
+
+    // 펫 삭제
+    const handleDelete = (id, closeModal) => {
+        axios
+            .delete(`http://localhost:8084/api/v1/pets/${id}`)
+            .then(() => {
+                setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));
+                closeModal();
+            })
+            .catch((error) => {
+                console.error(`Error deleting pet ${id}:`, error);
+            });
     };
-
-    const pets = [
-        {
-            id: 1,
-            name: "김츄츄",
-            kind: "강아지",
-            age: "2024.02.15",
-            imgSrc: "/assets/images/petDogIcon.svg",
-        },
-        {
-            id: 2,
-            name: "김챠챠",
-            kind: "고양이",
-            age: "2018.11.20",
-            imgSrc: "/assets/images/petCatIcon.svg",
-        },
-        {
-            id: 3,
-            name: "김퓨퓨",
-            kind: "강아지",
-            age: "2021.03.07",
-            imgSrc: "/assets/images/petDogIcon.svg",
-        },
-    ];
 
     return (
         <>
@@ -51,17 +61,14 @@ function AccountPetList() {
                         key={pet.id}
                         className="w-full flex flex-col items-center gap-2 py-4 my-2 border-b border-gray-100"
                     >
-                        {/* <ImageUploader /> */}
                         <div className="w-24 h-24 mb-4">
-                            {image ? (
-                                // 업로드 된 이미지
+                            {pet.petImage ? (
                                 <img
-                                    src={image}
-                                    alt="Uploaded"
+                                    src={`http://localhost:8084/api/v1/pets/image/${pet.petImage}`}
+                                    alt={pet.name}
                                     className="w-full h-full object-cover rounded-full"
                                 />
                             ) : (
-                                // 기본 이미지
                                 <div className="w-full h-full bg-gray-500 border border-gray-200 rounded-full flex items-center justify-center">
                                     <img
                                         width="30"
@@ -72,11 +79,10 @@ function AccountPetList() {
                                 </div>
                             )}
                         </div>
-                        {/* <img
-                            src={pet.imgSrc}
-                            className="inline-block w-7 h-7"
-                        /> */}
                         <p className="subtitle1 text-primary-300">{pet.name}</p>
+                        <span className="body2 block text-sub-100">
+                            {pet.kind}
+                        </span>
                         <span className="body2 block text-sub-100">
                             {pet.age}
                         </span>
@@ -126,7 +132,10 @@ function AccountPetList() {
                         onClick={() => navigate("/account/pets/new")}
                     >
                         <span className="ml-4">펫 등록하기 </span>
-                        <img src="/assets/images/arrow_rightW.svg" />
+                        <img
+                            src="/assets/images/arrow_rightW.svg"
+                            alt="arrow right"
+                        />
                     </button>
                 )}
 
