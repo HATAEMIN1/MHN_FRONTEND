@@ -3,6 +3,8 @@ import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonClear from "../../components/button/ButtonClear";
 
 //n분전 구현
 function getTimeAgo(dateString) {
@@ -47,8 +49,6 @@ function HospitalReview() {
             const trueCount = rating.filter(Boolean).length;
             const newComment = {
                 content: commentText,
-                // 여기 디비에서 불러올 때 어차피 다시 createAt쓸거니까 주석처리할예정
-                // createdAt: new Date(),
                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
                 likeCount: trueCount,
             };
@@ -90,7 +90,7 @@ function HospitalReview() {
         fetchHospitalComment();
     }, [shouldRefetch]);
 
-    const handleDeleteComment = async (commentId) => {
+    const handleDeleteComment = async (commentId, closeModal) => {
         console.log("댓글 삭제할거임");
 
         try {
@@ -99,6 +99,7 @@ function HospitalReview() {
             );
             console.log(comments);
             setShouldRefetch(true);
+            closeModal(); // 모달 닫기
         } catch (error) {
             console.error("삭제요청실패", error);
         }
@@ -192,6 +193,7 @@ function HospitalReview() {
                     </button>
                 </div>
                 {/* 댓글입력폼 end */}
+
                 {comments.map((item) => {
                     // console.log(item);
                     return (
@@ -211,19 +213,66 @@ function HospitalReview() {
                                         </p>
                                         <div className="flex gap-[4px]">
                                             <p className="mini text-gray-300">
-                                                {/* {timeAgo(item.createdAt)} */}
                                                 {getTimeAgo(item.createdAt)} |
                                             </p>
                                             {/* 나중에 삭제하기버튼은 로그인유저값이랑 댓글작성자 아이디값 동일할때만 보이도록 프론트단에서 처리해야함 삼항연산자 */}
-                                            <div
-                                                onClick={() =>
-                                                    handleDeleteComment(item.id)
-                                                }
+
+                                            <ModalManager
+                                                modalContent={({
+                                                    closeModal,
+                                                }) => (
+                                                    <div>
+                                                        <p className="mb-[8px]">
+                                                            댓글을 삭제할까요?
+                                                        </p>
+                                                        {/* <div className="flex gap-[4px]">
+                                                            <ButtonClear
+                                                                handleClick={(
+                                                                    e
+                                                                ) => {
+                                                                    handleDeleteComment(
+                                                                        item.id
+                                                                    );
+                                                                }}
+                                                                text1="네"
+                                                            />
+                                                            <ButtonClear
+                                                                handleClick={(
+                                                                    e
+                                                                ) => {
+                                                                    closeModal();
+                                                                }}
+                                                                text1="아니요"
+                                                            />
+                                                        </div> */}
+                                                        <ButtonClear
+                                                            text1="네"
+                                                            text2="아니요"
+                                                            handleClick={(
+                                                                e
+                                                            ) => {
+                                                                handleDeleteComment(
+                                                                    item.id
+                                                                );
+                                                                closeModal();
+                                                            }}
+                                                            handleClick2={(
+                                                                e
+                                                            ) => {
+                                                                closeModal();
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
                                             >
-                                                <p className="mini text-gray-300 cursor-pointer">
-                                                    삭제하기
-                                                </p>
-                                            </div>
+                                                {({ openModal }) => (
+                                                    <div onClick={openModal}>
+                                                        <p className="mini text-gray-300 cursor-pointer">
+                                                            삭제하기
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </ModalManager>
                                         </div>
                                     </div>
                                 </div>
