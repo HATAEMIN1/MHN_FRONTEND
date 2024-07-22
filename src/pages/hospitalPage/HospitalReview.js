@@ -10,6 +10,8 @@ import ButtonClear from "../../components/button/ButtonClear";
 function getTimeAgo(dateString) {
     const now = new Date();
     const past = new Date(dateString);
+    // memberId값 나중에 로그인유저로 바뀌어야함
+
     const diffInSeconds = Math.floor((now - past) / 1000);
 
     if (diffInSeconds < 60) {
@@ -42,6 +44,7 @@ function HospitalReview() {
     };
     useEffect(() => {}, [rating]);
     const { hpId } = useParams();
+    const memberId = 4;
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
@@ -55,6 +58,7 @@ function HospitalReview() {
 
             // DB로 전송 포스트요청
             const body = {
+                memberId: memberId,
                 hospitalId: hpId,
                 comment: newComment.content,
                 rating: newComment.likeCount,
