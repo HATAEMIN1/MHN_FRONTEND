@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 function ChattingListForm({ ...props }) {
     return (
         <>
-            {props.hospitalList.map((item) => {
+            {props.hospitalList.map((item, idx) => {
                 return (
                     // <div className="mb-[20px] border-2">
-                    <Link to="/hospitals/:hpId" className="w-full block">
+                    <Link to={`/chatboards/:chatId`} className="w-full block">
                         {/* 여기 경로값에는 원래 채팅방 뷰페이지로 이동하도록 해야합니다  */}
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">

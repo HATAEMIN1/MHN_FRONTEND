@@ -15,10 +15,7 @@ function HospitalView() {
     // }
     const [hospitalInfo, setHospitalInfo] = useState({});
     const { hpId } = useParams();
-
-    // memberId에 나중엔 로그인 아이디값이 들어가도록 변수저장해야함
-    const memberId = 1;
-
+    const memberId = 4;
     useEffect(() => {
         console.log("부모 hospitalInfo::", hospitalInfo);
     }, [hospitalInfo]);
