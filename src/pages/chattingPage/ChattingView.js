@@ -211,9 +211,9 @@ function ChattingView() {
                         </div>
                     </div>
                 ))}
-                {!hasPreviousMessages && isChatExpired && (
+                {isChatExpired && (
                     <div className="system-message">
-                        채팅이 종료되었습니다.
+                        종료된 채팅입니다.
                     </div>
                 )}
             </div>
