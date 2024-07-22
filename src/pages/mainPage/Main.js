@@ -14,7 +14,7 @@ import axiosInstance from "../../utils/axios";
 function Main() {
     // 현재 이용자의 위치값 확인
     const [location, setLocation] = useState(null);
-    const [hospitalsWithBMK, setHospitalsWithBMK] = useState([]);
+    const [hospitalData, setHospitalData] = useState([]);
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {
         navigate(pageUrl);
@@ -39,47 +39,54 @@ function Main() {
     console.log("location", location);
 
     useEffect(() => {
-        const fetchHospitalsWithBookmarks = async () => {
+        const fetchHospitalsAndBookmarks = async () => {
             if (location) {
                 try {
                     // 병원 정보 가져오기
-                    const hospitalsResponse = await axiosInstance.get(
+                    const response = await axiosInstance.get(
                         `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
                     );
-                    const hospitals = hospitalsResponse.data;
+                    const hospitals = response.data;
+                    console.log(response);
 
-                    // 각 병원의 북마크 개수 가져오기
-                    const hospitalPromises = hospitals.map((hospital) =>
-                        axiosInstance.get(
-                            `/hospitals/bmk?hospitalId=${hospital.id}&memberId=2`
-                        )
-                    );
-                    const bookmarkResponses =
-                        await Promise.all(hospitalPromises);
-
-                    // 병원 정보와 북마크 개수 합치기
-                    const hospitalsWithBookmarks = hospitals.map(
-                        (hospital, index) => ({
+                    // 병원 정보 먼저 설정
+                    setHospitalData(
+                        hospitals.map((hospital) => ({
                             ...hospital,
-                            bookmarkCount:
-                                bookmarkResponses[index].data.totalBMKCount,
-                        })
+                            bookmarkCount: 0,
+                        }))
                     );
 
-                    setHospitalsWithBMK(hospitalsWithBookmarks);
+                    // 북마크 정보 가져오기 (비동기적으로 처리)
+                    hospitals.forEach(async (hospital, index) => {
+                        try {
+                            const bookmarkResponse = await axiosInstance.get(
+                                `/hospitals/bmk/count?hospitalId=${hospital.id}`
+                            );
+                            setHospitalData((prevData) => {
+                                const newData = [...prevData];
+                                newData[index] = {
+                                    ...newData[index],
+                                    bookmarkCount:
+                                        bookmarkResponse.data.totalBMKCount,
+                                };
+                                return newData;
+                            });
+                        } catch (error) {
+                            console.error(
+                                `북마크 정보를 가져오는 중 오류 발생 (병원 ID: ${hospital.id}):`,
+                                error
+                            );
+                        }
+                    });
                 } catch (error) {
-                    console.error(
-                        "병원 정보 또는 북마크 개수를 가져오는 중 오류 발생:",
-                        error
-                    );
+                    console.error("병원 정보를 가져오는 중 오류 발생:", error);
                 }
             }
         };
 
-        fetchHospitalsWithBookmarks();
+        fetchHospitalsAndBookmarks();
     }, [location]);
-
-    console.log(hospitalsWithBMK);
 
     return (
         <>
@@ -184,35 +191,36 @@ function Main() {
                                 // pagination={{ clickable: true }}
                                 className="mySwiper"
                             >
-                                {hospitalsWithBMK &&
-                                    hospitalsWithBMK.map((item, idx) => {
-                                        if (idx <= 5) {
-                                            return (
-                                                <SwiperSlide
-                                                    key={item.id}
-                                                    className="!w-auto"
+                                {hospitalData.map((item, idx) => {
+                                    console.log(item);
+                                    if (idx <= 5) {
+                                        return (
+                                            <SwiperSlide
+                                                key={idx}
+                                                className="!w-auto"
+                                            >
+                                                <div
+                                                    onClick={() =>
+                                                        navigateToPage(
+                                                            `/hospitals/${item.id}`
+                                                        )
+                                                    }
+                                                    className="cursor-pointer"
                                                 >
-                                                    <div
-                                                        onClick={() =>
-                                                            navigateToPage(
-                                                                `/hospitals/${item.id}`
-                                                            )
+                                                    <CardSlider
+                                                        imgRoute="/assets/images/ratingIcon_color.svg"
+                                                        title={item.name}
+                                                        bookmarkCount={
+                                                            item.bookmarkCount
                                                         }
-                                                        className="cursor-pointer"
-                                                    >
-                                                        <CardSlider
-                                                            imgRoute="/assets/images/ratingIcon_color.svg"
-                                                            title={item.name}
-                                                            bookmarkCount={
-                                                                item.bookmarkCount
-                                                            }
-                                                        />
-                                                    </div>
-                                                </SwiperSlide>
-                                            );
-                                        }
-                                        return null;
-                                    })}
+                                                    />
+                                                </div>
+                                            </SwiperSlide>
+                                        );
+                                    }
+                                    console.log(item);
+                                    return null;
+                                })}
                                 {/* <SwiperSlide className="!w-auto">
                                     <CardSlider
                                         imgRoute="/assets/images/ratingIcon_color.svg"
