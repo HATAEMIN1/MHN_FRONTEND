@@ -84,7 +84,7 @@ function App() {
                                 />
                                 <Route path="/" element={<Main />} />
                                 <Route
-                                    path="/chatboards/:chatId"
+                                    path="/chatboards/:senderId/:recipientId"
                                     element={<ChattingView />}
                                 />
                                 <Route

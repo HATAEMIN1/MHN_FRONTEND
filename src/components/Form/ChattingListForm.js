@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
-function ChattingListForm({ ...props }) {
+function ChattingListForm() {
+    const [chatrooms, setChatrooms] = useState([]);
+
+    const api = axios.create({
+        baseURL: 'http://localhost:8080', 
+    });
+
+    useEffect(() => {
+        // Fetch chatrooms from the backend
+        api.get('/api/chatrooms')
+            .then(response => {
+                setChatrooms(response.data);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the chatrooms!", error);
+            });
+    }, []);
+
+    
     return (
         <>
-            {props.hospitalList.map((item, idx) => {
+            {chatrooms.map((chatroom, idx) => {
                 return (
-                    // <div className="mb-[20px] border-2">
-                    <Link to={`/chatboards/:chatId`} className="w-full block">
-                        {/* 여기 경로값에는 원래 채팅방 뷰페이지로 이동하도록 해야합니다  */}
+                    <Link key={`${chatroom.senderId}-${chatroom.recipientId}-${idx}`}
+                    to={`/chatboards/${chatroom.senderId}/${chatroom.recipientId}`} className="w-full block">
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">
                                 <div className="w-[80px] flex-shrink-0 ">
@@ -19,10 +37,10 @@ function ChattingListForm({ ...props }) {
                                 </div>
                                 <div>
                                     <div className="py-[4px] subtitle3 text-primary-300">
-                                        {item.title}
+                                        {chatroom.title}
                                     </div>
                                     <div className="body2 text-sub-100">
-                                        {item.content}
+                                        {chatroom.address}
                                     </div>
                                 </div>
                             </div>
@@ -30,11 +48,10 @@ function ChattingListForm({ ...props }) {
                                 <div>
                                     <img src="/assets/images/likeIcon_color.svg" />
                                 </div>
-                                <div>{item.like}</div>
+                                <div>{chatroom.likes}</div>
                             </div>
                         </div>
                     </Link>
-                    // </div>
                 );
             })}
         </>
