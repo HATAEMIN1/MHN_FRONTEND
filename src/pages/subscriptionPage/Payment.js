@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
@@ -94,7 +94,7 @@ function Payment() {
                 imp_uid,
                 error_msg
             ); //결제내역 저장
-            ReservationPayment();
+            ReservationPayment(customerUid);
         } else {
             alert(`결제 실패: ${error_msg}`);
         }
@@ -129,11 +129,14 @@ function Payment() {
             console.log("디비저장실패", e);
         }
     };
-    const ReservationPayment = async () => {
+    const ReservationPayment = async (customer_uid) => {
         try {
-            const res = axiosInstance.get("/payments");
-
+            // const params = billingKey;
+            // console.log(params);
+            // const res = axiosInstance.get("/payments", { params });
+            console.log(customer_uid);
             const billingKeyRequestData = {
+                customer_uid: customer_uid,
                 schedules: [
                     {
                         merchant_uid: generateRandomString("Reservation"),
