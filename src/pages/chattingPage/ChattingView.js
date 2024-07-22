@@ -6,12 +6,47 @@ import SockJS from 'sockjs-client';
 import "./chattingview.css";
 
 const WS_ENDPOINT = "http://localhost:8080/ws"; // Update with your WebSocket endpoint
-const CHAT_PRIVATE_TOPIC = "/user/private";
+// const CHAT_PRIVATE_TOPIC = "/user/private";
 const CHAT_SEND_MESSAGE_URL = "/app/chat.sendMessage";
 const CHAT_JOIN_ROOM_URL = "/app/chat.joinRoom";
 
 function ChattingView() {
-    const [messages, setMessages] = useState([]);
+    const [currentUserId, setCurrentUserId] = useState(1);
+    const [recipientId, setRecipientId] = useState(2); 
+    const [messages, setMessages] = useState([
+        {   
+            id: 1,
+            senderId: currentUserId,
+            recipientId: recipientId,
+            content: "얘가 고기만 먹고 사료를 안 먹는데 어떻게 해야돼여???",
+            timestamp: "오후 13:23",
+            type: "received",
+        },
+        {   
+            id: 2,
+            senderId: currentUserId,
+            recipientId: recipientId,
+            content: "안녕하세요. 코드랩 동물병원입니다.",
+            timestamp: "오후 13:25",
+            type: "sent",
+        },
+        {   
+            id: 3,
+            senderId: currentUserId,
+            recipientId: recipientId,
+            content: "어떻게 하나요?????????",
+            timestamp: "오후 13:26",
+            type: "received",
+        },
+        {   
+            id: 4,
+            senderId: currentUserId,
+            recipientId: recipientId,
+            content: "더 이상 질문이 없으시면 잠시 후 채팅이 종료됩니다.",
+            timestamp: "오후 13:27",
+            type: "sent",
+        },
+    ]);
     const [inputValue, setInputValue] = useState("");
     const [isChatExpired, setIsChatExpired] = useState(false);
     const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
@@ -76,19 +111,24 @@ function ChattingView() {
             stompClientRef.current = stompClient;
 
             // Subscribe to private messages
-            stompClient.subscribe(CHAT_PRIVATE_TOPIC, (message) => {
+            stompClient.subscribe(`/user/${currentUserId}/private`, (message) => {
                 if (message.body) {
                     const chatMessage = JSON.parse(message.body);
                     setMessages((prevMessages) => [
                         ...prevMessages,
-                        {
-                            text: chatMessage.text,
+                        {   
+                            id: chatMessage.id,
+                            senderId: chatMessage.currentUserId,
+                            recipientId: chatMessage.recipientId,
+                            content: chatMessage.content,
                             timestamp: new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                             type: "received",
                         },
                     ]);
                 }
             });
+
+            console.log("Successfully subscribed to:", `/user/${currentUserId}/private`);
 
             // Join room logic here
             // For example, you might need to send a request to join a room
@@ -119,17 +159,20 @@ function ChattingView() {
         if (inputValue.trim() === "") return;
 
         const newMessage = {
-            text: inputValue,
-            timestamp: new Date().toISOString(),
+            id: messages.length+1,
+            senderId: currentUserId,
+            recipientId: recipientId,
+            content: inputValue,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
 
         if (stompClientRef.current) {
             stompClientRef.current.send(CHAT_SEND_MESSAGE_URL, {}, JSON.stringify(newMessage));
             setMessages([...messages, {
-                text: inputValue,
-                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                ...newMessage,
                 type: "sent",
             }]);
+            console.log("updated messages:", messages);
             setInputValue("");
         }
     };
@@ -160,7 +203,7 @@ function ChattingView() {
                             />
                         )}
                         <div className="message-content">
-                            <p>{msg.text}</p>
+                            <p>{msg.content}</p>
                             <span className="timestamp">{msg.timestamp}</span>
                         </div>
                     </div>
