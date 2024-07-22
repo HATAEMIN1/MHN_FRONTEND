@@ -24,7 +24,7 @@ function ChattingView() {
 
     // Create an Axios instance with a custom base URL
     const api = axios.create({
-        baseURL: 'http://localhost:8080', // Set the base URL for API requests
+        baseURL: 'http://localhost:8080', 
     });
 
     useEffect(() => {

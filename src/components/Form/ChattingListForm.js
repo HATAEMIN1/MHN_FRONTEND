@@ -1,34 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 function ChattingListForm() {
-    const participants = [{
-        senderId: 1,
-        recipientId: 2,
-        title: "코드랩아카데미병원1",
-        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층",
-        like: 333,
-    },
-    {
-        senderId: 2,
-        recipientId: 3,
-        title: "코드랩아카데미병원2",
-        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 19층",
-        like: 10,
-    },
-    {
-        senderId: 4,
-        recipientId: 1,
-        title: "코드랩아카데미병원3",
-        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 18층",
-        like: 88,
-    }];
+    const [chatrooms, setChatrooms] = useState([]);
+
+    const api = axios.create({
+        baseURL: 'http://localhost:8080', 
+    });
+
+    useEffect(() => {
+        // Fetch chatrooms from the backend
+        api.get('/api/chatrooms')
+            .then(response => {
+                setChatrooms(response.data);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the chatrooms!", error);
+            });
+    }, []);
+
+    
     return (
         <>
-            {participants.map((pair, idx) => {
+            {chatrooms.map((chatroom, idx) => {
                 return (
-                    <Link key={`${pair.senderId}-${pair.recipientId}-${idx}`}
-                    to={`/chatboards/${pair.senderId}/${pair.recipientId}`} className="w-full block">
+                    <Link key={`${chatroom.senderId}-${chatroom.recipientId}-${idx}`}
+                    to={`/chatboards/${chatroom.senderId}/${chatroom.recipientId}`} className="w-full block">
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">
                                 <div className="w-[80px] flex-shrink-0 ">
@@ -39,10 +37,10 @@ function ChattingListForm() {
                                 </div>
                                 <div>
                                     <div className="py-[4px] subtitle3 text-primary-300">
-                                        {pair.title}
+                                        {chatroom.title}
                                     </div>
                                     <div className="body2 text-sub-100">
-                                        {pair.address}
+                                        {chatroom.address}
                                     </div>
                                 </div>
                             </div>
@@ -50,11 +48,10 @@ function ChattingListForm() {
                                 <div>
                                     <img src="/assets/images/likeIcon_color.svg" />
                                 </div>
-                                <div>{pair.like}</div>
+                                <div>{chatroom.likes}</div>
                             </div>
                         </div>
                     </Link>
-                    // </div>
                 );
             })}
         </>
