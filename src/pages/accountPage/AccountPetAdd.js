@@ -116,8 +116,9 @@ function AccountPetAdd() {
                     <p className="flex border-b border-gray-500 px-2 py-3 gap-2">
                         <span className="subtitle1">이름</span>
                         <input
-                            className="body2 flex-grow text-sub-100 focus:outline-none"
+                            className="body2 flex-grow text-sub-100 text-right focus:outline-none"
                             name="name"
+                            maxLength={6}
                             value={pet.name}
                             onChange={handleChange}
                         />
