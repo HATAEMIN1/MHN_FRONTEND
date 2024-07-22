@@ -131,7 +131,14 @@ function ChattingView() {
             console.log("Successfully subscribed to:", `/user/${currentUserId}/private`);
 
             // Join room logic here
-            // For example, you might need to send a request to join a room
+            const joinRoomRequest = {
+                senderId: currentUserId,
+                recipientId
+            }
+            stompClientRef.current.send(CHAT_JOIN_ROOM_URL, {}, JSON.stringify(joinRoomRequest));
+
+            console.log("Successfully joined room - chatRoomId created");
+            
         }, (error) => {
             console.error("WebSocket connection error: ", error);
         });
