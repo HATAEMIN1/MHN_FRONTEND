@@ -1,3 +1,7 @@
+![1:1 chat after 5 mins](public/assets/images/chatEnd.png)
+![during 1:1 chat](public/assets/images/duringChat.png)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

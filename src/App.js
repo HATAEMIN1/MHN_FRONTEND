@@ -36,6 +36,12 @@ import Payment from "./pages/subscriptionPage/Payment";
 import SubscriptionManage from "./pages/subscriptionPage/SubscriptionManage";
 import Test from "./components/test/Test";
 
+import AdminTest from "./components/test/AdminTest";
+import Approval from "./components/test/Approval";
+import Report from "./components/test/Report";
+import Stats from "./components/test/Stats";
+
+
 function App() {
     const [posts, setPosts] = useState([]);
 
@@ -44,8 +50,8 @@ function App() {
     };
     return (
         <>
-            <div className="sm:bg-red-200 w-[100%] h-[100vh] flex justify-center items-center">
-                <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px]  sm:h-screen relative flex flex-col overflow-hidden">
+            <div className="sm:bg-gray-50 w-[100%] h-[100vh] flex justify-center items-center">
+                <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px]  sm:h-screen relative flex flex-col overflow-hidden border">
                     <div className="flex-grow overflow-hidden">
                         <div className="h-full overflow-y-auto bg-white pr-4 px-[16px] py-[85px] no-scrollbar">
                             <Routes>
@@ -118,7 +124,7 @@ function App() {
                                     element={<HospitalView />}
                                 />
                                 <Route
-                                    path="/hospitals/review"
+                                    path="/hospitals/review/:hpId"
                                     element={<HospitalReview />}
                                 />
                                 {/*진료기록*/}
@@ -180,6 +186,21 @@ function App() {
                                 />
                                 {/*테스트*/}
                                 <Route path="/test" element={<Test />} />
+
+                                <Route path="/admin" element={<AdminTest />} />
+                                <Route
+                                    path="/admin/approval"
+                                    element={<Approval />}
+                                />
+                                <Route
+                                    path="/admin/report"
+                                    element={<Report />}
+                                />
+                                <Route
+                                    path="/admin/stats"
+                                    element={<Stats />}
+                                />
+
                             </Routes>
                             {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>

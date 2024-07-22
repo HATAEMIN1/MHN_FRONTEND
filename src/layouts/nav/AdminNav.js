@@ -1,40 +1,26 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-function NavBar() {
+function AdminNav() {
     const location = useLocation();
     const navMenu = [
         {
-            title: "홈",
-            route: "/",
-            grayIcon: "home_gray",
-            blackIcon: "home_black",
+            title: "가입승인",
+            route: "/admin/approval",
+            grayIcon: "approvalIcon_gray",
+            blackIcon: "approvalIcon_black",
         },
         {
-            title: "진료기록",
-            route: "/charts",
-            grayIcon: "medicalHistory_gray",
-            blackIcon: "medicalHistory_black",
+            title: "신고관리",
+            route: "/admin/report",
+            grayIcon: "policeIcon_gray",
+            blackIcon: "policeIcon_black",
         },
         {
-            title: "병원찾기",
-            route: "/hospitals/map",
-            grayIcon: "search_gray",
-            blackIcon: "search_black",
-        },
-
-        {
-            title: "게시판",
-            route: "/chatboards",
-            route2: "/boards",
-            grayIcon: "board_gray",
-            blackIcon: "board_black",
-        },
-        {
-            title: "마이페이지",
-            route: "/account",
-            grayIcon: "account_gray",
-            blackIcon: "account_black",
+            title: "통계",
+            route: "/admin/stats",
+            grayIcon: "graphIcon_gray",
+            blackIcon: "graphIcon_black",
         },
     ];
     return (
@@ -46,7 +32,7 @@ function NavBar() {
                 {navMenu.map((item, idx) => {
                     const isActive = location.pathname === item.route;
                     const isActive2 = location.pathname === item.route2;
-                    // console.log(location.pathname);
+                    console.log(location.pathname);
 
                     return (
                         <Link to={item.route} key={idx}>
@@ -65,4 +51,4 @@ function NavBar() {
     );
 }
 
-export default NavBar;
+export default AdminNav;

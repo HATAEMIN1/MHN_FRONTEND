@@ -124,55 +124,31 @@ function BoardView({ posts }) {
     };
 
     return (
-        <div style={{ paddingTop: "20px", paddingBottom: "30px" }}>
+        <div className="pt-5 pb-7">
             <Header title="자유게시판" />
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "20px",
-                }}
-            >
+            <div className="flex items-center mb-5">
                 <div> {authorName}</div>
                 <div style={{ marginLeft: "10px" }}>
                     {timeAgo(post.createdAt)}
                 </div>
             </div>
-            <div style={{ marginBottom: "20px" }}>
+            <div className="mb-5">
                 <Slider {...settings}>
                     {post.images.map((image, index) => (
                         <div key={index}>
                             <img
                                 src={URL.createObjectURL(image)}
                                 alt={`uploaded ${index}`}
-                                style={{
-                                    width: "100%",
-                                    height: "400px", // 이미지 크기를 좀 더 크게 조정
-                                    objectFit: "cover", // 이미지가 꽉 차게 설정
-                                }}
+                                className="w-full h-96 object-cover"
                             />
                         </div>
                     ))}
                 </Slider>
             </div>
-            <div
-                style={{
-                    marginBottom: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
+            <div className="mb-5 flex items-center">
                 <button
                     onClick={handleLike}
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginRight: "10px",
-                        border: "none",
-                        background: "none",
-                        cursor: "pointer",
-                        color: "#888", // 연한 회색
-                    }}
+                    className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-gray-500"
                 >
                     <img
                         src={
@@ -181,41 +157,30 @@ function BoardView({ posts }) {
                                 : `${process.env.PUBLIC_URL}/assets/images/likeIcon_clear.svg`
                         }
                         alt="like"
-                        style={{
-                            width: "20px",
-                            height: "20px",
-                            marginRight: "5px",
-                        }}
+                        className="w-5 h-5 mr-1"
                     />
                     좋아요 {liked ? "취소" : ""} {likes}
                 </button>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="flex items-center">
                     <img
                         src={`${process.env.PUBLIC_URL}/assets/images/commentIcon.svg`}
                         alt="comment"
-                        style={{
-                            width: "20px",
-                            height: "20px",
-                            marginRight: "5px",
-                        }}
+                        className="w-5 h-5 mr-1"
                     />
                     댓글 {comments.length}
                 </div>
             </div>
-            <div style={{ marginBottom: "20px" }}>
-                <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
-                    {post.title}
-                </h2>
+            <div className="mb-5">
+                <h2 className="text-lg font-bold">{post.title}</h2>
             </div>
-            <div style={{ fontSize: "16px" }}>{post.content}</div>
-            <div style={{ marginTop: "20px" }}>
-                <h3 style={{ fontSize: "14px", color: "#888" }}>
+            <div className="text-base">{post.content}</div>
+            <div className="mt-4">
+                <h3 className="text-sm text-gray-500">
                     {comments.length}개의 댓글
                 </h3>
                 <div
                     ref={commentsRef}
-                    className="comment-scroll"
-                    style={{ maxHeight: "300px", overflowY: "auto" }}
+                    className="comment-scroll max-h-80 overflow-y-auto"
                 >
                     {" "}
                     {/* 스크롤 추가 */}
@@ -245,58 +210,26 @@ function BoardView({ posts }) {
                         .map((comment, index) => (
                             <div
                                 key={index}
-                                style={{
-                                    marginBottom: "10px",
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                }}
+                                className="mb-4 flex justify-between items-center"
                             >
-                                <div style={{ display: "flex" }}>
-                                    <div
-                                        style={{
-                                            width: "40px",
-                                            height: "40px",
-                                            borderRadius: "50%",
-                                            overflow: "hidden",
-                                            marginRight: "10px",
-                                        }}
-                                    >
+                                <div className="flex">
+                                    <div className="w-10 h-10 rounded-full overflow-hidden mr-2">
                                         <img
                                             src={comment.profileImage}
                                             alt="profile"
-                                            style={{
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "cover",
-                                            }}
+                                            className="w-full h-full object-cover"
                                         />
                                     </div>
                                     <div>
-                                        <div style={{ fontWeight: "bold" }}>
+                                        <div className="font-bold">
                                             {comment.userId}
                                         </div>
-                                        <div style={{ fontSize: "14px" }}>
+                                        <div className="text-sm">
                                             {comment.content}
                                         </div>
-                                        <div
-                                            style={{
-                                                fontSize: "12px",
-                                                color: "#888",
-                                                display: "flex",
-                                                alignItems: "center",
-                                            }}
-                                        >
+                                        <div className="text-xs text-gray-500 flex items-center">
                                             {timeAgo(comment.createdAt)}
-                                            <button
-                                                style={{
-                                                    marginLeft: "10px",
-                                                    border: "none",
-                                                    background: "none",
-                                                    color: "#888",
-                                                    cursor: "pointer",
-                                                }}
-                                            >
+                                            <button className="ml-2 border-none bg-transparent text-gray-500 cursor-pointer">
                                                 댓글달기
                                             </button>
                                         </div>
@@ -307,12 +240,7 @@ function BoardView({ posts }) {
                                         onClick={() =>
                                             handleDeleteComment(comment.id)
                                         }
-                                        style={{
-                                            border: "none",
-                                            background: "none",
-                                            color: "#888",
-                                            cursor: "pointer",
-                                        }}
+                                        className="border-none bg-transparent text-gray-500 cursor-pointer"
                                     >
                                         삭제
                                     </button>
@@ -323,14 +251,7 @@ function BoardView({ posts }) {
                 {visibleComments < comments.length && ( // 더보기 버튼 조건부 렌더링
                     <button
                         onClick={handleLoadMoreComments}
-                        style={{
-                            border: "none",
-                            background: "none",
-                            color: "#888",
-                            cursor: "pointer",
-                            display: "block",
-                            margin: "10px auto",
-                        }}
+                        className="border-none bg-transparent text-gray-500 cursor-pointer block mx-auto my-4"
                     >
                         댓글 더보기
                     </button>
@@ -339,74 +260,29 @@ function BoardView({ posts }) {
                     visibleComments >= comments.length && ( // 접기 버튼 조건부 렌더링
                         <button
                             onClick={handleFoldComments}
-                            style={{
-                                border: "none",
-                                background: "none",
-                                color: "#888",
-                                cursor: "pointer",
-                                display: "block",
-                                margin: "10px auto",
-                            }}
+                            className="border-none bg-transparent text-gray-500 cursor-pointer block mx-auto my-4"
                         >
                             댓글 접기
                         </button>
                     )}
             </div>
-            <div
-                style={{
-                    position: "absolute",
-                    bottom: "65px",
-                    left: 0,
-                    width: "100%",
-                    padding: "10px 20px",
-                    backgroundColor: "#fff",
-                    borderTop: "1px solid #ddd",
-                    display: "flex",
-                    alignItems: "center",
-                    boxSizing: "border-box",
-                }}
-            >
-                <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        width: "100%",
-                        border: "1px solid #ddd",
-                        borderRadius: "15px", // 테두리를 둥글게 설정
-                        padding: "5px 10px",
-                        boxSizing: "border-box",
-                    }}
-                >
+            <div className="absolute bottom-16 left-0 w-full px-4 py-2 bg-white border-t border-gray-300 flex items-center">
+                <div className="flex items-center w-full border border-gray-300 rounded-lg px-4 py-2">
                     <input
                         type="text"
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
                         placeholder="댓글을 입력하세요"
-                        style={{
-                            flex: 1,
-                            marginRight: "10px",
-                            border: "none", // 입력창의 기본 테두리 제거
-                            outline: "none", // 입력창에 포커스 시 생기는 테두리 제거
-                            padding: "5px",
-                            boxSizing: "border-box",
-                        }}
+                        className="flex-1 mr-4 border-none outline-none p-2 box-border"
                     />
                     <button
                         onClick={handleCommentSubmit}
-                        style={{
-                            border: "none",
-                            background: "none",
-                            color: "#888",
-                            cursor: "pointer",
-                            padding: "0",
-                            display: "flex",
-                            alignItems: "center",
-                        }}
+                        className="border-none bg-transparent text-gray-500 cursor-pointer p-0 flex items-center"
                     >
                         <img
                             src="/assets/images/enterIcon.svg"
                             alt="댓글 달기"
-                            style={{ width: "20px", height: "20px" }}
+                            className="w-5 h-5s"
                         />
                     </button>
                 </div>

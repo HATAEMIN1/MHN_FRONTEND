@@ -11,7 +11,7 @@ function PlusButton() {
         <div className="w-full ">
             {/* <div className="flex justify-end fixed bottom-[75px] z-50  "> */}
             <div className="flex justify-end absolute bottom-[75px] right-[20px] z-50 max-w-full">
-                <Link to="/chat/new">
+                <Link to="/chatboards/new">
                     <img src="/assets/images/plusIcon.svg" />
                 </Link>
             </div>

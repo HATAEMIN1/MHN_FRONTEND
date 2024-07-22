@@ -31,24 +31,68 @@ function HospitalReview() {
     const [rating, setRating] = useState([true, true, true, true, true]);
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
-    const [shouldRefetch, setShouldRefetch] = useState(false);
     const handleOnclick = (idx) => {
         setRating(rating.map((item, index) => (index > idx ? false : true)));
     };
     useEffect(() => {}, [rating]);
+    // console.log(rating);
     const { hpId } = useParams();
 
+    // const handleCommentSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (commentText.trim() !== "") {
+    //         const trueCount = rating.filter(Boolean).length;
+    //         setComments([
+    //             {
+    //                 // id: comments.length,
+    //                 // userId: currentUserId,
+    //                 content: commentText,
+    //                 createdAt: new Date(),
+    //                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
+    //                 likeCount: trueCount,
+    //             },
+    //             ...comments,
+    //         ]);
+    //         console.log(comments);
+
+    //         setCommentText("");
+    //     }
+    // };
+
+    // // db로 전송 포스트요청
+    // async function handleSubmit(e) {
+    //     e.preventDefault();
+    //     console.log(comments);
+
+    //     const body = {
+    //         hospitalId: hpId,
+    //         comment: comments.content,
+    //         rating: comments.likeCount,
+    //     };
+    //     try {
+    //         await axiosInstance.post(
+    //             `/hospitals/review?hospitalId=${hpId}`,
+    //             body
+    //         );
+    //         setCommentText("");
+    //         console.log("프론트에선 전송됐어용");
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         if (commentText.trim() !== "") {
             const trueCount = rating.filter(Boolean).length;
             const newComment = {
                 content: commentText,
-                // 여기 디비에서 불러올 때 어차피 다시 createAt쓸거니까 주석처리할예정
-                // createdAt: new Date(),
+                createdAt: new Date(),
                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
                 likeCount: trueCount,
             };
+
+            // 화면에 댓글 추가
+            setComments([newComment, ...comments]);
 
             // DB로 전송 포스트요청
             const body = {
@@ -62,31 +106,17 @@ function HospitalReview() {
                     `/hospitals/review?hospitalId=${hpId}`,
                     body
                 );
-                setShouldRefetch(true);
-                setCommentText("");
+                console.log("프론트에선 전송됐어용");
             } catch (error) {
                 console.error("에러 발생:", error);
             }
+
+            setCommentText("");
         }
     };
 
-    async function fetchHospitalComment() {
-        try {
-            const res = await axiosInstance.get(
-                `/hospitals/review?hospitalId=${hpId}`
-            );
-
-            console.log(res.data);
-            setComments(res.data);
-            setShouldRefetch(false); // 데이터를 가져온 후 리페치 플래그 재설정
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    useEffect(() => {
-        fetchHospitalComment();
-    }, [shouldRefetch]);
-
+    // console.log(commentText);
+    // console.log(comments);
     return (
         <>
             <Header title="병원 상세 정보" />
@@ -189,17 +219,16 @@ function HospitalReview() {
                                             닉네임
                                         </p>
                                         <p className="body2 text-sub-200">
-                                            {item.comment}
+                                            {item.content}
                                         </p>
                                         <p className="mini text-gray-300">
-                                            {/* {timeAgo(item.createdAt)} */}
-                                            {item.createdAt}
+                                            {timeAgo(item.createdAt)}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex gap-[2px]">
                                     <img src="/assets/images/ratingIcon_color.svg" />
-                                    <p>{item.rating}</p>
+                                    <p>{item.likeCount}</p>
                                 </div>
                             </div>
                         </div>
