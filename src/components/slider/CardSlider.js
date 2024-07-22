@@ -12,7 +12,7 @@ function CardSlider({ ...props }) {
                     <p>{props.title}</p>
                     <div className="flex">
                         <img src={props.imgRoute} />
-                        <p>count</p>
+                        <p>{props.bmkCount}</p>
                     </div>
                 </div>
             </div>
