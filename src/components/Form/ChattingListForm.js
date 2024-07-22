@@ -1,14 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function ChattingListForm({ ...props }) {
+function ChattingListForm() {
+    const participants = [{
+        senderId: 1,
+        recipientId: 2,
+        title: "코드랩아카데미병원1",
+        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층",
+        like: 333,
+    },
+    {
+        senderId: 2,
+        recipientId: 3,
+        title: "코드랩아카데미병원2",
+        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 19층",
+        like: 10,
+    },
+    {
+        senderId: 4,
+        recipientId: 1,
+        title: "코드랩아카데미병원3",
+        address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 18층",
+        like: 88,
+    }];
     return (
         <>
-            {props.hospitalList.map((item, idx) => {
+            {participants.map((pair, idx) => {
                 return (
-                    // <div className="mb-[20px] border-2">
-                    <Link to={`/chatboards/:chatId`} className="w-full block">
-                        {/* 여기 경로값에는 원래 채팅방 뷰페이지로 이동하도록 해야합니다  */}
+                    <Link key={`${pair.senderId}-${pair.recipientId}-${idx}`}
+                    to={`/chatboards/${pair.senderId}/${pair.recipientId}`} className="w-full block">
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">
                                 <div className="w-[80px] flex-shrink-0 ">
@@ -19,10 +39,10 @@ function ChattingListForm({ ...props }) {
                                 </div>
                                 <div>
                                     <div className="py-[4px] subtitle3 text-primary-300">
-                                        {item.title}
+                                        {pair.title}
                                     </div>
                                     <div className="body2 text-sub-100">
-                                        {item.content}
+                                        {pair.address}
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +50,7 @@ function ChattingListForm({ ...props }) {
                                 <div>
                                     <img src="/assets/images/likeIcon_color.svg" />
                                 </div>
-                                <div>{item.like}</div>
+                                <div>{pair.like}</div>
                             </div>
                         </div>
                     </Link>

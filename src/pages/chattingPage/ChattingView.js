@@ -1,64 +1,70 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 import "./chattingview.css";
+import { v4 as uuidv4 } from 'uuid';
 
 const WS_ENDPOINT = "http://localhost:8080/ws"; // Update with your WebSocket endpoint
-// const CHAT_PRIVATE_TOPIC = "/user/private";
 const CHAT_SEND_MESSAGE_URL = "/app/chat.sendMessage";
 const CHAT_JOIN_ROOM_URL = "/app/chat.joinRoom";
 
 function ChattingView() {
-    const [currentUserId, setCurrentUserId] = useState(1);
-    const [recipientId, setRecipientId] = useState(2); 
-    const [messages, setMessages] = useState([
-        {   
-            id: 1,
-            senderId: currentUserId,
-            recipientId: recipientId,
-            content: "얘가 고기만 먹고 사료를 안 먹는데 어떻게 해야돼여???",
-            timestamp: "오후 13:23",
-            type: "received",
-        },
-        {   
-            id: 2,
-            senderId: currentUserId,
-            recipientId: recipientId,
-            content: "안녕하세요. 코드랩 동물병원입니다.",
-            timestamp: "오후 13:25",
-            type: "sent",
-        },
-        {   
-            id: 3,
-            senderId: currentUserId,
-            recipientId: recipientId,
-            content: "어떻게 하나요?????????",
-            timestamp: "오후 13:26",
-            type: "received",
-        },
-        {   
-            id: 4,
-            senderId: currentUserId,
-            recipientId: recipientId,
-            content: "더 이상 질문이 없으시면 잠시 후 채팅이 종료됩니다.",
-            timestamp: "오후 13:27",
-            type: "sent",
-        },
-    ]);
+    const { senderId, recipientId } = useParams();
+    const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [isChatExpired, setIsChatExpired] = useState(false);
     const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
+    const [hasPreviousMessages, setHasPreviousMessages] = useState(false);
     const chatBodyRef = useRef(null);
     const stompClientRef = useRef(null); // Reference to the STOMP client
+
+    // Create an Axios instance with a custom base URL
+    const api = axios.create({
+        baseURL: 'http://localhost:8080', // Set the base URL for API requests
+    });
+
+    useEffect(() => {
+        const fetchChatRoomId = async () => {
+            try {
+                const response = await api.get(`/api/chat/room/${senderId}/${recipientId}`);
+                const chatRoomId = response.data;
+                console.log("fetched chat room id:", chatRoomId);
+                if (chatRoomId) {
+                    fetchMessages(chatRoomId);
+                }
+            } catch (error) {
+                console.error("Error fetching chat room ID", error);
+            }
+        };
+
+        const fetchMessages = async (chatRoomId) => {
+            try {
+                const response = await api.get(`/api/chat/messages/${chatRoomId}`);
+                console.log("fetched messages:", response.data);
+                setMessages(response.data);
+                setHasPreviousMessages(response.data.length > 0);
+                if (response.data.length > 0) {
+                    setIsChatExpired(true); // If there are previous messages, the chat isn't expired
+                } else {
+                    setIsChatExpired(false); // No previous messages means chat can be active
+                }
+            } catch (error) {
+                console.error("Error fetching messages", error);
+            }
+        };
+
+        fetchChatRoomId();
+    }, [senderId, recipientId]);
 
     useEffect(() => {
         const adjustChatBodyHeight = () => {
             if (chatBodyRef.current) {
                 const headerHeight = 60; // Adjust based on your header height
                 const footer = document.querySelector(".chat-footer");
-                
                 if (footer) {
                     const footerHeight = footer.offsetHeight;
                     const newHeight = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
@@ -68,33 +74,30 @@ function ChattingView() {
                 }
             }
         };
-    
-        // Call the function initially to set the correct height
+
         adjustChatBodyHeight();
-    
-        // Adjust height on window resize
         window.addEventListener("resize", adjustChatBodyHeight);
-    
-        // Clean up the event listener on component unmount
         return () => window.removeEventListener("resize", adjustChatBodyHeight);
     }, []);
 
     useEffect(() => {
-        const startTime = Date.now();
-        const timer = setInterval(() => {
-            const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-            const remainingTime = 300 - elapsedTime;
-            if (remainingTime <= 0) {
-                setIsChatExpired(true);
-                setCountdown(0);
-                clearInterval(timer);
-            } else {
-                setCountdown(remainingTime);
-            }
-        }, 1000);
+        if (!hasPreviousMessages && !isChatExpired) {
+            const startTime = Date.now();
+            const timer = setInterval(() => {
+                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                const remainingTime = 300 - elapsedTime;
+                if (remainingTime <= 0) {
+                    setIsChatExpired(true);
+                    setCountdown(0);
+                    clearInterval(timer);
+                } else {
+                    setCountdown(remainingTime);
+                }
+            }, 1000);
 
-        return () => clearInterval(timer);
-    }, []);
+            return () => clearInterval(timer);
+        }
+    }, [hasPreviousMessages, isChatExpired]);
 
     useEffect(() => {
         if (chatBodyRef.current) {
@@ -110,15 +113,14 @@ function ChattingView() {
             console.log("Connected to WebSocket");
             stompClientRef.current = stompClient;
 
-            // Subscribe to private messages
-            stompClient.subscribe(`/user/${currentUserId}/private`, (message) => {
+            stompClient.subscribe(`/user/${senderId}/private`, (message) => {
                 if (message.body) {
                     const chatMessage = JSON.parse(message.body);
                     setMessages((prevMessages) => [
                         ...prevMessages,
-                        {   
+                        {
                             id: chatMessage.id,
-                            senderId: chatMessage.currentUserId,
+                            senderId: chatMessage.senderId,
                             recipientId: chatMessage.recipientId,
                             content: chatMessage.content,
                             timestamp: new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -128,12 +130,18 @@ function ChattingView() {
                 }
             });
 
-            console.log("Successfully subscribed to:", `/user/${currentUserId}/private`);
+            console.log("Subscribed to:", `/user/${senderId}/private`);
 
-            // Join room logic here
-            // For example, you might need to send a request to join a room
+            const joinRoomRequest = {
+                senderId,
+                recipientId
+            };
+            stompClientRef.current.send(CHAT_JOIN_ROOM_URL, {}, JSON.stringify(joinRoomRequest));
+
+            console.log("Joined room successfully");
+
         }, (error) => {
-            console.error("WebSocket connection error: ", error);
+            console.error("WebSocket connection error:", error);
         });
 
         return () => {
@@ -143,7 +151,7 @@ function ChattingView() {
                 });
             }
         };
-    }, []);
+    }, [senderId, recipientId]);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -159,20 +167,15 @@ function ChattingView() {
         if (inputValue.trim() === "") return;
 
         const newMessage = {
-            id: messages.length+1,
-            senderId: currentUserId,
-            recipientId: recipientId,
+            id: messages.length + 1,
+            senderId,
+            recipientId,
             content: inputValue,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
 
         if (stompClientRef.current) {
             stompClientRef.current.send(CHAT_SEND_MESSAGE_URL, {}, JSON.stringify(newMessage));
-            setMessages([...messages, {
-                ...newMessage,
-                type: "sent",
-            }]);
-            console.log("updated messages:", messages);
             setInputValue("");
         }
     };
@@ -188,14 +191,14 @@ function ChattingView() {
         <>
             <Header title="1:1 채팅" />
             <div className="chat-body" ref={chatBodyRef}>
-                <div className="system-message">
-                    {isChatExpired
-                        ? "채팅이 종료되었습니다."
-                        : `5분 이상 메시지가 없으면 채팅이 종료됩니다. (${formatTime(countdown)})`}
-                </div>
-                {messages.map((msg, index) => (
-                    <div key={index} className={`message ${msg.type}`}>
-                        {msg.type === "received" && (
+                {!hasPreviousMessages && !isChatExpired && (
+                    <div className="system-message">
+                        5분 이상 메시지가 없으면 채팅이 종료됩니다. ({formatTime(countdown)})
+                    </div>
+                )}
+                {hasPreviousMessages && messages.map((msg) => (
+                    <div key={`${msg.id}-${uuidv4()}`} className={`message ${msg.senderId === parseInt(senderId) ? "sent" : "received"}`}>
+                        {msg.senderId !== parseInt(senderId) && (
                             <img
                                 src="/assets/images/petDogIcon.svg"
                                 alt="Profile"
@@ -208,15 +211,20 @@ function ChattingView() {
                         </div>
                     </div>
                 ))}
+                {!hasPreviousMessages && isChatExpired && (
+                    <div className="system-message">
+                        채팅이 종료되었습니다.
+                    </div>
+                )}
             </div>
-            {!isChatExpired && (
+            {!hasPreviousMessages && !isChatExpired && (
                 <div className="chat-footer">
                     <input
                         type="text"
                         placeholder="메시지 입력..."
                         value={inputValue}
                         onChange={handleInputChange}
-                        onKeyDown={handleKeyDown} // Add this line
+                        onKeyDown={handleKeyDown}
                     />
                     <button className="send-button" onClick={handleSendMessage}>
                         ↑
