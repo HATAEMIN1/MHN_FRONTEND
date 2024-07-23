@@ -66,7 +66,10 @@ function Approval() {
                         {/* name,email e */}
 
                         {/* btn s  */}
-                        <button className="cursor-pointer">
+                        <button
+                            className="cursor-pointer"
+                            onClick={() => alert("승인완료")}
+                        >
                             <span className="body2 text-primary-200">승인</span>
                         </button>
                         {/* btn e  */}
