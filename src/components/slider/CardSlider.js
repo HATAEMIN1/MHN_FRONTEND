@@ -12,7 +12,7 @@ function CardSlider({ ...props }) {
                     <p>{props.title}</p>
                     <div className="flex">
                         <img src={props.imgRoute} />
-                        <p>{props.bookmarkCount}</p>
+                        <p>{props.ratingAVG}</p>
                     </div>
                 </div>
             </div>

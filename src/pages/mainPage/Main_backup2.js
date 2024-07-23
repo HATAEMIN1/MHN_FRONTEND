@@ -54,39 +54,27 @@ function Main() {
                         hospitals.map((hospital) => ({
                             ...hospital,
                             bookmarkCount: 0,
-                            averageRating: 0,
                         }))
                     );
 
-                    // 북마크 정보와 별점 평균 가져오기 (비동기적으로 처리)
+                    // 북마크 정보 가져오기 (비동기적으로 처리)
                     hospitals.forEach(async (hospital, index) => {
                         try {
-                            const [bookmarkResponse, ratingResponse] =
-                                await Promise.all([
-                                    axiosInstance.get(
-                                        `/hospitals/bmk/count?hospitalId=${hospital.id}`
-                                    ),
-                                    axiosInstance.get(
-                                        `/hospitals/review/rating?hospitalId=${hospital.id}`
-                                    ),
-                                ]);
-
+                            const bookmarkResponse = await axiosInstance.get(
+                                `/hospitals/bmk/count?hospitalId=${hospital.id}`
+                            );
                             setHospitalData((prevData) => {
                                 const newData = [...prevData];
                                 newData[index] = {
                                     ...newData[index],
                                     bookmarkCount:
                                         bookmarkResponse.data.totalBMKCount,
-                                    ratingAVG:
-                                        Math.floor(
-                                            ratingResponse.data.ratingAVG * 10
-                                        ) / 10, // 별점 평균 추가
                                 };
                                 return newData;
                             });
                         } catch (error) {
                             console.error(
-                                `북마크 정보 또는 별점 평균을 가져오는 중 오류 발생 (병원 ID: ${hospital.id}):`,
+                                `북마크 정보를 가져오는 중 오류 발생 (병원 ID: ${hospital.id}):`,
                                 error
                             );
                         }
@@ -184,13 +172,13 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                         <Link to="/hospitals/map" className="flex">
-                            <p className="title">내 근처 병원</p>
+                            <p className="title">병원찾기</p>
                             <img src="/assets/images/nextIcon.svg" />
                         </Link>
                     </div>
                     <div className="flex gap-[8px]">
-                        <p className="cursor-pointer">가까운 순 |</p>
-                        <p className="cursor-pointer">별점 높은 순</p>
+                        <p className="cursor-pointer">가까운 병원 |</p>
+                        <p className="cursor-pointer">많이 찾는 병원</p>
                     </div>
                     {/* 병원정보 카드섹션 s */}
                     {/* <div className="scroll-container "> */}
@@ -225,9 +213,6 @@ function Main() {
                                                         bookmarkCount={
                                                             item.bookmarkCount
                                                         }
-                                                        ratingAVG={
-                                                            item.ratingAVG
-                                                        }
                                                     />
                                                 </div>
                                             </SwiperSlide>
@@ -236,9 +221,39 @@ function Main() {
                                     console.log(item);
                                     return null;
                                 })}
+                                {/* <SwiperSlide className="!w-auto">
+                                    <CardSlider
+                                        imgRoute="/assets/images/ratingIcon_color.svg"
+                                        title={title}
+                                    />
+                                </SwiperSlide>
+                                <SwiperSlide className="!w-auto">
+                                    <CardSlider
+                                        imgRoute="/assets/images/ratingIcon_color.svg"
+                                        title={title}
+                                    />
+                                </SwiperSlide>
+                                <SwiperSlide className="!w-auto">
+                                    <CardSlider
+                                        imgRoute="/assets/images/ratingIcon_color.svg"
+                                        title={title}
+                                    />
+                                </SwiperSlide> */}
                             </Swiper>
                         </div>
                     </div>
+                    {/* <div className="scroll-container no-scrollbar"> */}
+                    {/* <div className="scroll-container custom-scroll-bar">
+                        <div className="card-list m-auto ">
+                            <CardSlider
+                                imgRoute={"/assets/images/ratingIcon_color.svg"}
+                            />
+                            <CardSlider
+                                imgRoute={"/assets/images/ratingIcon_color.svg"}
+                            />
+                        </div>
+                    </div> */}
+                    {/* 병원정보 카드섹션 e */}
                 </div>
 
                 <PlusButton />
