@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useParams } from "react-router-dom";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import Stomp from 'stompjs';
-import SockJS from 'sockjs-client';
+import Stomp from "stompjs";
+import SockJS from "sockjs-client";
 import "./chattingview.css";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import axiosInstance from "../../utils/axios";
 
 const WS_ENDPOINT = "http://localhost:8080/ws"; // Update with your WebSocket endpoint
 const CHAT_SEND_MESSAGE_URL = "/app/chat.sendMessage";
@@ -22,15 +22,12 @@ function ChattingView() {
     const chatBodyRef = useRef(null);
     const stompClientRef = useRef(null); // Reference to the STOMP client
 
-    // Create an Axios instance with a custom base URL
-    const api = axios.create({
-        baseURL: 'http://localhost:8080', 
-    });
-
     useEffect(() => {
         const fetchChatRoomId = async () => {
             try {
-                const response = await api.get(`/api/chat/room/${senderId}/${recipientId}`);
+                const response = await axiosInstance.get(
+                    `/chat/room/${senderId}/${recipientId}`
+                );
                 const chatRoomId = response.data;
                 console.log("fetched chat room id:", chatRoomId);
                 if (chatRoomId) {
@@ -43,7 +40,9 @@ function ChattingView() {
 
         const fetchMessages = async (chatRoomId) => {
             try {
-                const response = await api.get(`/api/chat/messages/${chatRoomId}`);
+                const response = await axiosInstance.get(
+                    `/chat/messages/${chatRoomId}`
+                );
                 console.log("fetched messages:", response.data);
                 setMessages(response.data);
                 setHasPreviousMessages(response.data.length > 0);
@@ -109,40 +108,55 @@ function ChattingView() {
         const socket = new SockJS(WS_ENDPOINT);
         const stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, () => {
-            console.log("Connected to WebSocket");
-            stompClientRef.current = stompClient;
+        stompClient.connect(
+            {},
+            () => {
+                console.log("Connected to WebSocket");
+                stompClientRef.current = stompClient;
 
-            stompClient.subscribe(`/user/${senderId}/private`, (message) => {
-                if (message.body) {
-                    const chatMessage = JSON.parse(message.body);
-                    setMessages((prevMessages) => [
-                        ...prevMessages,
-                        {
-                            id: chatMessage.id,
-                            senderId: chatMessage.senderId,
-                            recipientId: chatMessage.recipientId,
-                            content: chatMessage.content,
-                            timestamp: new Date(chatMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-                            type: "received",
-                        },
-                    ]);
-                }
-            });
+                stompClient.subscribe(
+                    `/user/${senderId}/private`,
+                    (message) => {
+                        if (message.body) {
+                            const chatMessage = JSON.parse(message.body);
+                            setMessages((prevMessages) => [
+                                ...prevMessages,
+                                {
+                                    id: chatMessage.id,
+                                    senderId: chatMessage.senderId,
+                                    recipientId: chatMessage.recipientId,
+                                    content: chatMessage.content,
+                                    timestamp: new Date(
+                                        chatMessage.timestamp
+                                    ).toLocaleTimeString([], {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                    }),
+                                    type: "received",
+                                },
+                            ]);
+                        }
+                    }
+                );
 
-            console.log("Subscribed to:", `/user/${senderId}/private`);
+                console.log("Subscribed to:", `/user/${senderId}/private`);
 
-            const joinRoomRequest = {
-                senderId,
-                recipientId
-            };
-            stompClientRef.current.send(CHAT_JOIN_ROOM_URL, {}, JSON.stringify(joinRoomRequest));
+                const joinRoomRequest = {
+                    senderId,
+                    recipientId,
+                };
+                stompClientRef.current.send(
+                    CHAT_JOIN_ROOM_URL,
+                    {},
+                    JSON.stringify(joinRoomRequest)
+                );
 
-            console.log("Joined room successfully");
-
-        }, (error) => {
-            console.error("WebSocket connection error:", error);
-        });
+                console.log("Joined room successfully");
+            },
+            (error) => {
+                console.error("WebSocket connection error:", error);
+            }
+        );
 
         return () => {
             if (stompClientRef.current) {
@@ -171,11 +185,18 @@ function ChattingView() {
             senderId,
             recipientId,
             content: inputValue,
-            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            timestamp: new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+            }),
         };
 
         if (stompClientRef.current) {
-            stompClientRef.current.send(CHAT_SEND_MESSAGE_URL, {}, JSON.stringify(newMessage));
+            stompClientRef.current.send(
+                CHAT_SEND_MESSAGE_URL,
+                {},
+                JSON.stringify(newMessage)
+            );
             setInputValue("");
         }
     };
@@ -193,28 +214,33 @@ function ChattingView() {
             <div className="chat-body" ref={chatBodyRef}>
                 {!hasPreviousMessages && !isChatExpired && (
                     <div className="system-message">
-                        5분 이상 메시지가 없으면 채팅이 종료됩니다. ({formatTime(countdown)})
+                        5분 이상 메시지가 없으면 채팅이 종료됩니다. (
+                        {formatTime(countdown)})
                     </div>
                 )}
-                {hasPreviousMessages && messages.map((msg) => (
-                    <div key={`${msg.id}-${uuidv4()}`} className={`message ${msg.senderId === parseInt(senderId) ? "sent" : "received"}`}>
-                        {msg.senderId !== parseInt(senderId) && (
-                            <img
-                                src="/assets/images/petDogIcon.svg"
-                                alt="Profile"
-                                className="profile-image"
-                            />
-                        )}
-                        <div className="message-content">
-                            <p>{msg.content}</p>
-                            <span className="timestamp">{msg.timestamp}</span>
+                {hasPreviousMessages &&
+                    messages.map((msg) => (
+                        <div
+                            key={`${msg.id}-${uuidv4()}`}
+                            className={`message ${msg.senderId === parseInt(senderId) ? "sent" : "received"}`}
+                        >
+                            {msg.senderId !== parseInt(senderId) && (
+                                <img
+                                    src="/assets/images/petDogIcon.svg"
+                                    alt="Profile"
+                                    className="profile-image"
+                                />
+                            )}
+                            <div className="message-content">
+                                <p>{msg.content}</p>
+                                <span className="timestamp">
+                                    {msg.timestamp}
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
                 {isChatExpired && (
-                    <div className="system-message">
-                        종료된 채팅입니다.
-                    </div>
+                    <div className="system-message">종료된 채팅입니다.</div>
                 )}
             </div>
             {!hasPreviousMessages && !isChatExpired && (
