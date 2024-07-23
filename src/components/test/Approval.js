@@ -8,43 +8,36 @@ function Approval() {
             id: 1,
             name: "코드랩 동물병원",
             email: "aaa@naver.com",
-            imgSrc: "/assets/images/petDogIcon.svg",
         },
         {
             id: 2,
             name: "이노24시 동물병원",
             email: "bbb@naver.com",
-            imgSrc: "/assets/images/petCatIcon.svg",
         },
         {
             id: 3,
             name: "n동물의료센터",
-            email: "bbb@naver.com",
-            imgSrc: "/assets/images/petCatIcon.svg",
+            email: "ccc@naver.com",
         },
         {
             id: 4,
             name: "아이이 동물병원",
-            email: "bbb@naver.com",
-            imgSrc: "/assets/images/petCatIcon.svg",
+            email: "ddd@naver.com",
         },
         {
             id: 5,
             name: "가나다라 동물병원",
-            email: "bbb@naver.com",
-            imgSrc: "/assets/images/petCatIcon.svg",
+            email: "eee@naver.com",
         },
         {
             id: 6,
             name: "가디24시 동물병원",
-            email: "bbb@naver.com",
-            imgSrc: "/assets/images/petCatIcon.svg",
+            email: "fff@naver.com",
         },
         {
             id: 7,
             name: "동동 동물병원",
-            email: "bbb@naver.com",
-            imgSrc: "/assets/images/petCatIcon.svg",
+            email: "ggg@naver.com",
         },
     ];
     return (
