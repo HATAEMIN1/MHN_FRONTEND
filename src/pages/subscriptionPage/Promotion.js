@@ -9,6 +9,10 @@ function Promotion({ ...props }) {
     return (
         <>
             <div className="promotion-container pt-[100px] pb-[70px] ">
+                {/* <div
+                className="pt-[100px] pb-[70px]"
+                style={{ background: "#cad9d2" }}
+            > */}
                 <Header title="구독권 결제" />
                 <div className="h-[80%] px-[100px]">
                     <div>

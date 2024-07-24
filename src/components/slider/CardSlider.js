@@ -12,7 +12,8 @@ function CardSlider({ ...props }) {
                     <p>{props.title}</p>
                     <div className="flex">
                         <img src={props.imgRoute} />
-                        <p>{props.ratingAVG}</p>
+                        {props.ratingAVG ? <p>{props.ratingAVG}</p> : 0}
+                        {/* <p>{props.ratingAVG}</p> */}
                     </div>
                 </div>
             </div>

@@ -39,6 +39,9 @@ function HospitalReview() {
     const [commentText, setCommentText] = useState("");
     const [comments, setComments] = useState([]);
     const [shouldRefetch, setShouldRefetch] = useState(false);
+    const [isValid, setIsValid] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
     const handleOnclick = (idx) => {
         setRating(rating.map((item, index) => (index > idx ? false : true)));
     };
@@ -109,6 +112,22 @@ function HospitalReview() {
         }
     };
 
+    const handleCommentChange = (e) => {
+        const newText = e.target.value;
+        setCommentText(newText);
+        // 실시간으로 댓글 길이 체크
+        if (newText.trim().length > 0 && newText.length <= 200) {
+            setIsValid(true);
+            setErrorMessage("");
+        } else if (newText.length > 200) {
+            setIsValid(false);
+            setErrorMessage("댓글은 200자 이내로 작성해주세요");
+        } else {
+            setIsValid(false);
+            setErrorMessage("");
+        }
+    };
+
     return (
         <>
             <Header title="병원 상세 정보" />
@@ -151,7 +170,7 @@ function HospitalReview() {
                 </div>
                 {/* 자유게시판 댓글작성 인풋폼 가져오기 컴포넌트 */}
                 {/* 댓글입력폼 start */}
-                <div
+                {/* <div
                     style={{
                         display: "flex",
                         alignItems: "center",
@@ -195,6 +214,75 @@ function HospitalReview() {
                             style={{ width: "20px", height: "20px" }}
                         />
                     </button>
+                </div> */}
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        width: "100%",
+                        marginBottom: "20px",
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            width: "100%",
+                            border: "1px solid #ddd",
+                            borderRadius: "15px",
+                            padding: "5px 10px",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <input
+                            type="text"
+                            value={commentText}
+                            onChange={handleCommentChange}
+                            placeholder="댓글을 입력하세요 (1-200자)"
+                            style={{
+                                flex: 1,
+                                marginRight: "10px",
+                                border: "none",
+                                outline: "none",
+                                padding: "5px",
+                                boxSizing: "border-box",
+                            }}
+                        />
+                        <button
+                            onClick={handleCommentSubmit}
+                            disabled={!isValid}
+                            style={{
+                                border: "none",
+                                background: "none",
+                                color: isValid ? "#888" : "#ccc",
+                                cursor: isValid ? "pointer" : "not-allowed",
+                                padding: "0",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <img
+                                src="/assets/images/enterIcon.svg"
+                                alt="댓글 달기"
+                                style={{
+                                    width: "20px",
+                                    height: "20px",
+                                    opacity: isValid ? 1 : 0.3,
+                                }}
+                            />
+                        </button>
+                    </div>
+                    {errorMessage && (
+                        <p
+                            style={{
+                                color: "red",
+                                fontSize: "12px",
+                                marginTop: "5px",
+                            }}
+                        >
+                            {errorMessage}
+                        </p>
+                    )}
                 </div>
                 {/* 댓글입력폼 end */}
 
