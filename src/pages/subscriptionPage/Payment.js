@@ -138,6 +138,7 @@ function Payment() {
                     {
                         merchant_uid: generateRandomString("Reservation"),
                         schedule_at: Math.floor(Date.now() / 1000) + 86400, // 예: 24시간 후
+                        // schedule_at: Math.floor(Date.now() / 1000) + 60, // 현재 시간 기준으로 1분 후
                         currency: "KRW",
                         amount: 8900, // 예시 금액
                         name: "정기결제 상품(예약)",

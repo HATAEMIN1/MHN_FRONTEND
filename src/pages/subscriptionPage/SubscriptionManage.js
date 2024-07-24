@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 
 function SubscriptionManage(props) {
+    const navigate = useNavigate();
     const statusMap = {
         ACTIVE: "구독 중",
-        CANCELLED: "해지 중",
+        PAUSED: "해지 중",
+        CANCELLED: "구독 해제",
     };
     function getStatusText(status) {
         return statusMap[status];
@@ -34,9 +36,22 @@ function SubscriptionManage(props) {
         setMySubscription(formattedData);
         console.log(formattedData);
     };
+    const handleSubscriptionPaused = async () => {
+        const res = await axiosInstance.post("/payments/unschedule", {
+            memberId: mySubscription.id,
+        });
+        console.log(res.data);
+        mySubscribe();
+    };
     useEffect(() => {
         mySubscribe();
     }, []);
+    useEffect(() => {
+        console.log("유즈이펙트한번더옴");
+        if (mySubscription && mySubscription.status === "CANCELLED") {
+            navigate("/subscription");
+        }
+    }, [mySubscription, navigate]);
     return (
         <>
             <Header title="구독 내역"></Header>
@@ -72,11 +87,21 @@ function SubscriptionManage(props) {
                 </div>
             </div>
             <div className="flex justify-center border-b pb-8">
-                <ButtonBlack
-                    text1="자동 결제 해지"
-                    height="45px"
-                    width="80%"
-                ></ButtonBlack>
+                {mySubscription.status === "ACTIVE" ? (
+                    <ButtonBlack
+                        text1="자동 결제 해지"
+                        height="45px"
+                        width="80%"
+                        handleClick={handleSubscriptionPaused}
+                    ></ButtonBlack>
+                ) : (
+                    <ButtonBlack
+                        text1="구독 하기"
+                        height="45px"
+                        width="80%"
+                        // handleClick={handleSubscriptionPaused}
+                    ></ButtonBlack>
+                )}
             </div>
 
             <NavBar></NavBar>
