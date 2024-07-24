@@ -69,13 +69,17 @@ function HospitalMap() {
               )
             : "거리 계산 중",
     }));
+
+    const handleClick = () => {
+        alert("검색버튼눌림");
+    };
     return (
         <>
             <div className="mb-[10px]">
                 <Header title="내 주변 병원" />
             </div>
             <div className="mb-[20px]">
-                <SearchInput />
+                <SearchInput handleClick={handleClick} />
             </div>
             <div className="mb-[30px] kakao-map-container">
                 <KakaoMapSearch

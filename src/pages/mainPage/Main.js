@@ -59,8 +59,8 @@ function Main() {
                 try {
                     // 병원 정보 가져오기
                     const response = await axiosInstance.get(
-                        `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
-                        // `/hospitals?latitude=37.3835006&longitude=126.9606728`
+                        // `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                        `/hospitals?latitude=37.3835006&longitude=126.9606728`
                     );
                     const hospitals = response.data;
 
@@ -86,6 +86,8 @@ function Main() {
                                         Math.floor(
                                             ratingResponse.data.ratingAVG * 10
                                         ) / 10,
+                                    randomImageNumber:
+                                        Math.floor(Math.random() * 17) + 1, // 각 병원에 대해 랜덤 이미지 번호 생성
                                 };
                             } catch (error) {
                                 console.error(
@@ -97,6 +99,8 @@ function Main() {
                                     ...hospital,
                                     bookmarkCount: 0,
                                     ratingAVG: 0,
+                                    randomImageNumber:
+                                        Math.floor(Math.random() * 17) + 1, // 오류 발생 시에도 랜덤 이미지 번호 생성
                                 };
                             }
                         })
@@ -248,6 +252,9 @@ function Main() {
                                                                 }
                                                                 ratingAVG={
                                                                     item.ratingAVG
+                                                                }
+                                                                randomImageNumber={
+                                                                    item.randomImageNumber
                                                                 }
                                                             />
                                                         </div>
