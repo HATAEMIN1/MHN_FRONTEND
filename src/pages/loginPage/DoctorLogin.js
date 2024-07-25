@@ -75,7 +75,7 @@ function DoctorLogin() {
                     </div>
                 </div>
                 <div className="flex justify-center items-center p-4">
-                    <Link to="/users/register" className="">
+                    <Link to="/doctors/register" className="">
                         이메일로 가입하기
                     </Link>
                 </div>

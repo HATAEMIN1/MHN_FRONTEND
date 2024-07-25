@@ -23,13 +23,24 @@ function Promotion({ ...props }) {
                     </div>
                     <div className="py-[20px]">
                         <p className="text-center subtitle2">
-                            대략적인 구독권 추가 설명
+                            <span className="text-cyan-950 subtitle1">
+                                혜택 1{") "}
+                            </span>
+                            24시간 대기중인 수의사와의 1:1 채팅 전문상담
                         </p>
                         <p className="text-center subtitle2">
-                            대략적인 구독권 추가 설명
+                            <span className="text-cyan-950 subtitle1">
+                                혜택 2{") "}
+                            </span>
+                            내 반려동물의 건강상태를 기록할 수 있는
+                            <br />
+                            진료기록 후기 작성기능 오픈!
                         </p>
                         <p className="text-center subtitle2">
-                            대략적인 구독권 추가 설명
+                            <span className="text-cyan-950 subtitle1">
+                                혜택 3{") "}
+                            </span>
+                            구독 결제 금액의 일부로 유기견들을 후원해보세요!
                         </p>
                     </div>
                     <div className="flex justify-center w-full">

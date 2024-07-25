@@ -125,7 +125,9 @@ function Main() {
 
     return (
         <>
-            <div className="w-full">
+            <div className="w-full overflow-x-hidden">
+                {/* 헤더구간 s */}
+
                 <div className="bg-white top-0 z-50 w-[100%]  top-0 left-0 right-0 absolute h-[65px] px-[16px] flex items-center border-b">
                     <img
                         src="/assets/images/logoWhite.svg"
