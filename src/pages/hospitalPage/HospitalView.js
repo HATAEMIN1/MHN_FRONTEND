@@ -14,6 +14,7 @@ function HospitalView() {
     //     console.log(bookmark);
     // }
     const [hospitalInfo, setHospitalInfo] = useState({});
+    const [randomImageNumber, setRandomImageNumber] = useState(null);
     const { hpId } = useParams();
     const memberId = 4;
     useEffect(() => {
@@ -68,16 +69,24 @@ function HospitalView() {
 
     useEffect(() => {
         fetchBMK();
+        setRandomImageNumber(Math.floor(Math.random() * 17) + 1);
     }, [hpId]);
 
     return (
         <>
             <Header title="병원 상세 정보" />
             <form action="">
-                <div>
+                {/* <div>
                     <img
-                        src="/assets/images/testHospital.svg"
+                        src={`/assets/images/hospitalImage${randomImageNumber}.svg`}
                         className="m-auto w-full mb-[24px]"
+                    />
+                </div> */}
+                <div className="w-full aspect-[542.67/397.07] mb-[24px] overflow-hidden">
+                    <img
+                        src={`/assets/images/hospitalImage${randomImageNumber}.svg`}
+                        className="w-full h-full object-cover"
+                        alt="Hospital Image"
                     />
                 </div>
                 {/* 정보/후기 선택탭 s */}

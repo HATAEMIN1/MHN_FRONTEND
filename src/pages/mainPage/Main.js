@@ -14,12 +14,27 @@ import axiosInstance from "../../utils/axios";
 function Main() {
     // 현재 이용자의 위치값 확인
     const [location, setLocation] = useState(null);
-    const [hospitalsWithBMK, setHospitalsWithBMK] = useState([]);
+    const [hospitalData, setHospitalData] = useState([]);
+    // 정렬 상태를 관리할 state 추가
+    const [sortBy, setSortBy] = useState("distance"); // 'distance' 또는 'rating'
+
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {
         navigate(pageUrl);
     };
 
+    // 정렬 함수
+    const sortHospitals = (hospitals, sortType) => {
+        if (sortType === "rating") {
+            return [...hospitals].sort(
+                (a, b) => (b.ratingAVG || 0) - (a.ratingAVG || 0)
+            );
+        }
+        // 'distance'인 경우 또는 기본적으로 원래 순서 유지
+        return hospitals;
+    };
+
+    // 위치 정보 가져오기
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -36,50 +51,72 @@ function Main() {
             console.log("Geolocation is not supported by this browser.");
         }
     }, []);
-    console.log("location", location);
 
+    // 병원 정보 및 북마크, 별점 정보 가져오기
     useEffect(() => {
-        const fetchHospitalsWithBookmarks = async () => {
+        const fetchHospitalsAndBookmarks = async () => {
             if (location) {
                 try {
                     // 병원 정보 가져오기
-                    const hospitalsResponse = await axiosInstance.get(
-                        `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                    const response = await axiosInstance.get(
+                        // `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                        `/hospitals?latitude=37.3835006&longitude=126.9606728`
                     );
-                    const hospitals = hospitalsResponse.data;
+                    const hospitals = response.data;
 
-                    // 각 병원의 북마크 개수 가져오기
-                    const hospitalPromises = hospitals.map((hospital) =>
-                        axiosInstance.get(
-                            `/hospitals/bmk?hospitalId=${hospital.id}&memberId=2`
-                        )
-                    );
-                    const bookmarkResponses =
-                        await Promise.all(hospitalPromises);
+                    // 북마크 정보와 별점 평균 가져오기 (비동기적으로 처리)
+                    const updatedHospitals = await Promise.all(
+                        hospitals.map(async (hospital) => {
+                            try {
+                                const [bookmarkResponse, ratingResponse] =
+                                    await Promise.all([
+                                        axiosInstance.get(
+                                            `/hospitals/bmk/count?hospitalId=${hospital.id}`
+                                        ),
+                                        axiosInstance.get(
+                                            `/hospitals/review/rating?hospitalId=${hospital.id}`
+                                        ),
+                                    ]);
 
-                    // 병원 정보와 북마크 개수 합치기
-                    const hospitalsWithBookmarks = hospitals.map(
-                        (hospital, index) => ({
-                            ...hospital,
-                            bookmarkCount:
-                                bookmarkResponses[index].data.totalBMKCount,
+                                return {
+                                    ...hospital,
+                                    bookmarkCount:
+                                        bookmarkResponse.data.totalBMKCount,
+                                    ratingAVG:
+                                        Math.floor(
+                                            ratingResponse.data.ratingAVG * 10
+                                        ) / 10,
+                                    randomImageNumber:
+                                        Math.floor(Math.random() * 17) + 1, // 각 병원에 대해 랜덤 이미지 번호 생성
+                                };
+                            } catch (error) {
+                                console.error(
+                                    `북마크 정보 또는 별점 평균을 가져오는 중 오류 발생 (병원 ID: ${hospital.id}):`,
+                                    error
+                                );
+                                // 오류 발생 시 기본값 사용
+                                return {
+                                    ...hospital,
+                                    bookmarkCount: 0,
+                                    ratingAVG: 0,
+                                    randomImageNumber:
+                                        Math.floor(Math.random() * 17) + 1, // 오류 발생 시에도 랜덤 이미지 번호 생성
+                                };
+                            }
                         })
                     );
 
-                    setHospitalsWithBMK(hospitalsWithBookmarks);
+                    setHospitalData(updatedHospitals);
                 } catch (error) {
-                    console.error(
-                        "병원 정보 또는 북마크 개수를 가져오는 중 오류 발생:",
-                        error
-                    );
+                    console.error("병원 정보를 가져오는 중 오류 발생:", error);
+                    // 전체 요청이 실패한 경우 빈 배열 설정
+                    setHospitalData([]);
                 }
             }
         };
 
-        fetchHospitalsWithBookmarks();
+        fetchHospitalsAndBookmarks();
     }, [location]);
-
-    console.log(hospitalsWithBMK);
 
     return (
         <>
@@ -104,14 +141,11 @@ function Main() {
                             </Link>
                         </div>
                         {/* 자유게시판 카드섹션 s */}
-                        {/* <div className="scroll-container"> */}
                         <div className="px-[4px]">
                             <div className="overflow-hidden">
                                 <Swiper
-                                    // modules={[Pagination]}
                                     spaceBetween={8}
                                     slidesPerView={"auto"}
-                                    // pagination={{ clickable: true }}
                                     className="mySwiper"
                                 >
                                     <SwiperSlide className="!w-auto">
@@ -165,87 +199,80 @@ function Main() {
                     </div>
                     <div className="flex items-center">
                         <Link to="/hospitals/map" className="flex">
-                            <p className="title">병원찾기</p>
+                            <p className="title">내 근처 병원</p>
                             <img src="/assets/images/nextIcon.svg" />
                         </Link>
                     </div>
                     <div className="flex gap-[8px]">
-                        <p className="cursor-pointer">가까운 병원 |</p>
-                        <p className="cursor-pointer">많이 찾는 병원</p>
+                        <p
+                            className={`cursor-pointer ${sortBy === "distance" ? "font-bold" : ""}`}
+                            onClick={() => setSortBy("distance")}
+                        >
+                            가까운 순 |
+                        </p>
+                        <p
+                            className={`cursor-pointer ${sortBy === "rating" ? "font-bold" : ""}`}
+                            onClick={() => setSortBy("rating")}
+                        >
+                            별점 높은 순
+                        </p>
                     </div>
                     {/* 병원정보 카드섹션 s */}
-                    {/* <div className="scroll-container "> */}
                     <div className="px-[4px]">
                         <div className="overflow-hidden">
                             <Swiper
-                                // modules={[Pagination]}
                                 spaceBetween={8}
                                 slidesPerView={"auto"}
-                                // pagination={{ clickable: true }}
                                 className="mySwiper"
                             >
-                                {hospitalsWithBMK &&
-                                    hospitalsWithBMK.map((item, idx) => {
-                                        if (idx <= 5) {
-                                            return (
-                                                <SwiperSlide
-                                                    key={item.id}
-                                                    className="!w-auto"
-                                                >
-                                                    <div
-                                                        onClick={() =>
-                                                            navigateToPage(
-                                                                `/hospitals/${item.id}`
-                                                            )
-                                                        }
-                                                        className="cursor-pointer"
+                                {hospitalData.length > 0 ? (
+                                    sortHospitals(hospitalData, sortBy).map(
+                                        (item, idx) => {
+                                            if (idx <= 5) {
+                                                return (
+                                                    <SwiperSlide
+                                                        key={idx}
+                                                        className="!w-auto"
                                                     >
-                                                        <CardSlider
-                                                            imgRoute="/assets/images/ratingIcon_color.svg"
-                                                            title={item.name}
-                                                            bookmarkCount={
-                                                                item.bookmarkCount
+                                                        <div
+                                                            onClick={() =>
+                                                                navigateToPage(
+                                                                    `/hospitals/${item.id}`
+                                                                )
                                                             }
-                                                        />
-                                                    </div>
-                                                </SwiperSlide>
-                                            );
+                                                            className="cursor-pointer"
+                                                        >
+                                                            <CardSlider
+                                                                imgRoute="/assets/images/ratingIcon_color.svg"
+                                                                title={
+                                                                    item.name
+                                                                }
+                                                                bookmarkCount={
+                                                                    item.bookmarkCount
+                                                                }
+                                                                ratingAVG={
+                                                                    item.ratingAVG
+                                                                }
+                                                                randomImageNumber={
+                                                                    item.randomImageNumber
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </SwiperSlide>
+                                                );
+                                            }
+                                            return null;
                                         }
-                                        return null;
-                                    })}
-                                {/* <SwiperSlide className="!w-auto">
-                                    <CardSlider
-                                        imgRoute="/assets/images/ratingIcon_color.svg"
-                                        title={title}
-                                    />
-                                </SwiperSlide>
-                                <SwiperSlide className="!w-auto">
-                                    <CardSlider
-                                        imgRoute="/assets/images/ratingIcon_color.svg"
-                                        title={title}
-                                    />
-                                </SwiperSlide>
-                                <SwiperSlide className="!w-auto">
-                                    <CardSlider
-                                        imgRoute="/assets/images/ratingIcon_color.svg"
-                                        title={title}
-                                    />
-                                </SwiperSlide> */}
+                                    )
+                                ) : (
+                                    <p>
+                                        병원 정보를 불러오는 중 오류가
+                                        발생했습니다.
+                                    </p>
+                                )}
                             </Swiper>
                         </div>
                     </div>
-                    {/* <div className="scroll-container no-scrollbar"> */}
-                    {/* <div className="scroll-container custom-scroll-bar">
-                        <div className="card-list m-auto ">
-                            <CardSlider
-                                imgRoute={"/assets/images/ratingIcon_color.svg"}
-                            />
-                            <CardSlider
-                                imgRoute={"/assets/images/ratingIcon_color.svg"}
-                            />
-                        </div>
-                    </div> */}
-                    {/* 병원정보 카드섹션 e */}
                 </div>
 
                 <PlusButton />
