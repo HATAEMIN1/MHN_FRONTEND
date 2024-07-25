@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../../layouts/header/Header";
-import Searchbar from "../../components/search/Searchbar";
 import NavBar from "../../layouts/nav/NavBar";
 import FilterModalManager from "../../components/modal/FilterModalManager";
 import axiosInstance from "../../utils/axios";
+import Searchbar from "../../components/search/Searchbar";
 
 function timeSince(date) {
     const now = new Date();
@@ -28,36 +28,36 @@ function timeSince(date) {
     return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
-function BoardList() {
+function BoardSearchList() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [pageRange, setPageRange] = useState([0, 4]);
-    const [filter, setFilter] = useState("latest"); // 수정된 부분: 필터 상태 추가
+
+    const location = useLocation();
     const navigate = useNavigate();
+    const query = new URLSearchParams(location.search).get("title");
 
     useEffect(() => {
-        fetchPosts(currentPage, filter);
-    }, [currentPage, filter]); // 수정된 부분: 필터 상태가 변경될 때마다 API 호출
+        if (query) {
+            fetchPosts(currentPage, query);
+        }
+    }, [currentPage, query]);
 
-    const fetchPosts = (page, filter) => {
+    const fetchPosts = (page, query) => {
         setLoading(true);
-        const apiEndpoint =
-            filter === "likes"
-                ? `/boards/likes?memberId=1&page=${page}&size=4`
-                : filter === "oldest"
-                  ? `/boards/oldest?memberId=1&page=${page}&size=4`
-                  : `/boards?page=${page}&size=4`;
         axiosInstance
-            .get(apiEndpoint)
+            .get(`/boards/search?title=${query}&page=${page}&size=4`)
             .then((response) => {
-                setPosts(response.data.data.content);
-                setTotalPages(response.data.data.totalPages);
+                console.log("Fetched posts:", response.data);
+                setPosts(response.data.content);
+                setTotalPages(response.data.totalPages);
                 setLoading(false);
             })
             .catch((error) => {
+                console.error("Error fetching posts:", error);
                 setError(error);
                 setLoading(false);
             });
@@ -87,11 +87,6 @@ function BoardList() {
 
     const handleSearch = (query) => {
         navigate(`/boards/search?title=${query}`);
-    };
-
-    const handleFilterChange = (newFilter) => {
-        setFilter(newFilter);
-        setCurrentPage(0); // 필터 변경 시 페이지를 0으로 초기화
     };
 
     if (loading) {
@@ -134,54 +129,57 @@ function BoardList() {
                         </div>
                     }
                     onOpenModal={handleModalOpen}
-                    onFilterChange={handleFilterChange} // 수정된 부분: 필터 변경 함수 전달
                 />
             </div>
             <ul className="grid grid-cols-2 gap-2 w-full p-0 m-0 list-none">
-                {posts.map((post, index) => (
-                    <Link
-                        to={`/boards/${post.id}`}
-                        key={index}
-                        state={{ post }}
-                    >
-                        <li
+                {posts && posts.length > 0 ? (
+                    posts.map((post, index) => (
+                        <Link
+                            to={`/boards/${post.id}`}
                             key={index}
-                            className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start h-64"
+                            state={{ post }}
                         >
-                            <div className="w-full h-40 mb-4 overflow-hidden">
-                                {post.imageList &&
-                                    post.imageList.length > 0 && (
-                                        <img
-                                            src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${post.imageList[0].fileName}`}
-                                            alt="Post Image"
-                                            className="w-full h-full object-cover"
-                                        />
-                                    )}
-                            </div>
-                            <div className="flex justify-between items-center w-full">
-                                <div className="font-bold text-base text-left text-black truncate">
-                                    {post.title}
+                            <li
+                                key={index}
+                                className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start h-64"
+                            >
+                                <div className="w-full h-40 mb-4 overflow-hidden">
+                                    {post.imageList &&
+                                        post.imageList.length > 0 && (
+                                            <img
+                                                src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${post.imageList[0].fileName}`}
+                                                alt="Post Image"
+                                                className="w-full h-full object-cover"
+                                            />
+                                        )}
                                 </div>
-                                <span className="text-sm text-gray-600 whitespace-nowrap">
-                                    {timeSince(post.createDate)}
-                                </span>
-                            </div>
-                            <p className="text-sm text-left overflow-hidden truncate">
-                                {post.content.substring(0, 10) +
-                                    (post.content.length > 10 ? "..." : "")}
-                            </p>
-                            <div className="flex gap-[4px]">
-                                <p className="mini text-gray-300">
-                                    좋아요 {post.likeCount}
+                                <div className="flex justify-between items-center w-full">
+                                    <div className="font-bold text-base text-left text-black truncate">
+                                        {post.title}
+                                    </div>
+                                    <span className="text-sm text-gray-600 whitespace-nowrap">
+                                        {timeSince(post.createDate)}
+                                    </span>
+                                </div>
+                                <p className="text-sm text-left overflow-hidden truncate">
+                                    {post.content.substring(0, 10) +
+                                        (post.content.length > 10 ? "..." : "")}
                                 </p>
-                                <p className="mini text-gray-300">|</p>
-                                <p className="mini text-gray-300">
-                                    댓글 {post.commentCount}
-                                </p>
-                            </div>
-                        </li>
-                    </Link>
-                ))}
+                                <div className="flex gap-[4px]">
+                                    <p className="mini text-gray-300">
+                                        좋아요 {post.likeCount}
+                                    </p>
+                                    <p className="mini text-gray-300">|</p>
+                                    <p className="mini text-gray-300">
+                                        댓글 {post.commentCount}
+                                    </p>
+                                </div>
+                            </li>
+                        </Link>
+                    ))
+                ) : (
+                    <div>No posts found.</div>
+                )}
             </ul>
             <div className="flex justify-center mt-4">
                 {pageRange[0] > 0 && (
@@ -221,4 +219,4 @@ function BoardList() {
     );
 }
 
-export default BoardList;
+export default BoardSearchList;
