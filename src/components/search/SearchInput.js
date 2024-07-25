@@ -1,28 +1,30 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function SearchInput({ ...props }) {
+function SearchInput({ handleSearch, ...props }) {
     const [textData, setTextData] = useState("");
-    const [searchData, setSearchData] = useState([]);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setTextData(e.target.value);
     };
-    // console.log(textData);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (textData.trim() !== "") {
-            setSearchData([textData]); // 새로운 배열로 교체
-            setTextData("");
+            // setTextData("");
+            if (handleSearch && typeof handleSearch === "function") {
+                handleSearch([textData]); // 부모 컴포넌트로 searchData 전달
+            }
+            navigate(`/hospitals/search?name=${[textData]}`);
         }
     };
 
     console.log("textData:", textData);
-    console.log("searchData:", searchData);
 
     return (
         <>
-            <form action="">
+            <form onSubmit={handleSubmit}>
                 <div className="flex border-b py-[6px] px-[8px]">
                     <input
                         placeholder="검색어 입력"
@@ -30,7 +32,7 @@ function SearchInput({ ...props }) {
                         onChange={handleChange}
                         value={textData}
                     />
-                    <button onClick={handleSubmit}>
+                    <button type="submit">
                         <img src="/assets/images/searchIcon.svg" alt="검색" />
                     </button>
                 </div>

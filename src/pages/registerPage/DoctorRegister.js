@@ -68,11 +68,25 @@ function DoctorRegister() {
                         className="w-full p-4 border-none focus:outline-none focus:ring-0"
                     />
                 </div>
-
+                <div className="mb-[16px]">
+                    <p className="text-center text-gray-300">
+                        수의사님들의 회원가입은 별도의 인증절차를 거치고
+                        있습니다.
+                    </p>
+                    <p className="text-center  text-gray-300">
+                        번거로우시더라도 안내에 따라 가입 요청 절차를
+                        마쳐주시면,
+                    </p>
+                    <p className="text-center  text-gray-300">
+                        빠른시일 내에 가입 승인 해드릴 수 있도록 노력하겠습니다.
+                    </p>
+                </div>
                 <ButtonBlack
-                    text1="회원가입"
+                    text1="회원가입 요청하기"
                     width="100%"
                     height="45px"
+                    // 들어가야할 함수 -> 폼제출 + 모달오픈
+                    // 모달 안내문구 -
                 ></ButtonBlack>
             </form>
         </>
