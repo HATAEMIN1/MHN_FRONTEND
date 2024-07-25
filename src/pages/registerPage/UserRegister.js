@@ -3,6 +3,7 @@ import Header from "../../layouts/header/Header";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axios";
 import ButtonBlack from "../../components/button/ButtonBlack";
+import Identity from "./Identity";
 
 function UserRegister() {
     const {
@@ -251,7 +252,7 @@ function UserRegister() {
                         {nicknameValidMessage}
                     </p>
                 )}
-
+                <Identity />
                 <ButtonBlack
                     text1="회원가입"
                     width="100%"

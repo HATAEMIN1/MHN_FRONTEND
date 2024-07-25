@@ -4,6 +4,8 @@ import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonClear from "../../components/button/ButtonClear";
 
 function SubscriptionManage(props) {
     const navigate = useNavigate();
@@ -88,12 +90,38 @@ function SubscriptionManage(props) {
             </div>
             <div className="flex justify-center border-b pb-8">
                 {mySubscription.status === "ACTIVE" ? (
-                    <ButtonBlack
-                        text1="자동 결제 해지"
-                        height="45px"
-                        width="80%"
-                        handleClick={handleSubscriptionPaused}
-                    ></ButtonBlack>
+                    <ModalManager
+                        modalContent={({ closeModal }) => (
+                            <div>
+                                <p>구독을 해제할까요?</p>
+                                <p className="mini text-red-700 mb-[8px]">
+                                    구독 해제시, 재구독이 어려울 수 있습니다.
+                                </p>
+                                <ButtonClear
+                                    text1="네"
+                                    text2="아니요"
+                                    handleClick={(e) => {
+                                        handleSubscriptionPaused();
+                                        closeModal();
+                                    }}
+                                    handleClick2={(e) => {
+                                        closeModal();
+                                    }}
+                                />
+                            </div>
+                        )}
+                    >
+                        {({ openModal }) => (
+                            <ButtonBlack
+                                text1="자동 결제 해지"
+                                height="45px"
+                                width="80%"
+                                // handleClick={handleSubscriptionPaused}
+                                handleClick={openModal}
+                                // 이거 눌렀을 때 모달이 나와야하고, 모달에서 예 버튼을 눌렀을 때 handleSubscriptionPaused 함수가 실행되어야 함.
+                            ></ButtonBlack>
+                        )}
+                    </ModalManager>
                 ) : (
                     <ButtonBlack
                         text1="구독 하기"
