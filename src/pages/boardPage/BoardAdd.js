@@ -1,7 +1,8 @@
+// src/components/BoardAdd.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axios";
 import Header from "../../layouts/header/Header";
-import Searchbar from "../../components/search/Searchbar";
 import ModalManager from "../../components/modal/ModalManager";
 import ButtonBlack from "../../components/button/ButtonBlack";
 
@@ -48,18 +49,43 @@ function BoardAdd({ onAddPost }) {
         setImages(images.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = (closeModal) => {
+    const handleSubmit = async (closeModal) => {
         if (title && content) {
-            const newPost = {
-                title,
-                content,
-                images,
-                createdAt: new Date().toISOString(),
-            };
-            onAddPost(newPost);
-            console.log("Submitted Post:", newPost); // 콘솔에 데이터 출력
-            closeModal(); // 모달 닫기
-            navigate("/boards"); // 리스트 페이지로 이동
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("content", content);
+            formData.append("memberId", 1); // 실제 memberId 값을 설정해주세요.
+            images.forEach((image) => {
+                formData.append("files", image);
+            });
+
+            try {
+                const response = await axiosInstance.post("/boards", formData);
+                console.log("Submitted Post:", response.data); // 콘솔에 데이터 출력
+                onAddPost(response.data);
+                closeModal(); // 모달 닫기
+                navigate("/boards"); // 리스트 페이지로 이동
+            } catch (error) {
+                if (error.response) {
+                    // 서버가 응답을 했지만 status code가 2xx 범위 밖일 때
+                    console.error("Error response data:", error.response.data);
+                    console.error(
+                        "Error response status:",
+                        error.response.status
+                    );
+                    console.error(
+                        "Error response headers:",
+                        error.response.headers
+                    );
+                } else if (error.request) {
+                    // 요청이 만들어졌지만 응답을 받지 못함
+                    console.error("Error request:", error.request);
+                } else {
+                    // 요청을 설정하는 중에 발생한 오류
+                    console.error("Error message:", error.message);
+                }
+                console.error("Error config:", error.config);
+            }
         }
     };
 
@@ -92,7 +118,6 @@ function BoardAdd({ onAddPost }) {
                     </div>
                 )}
             </ModalManager>
-            {/* <Searchbar /> */}
             <div className="border-b-0">
                 <input
                     type="text"
@@ -112,7 +137,6 @@ function BoardAdd({ onAddPost }) {
                     onChange={handleContentChange}
                     className="no-scrollbar w-full h-48 p-2 border-b border-gray-300 outline-none resize-none text-base bg-white box-border"
                 />
-
                 {contentError && (
                     <p className="text-red-500 text-xs mt-2">{contentError}</p>
                 )}
