@@ -2,15 +2,22 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Header from "../../layouts/header/Header";
 import ButtonBlack from "../../components/button/ButtonBlack";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../store/thunkFunction";
 
 function UserLogin() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const onSubmit = (data) => console.log(data);
+    const dispatch = useDispatch();
+    const onSubmit = (data) => {
+        dispatch(loginUser(data));
+        navigate("/");
+    };
     console.log(errors);
     return (
         <>

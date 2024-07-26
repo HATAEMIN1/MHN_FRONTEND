@@ -10,7 +10,6 @@ function Approval() {
             email: "sjhda00@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-111-1111",
-            // createdAt: new Date("2024.07.22"),
             createdAt: "2024.07.22",
             status: "pending",
         },
@@ -20,7 +19,6 @@ function Approval() {
             email: "djahdja@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-222-2222",
-            // createdAt: new Date("2024.07.18"),
             createdAt: "2024.07.18",
             status: "pending",
         },
@@ -30,7 +28,6 @@ function Approval() {
             email: "oetieo@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-333-3333",
-            // createdAt: new Date("2024.07.16"),
             createdAt: "2024.07.16",
             status: "pending",
         },
@@ -40,7 +37,6 @@ function Approval() {
             email: "bcnkcd@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-444-4444",
-            // createdAt: new Date("2024.07.11"),
             createdAt: "2024.07.11",
             status: "pending",
         },
@@ -50,7 +46,6 @@ function Approval() {
             email: "queiqir@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-555-5555",
-            // createdAt: new Date("2024.07.03"),
             createdAt: "2024.07.03",
             status: "pending",
         },
@@ -60,7 +55,6 @@ function Approval() {
             email: "vbjkwkh@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-666-6666",
-            // createdAt: new Date("2024.06.30"),
             createdAt: "2024.06.30",
             status: "pending",
         },
@@ -70,17 +64,12 @@ function Approval() {
             email: "fhajha@naver.com",
             address: "서울 금천구 가산디지털2로 144 현대테라타워 가산dK 20층",
             tell: "02-777-7777",
-            // createdAt: new Date("2024.06.24"),
             createdAt: "2024.06.24",
             status: "pending",
         },
     ]);
 
-    // const [currentPage, setCurrentPage] = useState(1);
-    // const [filter, setFilter] = useState("all");
-    // const itemsPerPage = 5;
-
-    // 요청 상태 변경
+    // 요청 상태 변경 .
     const handleApprove = (id) => {
         setHospitals(
             hospitals.map((hospital) =>
@@ -91,73 +80,50 @@ function Approval() {
         );
     };
 
-    // const sortedAndFilteredHospitals = useMemo(() => {
-    //     return hospitals
-    //         .filter((hospital) => {
-    //             if (filter === "all") return true;
-    //             return hospital.status === filter;
-    //         })
-    //         .sort((a, b) => {
-    //             if (a.status === b.status) {
-    //                 return b.createdAt - a.createdAt; // 최신 날짜 순
-    //             }
-    //             return a.status === "pending" ? -1 : 1; // pending이 먼저
-    //         });
-    // }, [hospitals, filter]);
-
-    // const pageCount = Math.ceil(
-    //     sortedAndFilteredHospitals.length / itemsPerPage
-    // );
-    // const currentHospitals = sortedAndFilteredHospitals.slice(
-    //     (currentPage - 1) * itemsPerPage,
-    //     currentPage * itemsPerPage
-    // );
+    // 수락 완료된 병원 하단으로 이동, 날짜 정렬
+    const sortedHospitals = useMemo(() => {
+        return [...hospitals].sort((a, b) => {
+            if (a.status === "approved" && b.status !== "approved") return 1;
+            if (a.status !== "approved" && b.status === "approved") return -1;
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+    }, [hospitals]);
 
     return (
         <>
             <Header title="가입승인" />
-            {/* <div className="mb-4">
-                <select
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    className="p-2 border rounded"
-                >
-                    <option value="all">전체</option>
-                    <option value="pending">요청</option>
-                    <option value="approved">종료</option>
-                </select>
-            </div> */}
             <form>
-                {/* {currentHospitals.map((hospital) => (
+                {sortedHospitals.map((hospital) => (
                     <div
                         key={hospital.id}
-                        className="border border-gray-600 rounded-md p-4 mt-8 hover:border-blue-200 hover:shadow-md transition duration-500"
-                    > */}
-                {hospitals.map((hospital) => (
-                    <div
-                        key={hospital.id}
-                        className="border border-gray-600 rounded-md p-4 mt-8 hover:border-blue-200 hover:shadow-md transition duration-500"
+                        className={`border border-gray-600 rounded-md p-4 mt-8 ${
+                            hospital.status === "pending"
+                                ? "hover:border-blue-200 hover:shadow-md transition duration-500"
+                                : ""
+                        }`}
                     >
-                        {/* 병원 정보  */}
                         <div className="flex justify-between body2 text-sub-200">
+                            {/* 병원 정보 시작 */}
                             <div className="flex flex-col gap-2 mb-2 w-3/4">
                                 <p className="subtitle1 text-primary-300">
                                     {hospital.name}
                                 </p>
-                                <p className="body2 text-sub-200">
+                                <p className="body2 text-sub-100">
                                     {hospital.email}
                                 </p>
-                                <p className="body2 text-sub-100">
+                                {/* <p className="body2 text-sub-100">
                                     {hospital.tell}
                                 </p>
-                                <p className="body3 tetx-gray-600">
+                                <p className="body3 text-gray-800">
                                     {hospital.address}
-                                </p>
+                                </p> */}
                             </div>
+                            {/* 병원 정보 종료  */}
+
                             {/* 요청 상태 시작 */}
                             <div className="flex gap-1 h-3 items-center">
                                 <span
-                                    className={`inline-block w-2 h-2 rounded-full ${hospital.status === "approved" ? "bg-primary-300" : "bg-primary-200"}`}
+                                    className={`inline-block w-2 h-2 rounded-full ${hospital.status === "approved" ? "bg-sub-100" : "bg-primary-200"}`}
                                 ></span>
                                 <span
                                     className={`mini ${hospital.status === "approved" ? "text-primary-300" : "text-primary-200"}`}
@@ -173,19 +139,12 @@ function Approval() {
                         <div className="border-t border-dashed border-gray-700 flex justify-between pt-3">
                             <p className="body2 text-primary-300">
                                 가입{" "}
-                                <span className="body3 text-gray-300">
+                                <span className="body3 text-gray-300 ml-1">
                                     {hospital.createdAt}
-                                    {/* {hospital.createdAt.toLocaleDateString(
-                                                "ko-KR",
-                                                {
-                                                    year: "numeric",
-                                                    month: "2-digit",
-                                                    day: "2-digit",
-                                                }
-                                            )} */}
                                 </span>
                             </p>
 
+                            {/* 버튼 시작 */}
                             <button
                                 className={`mini py-[6px] px-[14px] rounded-md ${
                                     hospital.status === "approved"
@@ -199,37 +158,13 @@ function Approval() {
                                     ? "수락완료"
                                     : "수락"}
                             </button>
+                            {/* 버튼 종료  */}
                         </div>
                     </div>
                 ))}
-                {/* </div>
-                ))} */}
             </form>
-            {/* <div className="mt-4 flex justify-center gap-2">
-                <button
-                    onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                    }
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    이전
-                </button>
-                <span className="px-4 py-2">
-                    {currentPage} / {pageCount}
-                </span>
-                <button
-                    onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, pageCount))
-                    }
-                    disabled={currentPage === pageCount}
-                    className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-                >
-                    다음
-                </button>
-            </div> */}
 
-            <AdminNav />
+            {/* <AdminNav /> */}
         </>
     );
 }
