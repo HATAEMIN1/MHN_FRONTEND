@@ -69,7 +69,7 @@ function Approval() {
         },
     ]);
 
-    // 요청 상태 변경
+    // 요청 상태 변경 .
     const handleApprove = (id) => {
         setHospitals(
             hospitals.map((hospital) =>
