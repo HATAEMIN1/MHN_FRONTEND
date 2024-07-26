@@ -3,11 +3,7 @@ import Header from "../../layouts/header/Header";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axios";
 import ButtonBlack from "../../components/button/ButtonBlack";
-
-
 import Identity from "./Identity";
-import { useNavigate } from "react-router-dom";
-
 
 function UserRegister() {
     const {
@@ -17,30 +13,19 @@ function UserRegister() {
         getValues,
         setError,
         clearErrors,
-        trigger,
     } = useForm();
-    const navigate = useNavigate();
     const [emailValidMessage, setEmailValidMessage] = useState("");
     const [nicknameValidMessage, setNicknameValidMessage] = useState("");
-    const [isEmailVerified, setIsEmailVerified] = useState(false);
-    const [isVerificationCodeSent, setIsVerificationCodeSent] = useState(false);
 
     const onSubmit = async (data) => {
-        if (!isEmailVerified) {
-            setError("email", {
-                type: "manual",
-                message: "이메일 인증을 완료하세요.",
-            });
-            return;
-        }
         try {
-            const response = await axiosInstance.post("/register", {
+            const response = await axiosInstance.post("/users/register", {
                 email: data.email,
                 password: data.password,
                 nickName: data.nickName,
             });
             if (response.status === 200) {
-                navigate("/users/login");
+                alert("회원가입 성공!");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -63,11 +48,11 @@ function UserRegister() {
         }
     };
 
-    const sendVerificationEmail = async (e) => {
+    const checkEmailExists = async (e) => {
         e.preventDefault();
         const email = getValues("email");
-        setEmailValidMessage("");
-        clearErrors("email");
+        setEmailValidMessage(""); // Reset message
+        clearErrors("email"); // Clear previous errors
         if (!email) {
             setError("email", {
                 type: "manual",
@@ -76,66 +61,38 @@ function UserRegister() {
             return;
         }
         try {
-            const response = await axiosInstance.post("/sendemail", null, {
+            const response = await axiosInstance.get("/users/check-email", {
                 params: { email },
             });
-            if (response.status === 200) {
-                setEmailValidMessage("인증 코드가 전송되었습니다.");
-                setIsVerificationCodeSent(true);
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            if (error.response && error.response.status === 409) {
+            if (response.data) {
                 setError("email", {
                     type: "manual",
-                    message: error.response.data,
+                    message: "이미 존재하는 이메일입니다.",
                 });
             } else {
-                setError("email", {
-                    type: "manual",
-                    message: "인증 코드 전송 중 오류가 발생했습니다.",
-                });
-            }
-        }
-    };
-
-    const verifyEmailCode = async (e) => {
-        e.preventDefault();
-        const email = getValues("email");
-        const code = getValues("verificationCode");
-        if (!email || !code) {
-            setError("verificationCode", {
-                type: "manual",
-                message: "이메일과 인증번호를 입력하세요.",
-            });
-            return;
-        }
-        try {
-            const response = await axiosInstance.post("/verify", null, {
-                params: { email, code },
-            });
-            if (response.status === 200) {
-                setIsEmailVerified(true);
-                setEmailValidMessage("이메일 인증이 완료되었습니다.");
+                setEmailValidMessage("사용 가능한 이메일입니다.");
             }
         } catch (error) {
             console.error("Error:", error);
-            setError("verificationCode", {
+            setError("email", {
                 type: "manual",
-                message: "잘못된 인증 코드입니다.",
+                message: "이메일 확인 중 오류가 발생했습니다.",
             });
         }
     };
 
     const checkNicknameExists = async (e) => {
         e.preventDefault();
-        clearErrors("nickName");
-        const isValid = await trigger("nickName"); // 유효성 검사를 트리거합니다.
-        if (!isValid) return; // 유효성 검사에 실패하면 중복 체크를 수행하지 않습니다.
-
         const nickName = getValues("nickName");
-        setNicknameValidMessage("");
-
+        setNicknameValidMessage(""); // Reset message
+        clearErrors("nickName"); // Clear previous errors
+        if (!nickName) {
+            setError("nickName", {
+                type: "manual",
+                message: "닉네임을 입력하세요.",
+            });
+            return;
+        }
         try {
             const response = await axiosInstance.get("/users/check-nickname", {
                 params: { nickName },
@@ -173,12 +130,11 @@ function UserRegister() {
                             },
                         })}
                         className="w-full p-4 border-none focus:outline-none focus:ring-0"
-                        disabled={isEmailVerified}
                     />
                     <ButtonBlack
-                        text1={isVerificationCodeSent ? "재전송" : "전송"}
+                        text1="전송"
                         type="button"
-                        handleClick={sendVerificationEmail}
+                        handleClick={checkEmailExists}
                     />
                 </div>
                 {errors.email && (
@@ -192,23 +148,21 @@ function UserRegister() {
                     </p>
                 )}
 
-                {isVerificationCodeSent && !isEmailVerified && (
-                    <div className="flex justify-between items-center border-b py-4">
-                        <input
-                            type="text"
-                            placeholder="인증번호"
-                            {...register("verificationCode", {
-                                required: "인증번호는 필수 입력입니다.",
-                            })}
-                            className="w-full p-4 border-none focus:outline-none focus:ring-0"
-                        />
-                        <ButtonBlack
-                            text1="확인"
-                            type="button"
-                            handleClick={verifyEmailCode}
-                        />
-                    </div>
-                )}
+                <div className="flex justify-between items-center border-b py-4">
+                    <input
+                        type="text"
+                        placeholder="인증번호"
+                        {...register("verificationCode", {
+                            required: "인증번호는 필수 입력입니다.",
+                        })}
+                        className="w-full p-4 border-none focus:outline-none focus:ring-0"
+                    />
+                    <ButtonBlack
+                        text1="확인"
+                        type="button"
+                        handleClick={() => {}}
+                    />
+                </div>
                 {errors.verificationCode && (
                     <p className="text-red-500 text-sm mt-1">
                         {errors.verificationCode.message}
@@ -298,6 +252,7 @@ function UserRegister() {
                         {nicknameValidMessage}
                     </p>
                 )}
+                <Identity />
                 <ButtonBlack
                     text1="회원가입"
                     width="100%"
