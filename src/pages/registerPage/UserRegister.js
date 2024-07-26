@@ -4,6 +4,11 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axios";
 import ButtonBlack from "../../components/button/ButtonBlack";
 
+
+import Identity from "./Identity";
+import { useNavigate } from "react-router-dom";
+
+
 function UserRegister() {
     const {
         register,
@@ -14,6 +19,7 @@ function UserRegister() {
         clearErrors,
         trigger,
     } = useForm();
+    const navigate = useNavigate();
     const [emailValidMessage, setEmailValidMessage] = useState("");
     const [nicknameValidMessage, setNicknameValidMessage] = useState("");
     const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -34,7 +40,7 @@ function UserRegister() {
                 nickName: data.nickName,
             });
             if (response.status === 200) {
-                alert("회원가입 성공!");
+                navigate("/users/login");
             }
         } catch (error) {
             console.error("Error:", error);
