@@ -17,17 +17,26 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
-                console.log("fulfilled");
+                console.log(action.payload);
+                console.log("스테이트는");
+                console.log(state);
                 const payload = action.payload;
-                if (!payload.error) {
-                    setCookie("member", JSON.stringify(payload));
+                if (payload.error) {
+                    return payload.error;
                 }
+                setCookie("member", JSON.stringify(payload));
+                console.log("fulfilled");
             })
             .addCase(loginUser.pending, (state, action) => {
                 console.log("pending");
             })
             .addCase(loginUser.rejected, (state, action) => {
-                console.log("reject");
+                console.log(action);
+                const error = action.error;
+                console.log(error);
+                if (error) {
+                    return error;
+                }
                 removeCookie("member");
             });
     },

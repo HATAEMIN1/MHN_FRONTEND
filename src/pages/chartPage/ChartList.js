@@ -3,10 +3,16 @@ import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function ChartList() {
     const chartId = "1";
+    const selector = useSelector((state) => {
+        console.log(state);
+    });
+    console.log(selector);
     const [chartData, setChartData] = useState([]);
+
     function getTimeAgo(dateString) {
         const now = new Date();
         const past = new Date(dateString);
