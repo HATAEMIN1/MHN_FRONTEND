@@ -148,7 +148,7 @@ function BoardList() {
                             key={index}
                             className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start h-64"
                         >
-                            <div className="w-full h-40 mb-4 overflow-hidden">
+                            <div className="w-full h-40 mb-4 overflow-hidden ">
                                 {post.imageList &&
                                     post.imageList.length > 0 && (
                                         <img

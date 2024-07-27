@@ -3,38 +3,24 @@ import Header from "../../layouts/header/Header";
 import HospitalListForm from "../../components/Form/HospitalListForm";
 import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function AccountHospital() {
-    // const hospitalExam = [
-    //     {
-    //         name: "코드랩아카데미병원",
-    //         address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층",
-    //         location: "350m",
-    //         tel: "02-123-4567",
-    //     },
-    //     {
-    //         name: "코드랩아카데미병원11111",
-    //         address:
-    //             "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ",
-    //         location: "350m",
-    //         tel: "02-123-4567",
-    //     },
-    //     {
-    //         name: "코드랩아카데미병원22222",
-    //         address: "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 20층",
-    //         location: "350m",
-    //         tel: "02-123-4567",
-    //     },
-    // ];
     const [accountHospitalInfo, setAccountHospitalInfo] = useState([]);
     const [hospitals, setHospitals] = useState([]);
+
+    const loginState = useSelector((state) => {
+        console.log(state.userSlice);
+        console.log(state.userSlice.id);
+        return state.userSlice;
+    });
+
     useEffect(() => {
         const getAccountHospitalInfo = async () => {
             // if () {
             try {
                 const response = await axiosInstance.get(
-                    // `/hospitals/account?memberId=${로그인 유저 아이디 들어가야함}`
-                    `/hospitals/account?memberId=4`
+                    `/hospitals/account?memberId=${loginState.id}`
                 );
                 setAccountHospitalInfo(response.data);
                 console.log(response);

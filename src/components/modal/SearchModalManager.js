@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import SearchModal from "./SearchModal";
 
-function SearchModalManager({ modalOpen, onFilterChange, ...props }) {
+function SearchModalManager({ modalOpen, ...props }) {
     // 기존 props 유지
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const openModal = () => {
+        console.log("9번 들어옴");
         setIsModalOpen(true);
     };
 
@@ -19,8 +20,8 @@ function SearchModalManager({ modalOpen, onFilterChange, ...props }) {
             {isModalOpen && (
                 <SearchModal
                     onClose={closeModal}
-                    onFilterChange={onFilterChange}
                     {...props}
+                    setGetHospitalId={props.setGetHospitalId}
                 /> // 기존 props 유지
             )}
         </>

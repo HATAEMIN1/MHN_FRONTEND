@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 import ModalManager from "../../components/modal/ModalManager";
 import ButtonClear from "../../components/button/ButtonClear";
+import { useSelector } from "react-redux";
 
 //n분전 구현
 function getTimeAgo(dateString) {
@@ -47,7 +48,12 @@ function HospitalReview() {
     };
     useEffect(() => {}, [rating]);
     const { hpId } = useParams();
-    const memberId = 4;
+
+    const loginState = useSelector((state) => {
+        console.log(state.userSlice);
+        console.log(state.userSlice.id);
+        return state.userSlice;
+    });
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
@@ -61,7 +67,7 @@ function HospitalReview() {
 
             // DB로 전송 포스트요청
             const body = {
-                memberId: memberId,
+                memberId: loginState.id,
                 hospitalId: hpId,
                 comment: newComment.content,
                 rating: newComment.likeCount,
@@ -168,99 +174,113 @@ function HospitalReview() {
                         })}
                     </div>
                 </div>
-                {/* 자유게시판 댓글작성 인풋폼 가져오기 컴포넌트 */}
-                {/* 댓글입력폼 start */}
-                {/* <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        width: "100%",
-                        border: "1px solid #ddd",
-                        borderRadius: "15px", // 테두리를 둥글게 설정
-                        padding: "5px 10px",
-                        boxSizing: "border-box",
-                        marginBottom: "20px",
-                    }}
-                >
-                    <input
-                        type="text"
-                        value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
-                        placeholder="댓글을 입력하세요"
-                        style={{
-                            flex: 1,
-                            marginRight: "10px",
-                            border: "none", // 입력창의 기본 테두리 제거
-                            outline: "none", // 입력창에 포커스 시 생기는 테두리 제거
-                            padding: "5px",
-                            boxSizing: "border-box",
-                        }}
-                    />
-                    <button
-                        onClick={handleCommentSubmit}
-                        style={{
-                            border: "none",
-                            background: "none",
-                            color: "#888",
-                            cursor: "pointer",
-                            padding: "0",
-                            display: "flex",
-                            alignItems: "center",
-                        }}
-                    >
-                        <img
-                            src="/assets/images/enterIcon.svg"
-                            alt="댓글 달기"
-                            style={{ width: "20px", height: "20px" }}
-                        />
-                    </button>
-                </div> */}
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "100%",
-                        marginBottom: "20px",
-                    }}
-                >
+
+                {loginState.email ? (
                     <div
                         style={{
                             display: "flex",
-                            alignItems: "center",
+                            flexDirection: "column",
                             width: "100%",
-                            border: "1px solid #ddd",
-                            borderRadius: "15px",
-                            padding: "5px 10px",
-                            boxSizing: "border-box",
+                            marginBottom: "20px",
                         }}
                     >
-                        <input
-                            type="text"
-                            value={commentText}
-                            onChange={handleCommentChange}
-                            placeholder="댓글을 입력하세요 (1-200자)"
+                        <div
                             style={{
-                                flex: 1,
-                                marginRight: "10px",
-                                border: "none",
-                                outline: "none",
-                                padding: "5px",
-                                boxSizing: "border-box",
-                            }}
-                        />
-                        <button
-                            onClick={handleCommentSubmit}
-                            disabled={!isValid}
-                            style={{
-                                border: "none",
-                                background: "none",
-                                color: isValid ? "#888" : "#ccc",
-                                cursor: isValid ? "pointer" : "not-allowed",
-                                padding: "0",
                                 display: "flex",
                                 alignItems: "center",
+                                width: "100%",
+                                border: "1px solid #ddd",
+                                borderRadius: "15px",
+                                padding: "5px 10px",
+                                boxSizing: "border-box",
                             }}
                         >
+                            <input
+                                type="text"
+                                value={commentText}
+                                onChange={handleCommentChange}
+                                placeholder="댓글을 입력하세요 (1-200자)"
+                                style={{
+                                    flex: 1,
+                                    marginRight: "10px",
+                                    border: "none",
+                                    outline: "none",
+                                    padding: "5px",
+                                    boxSizing: "border-box",
+                                }}
+                            />
+                            <button
+                                onClick={handleCommentSubmit}
+                                disabled={!isValid}
+                                style={{
+                                    border: "none",
+                                    background: "none",
+                                    color: isValid ? "#888" : "#ccc",
+                                    cursor: isValid ? "pointer" : "not-allowed",
+                                    padding: "0",
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <img
+                                    src="/assets/images/enterIcon.svg"
+                                    alt="댓글 달기"
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        opacity: isValid ? 1 : 0.3,
+                                    }}
+                                />
+                            </button>
+                        </div>
+                        {errorMessage && (
+                            <p
+                                style={{
+                                    color: "red",
+                                    fontSize: "12px",
+                                    marginTop: "5px",
+                                }}
+                            >
+                                {errorMessage}
+                            </p>
+                        )}
+                    </div>
+                ) : (
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            width: "100%",
+                            marginBottom: "20px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                width: "100%",
+                                border: "1px solid #ddd",
+                                borderRadius: "15px",
+                                padding: "5px 10px",
+                                boxSizing: "border-box",
+                            }}
+                        >
+                            <input
+                                type="text"
+                                value={commentText}
+                                onChange={handleCommentChange}
+                                placeholder="로그인 된 유저만 댓글을 달 수 있어요🥲"
+                                style={{
+                                    flex: 1,
+                                    marginRight: "10px",
+                                    border: "none",
+                                    outline: "none",
+                                    padding: "5px",
+                                    boxSizing: "border-box",
+                                }}
+                                readOnly
+                            />
+
                             <img
                                 src="/assets/images/enterIcon.svg"
                                 alt="댓글 달기"
@@ -270,20 +290,21 @@ function HospitalReview() {
                                     opacity: isValid ? 1 : 0.3,
                                 }}
                             />
-                        </button>
+                        </div>
+                        {errorMessage && (
+                            <p
+                                style={{
+                                    color: "red",
+                                    fontSize: "12px",
+                                    marginTop: "5px",
+                                }}
+                            >
+                                {errorMessage}
+                            </p>
+                        )}
                     </div>
-                    {errorMessage && (
-                        <p
-                            style={{
-                                color: "red",
-                                fontSize: "12px",
-                                marginTop: "5px",
-                            }}
-                        >
-                            {errorMessage}
-                        </p>
-                    )}
-                </div>
+                )}
+
                 {/* 댓글입력폼 end */}
 
                 {comments.map((item) => {
@@ -298,73 +319,58 @@ function HospitalReview() {
                                     />
                                     <div>
                                         <p className="subtitle2 text-primary-300">
-                                            닉네임
+                                            {item.member.nickName}
                                         </p>
                                         <p className="body2 text-sub-200">
                                             {item.comment}
                                         </p>
                                         <div className="flex gap-[4px]">
                                             <p className="mini text-gray-300">
-                                                {getTimeAgo(item.createdAt)} |
+                                                {getTimeAgo(item.createdAt)}
                                             </p>
                                             {/* 나중에 삭제하기버튼은 로그인유저값이랑 댓글작성자 아이디값 동일할때만 보이도록 프론트단에서 처리해야함 삼항연산자 */}
+                                            {loginState.id == item.member.id ? (
+                                                <ModalManager
+                                                    modalContent={({
+                                                        closeModal,
+                                                    }) => (
+                                                        <div>
+                                                            <p className="mb-[8px]">
+                                                                댓글을
+                                                                삭제할까요?
+                                                            </p>
 
-                                            <ModalManager
-                                                modalContent={({
-                                                    closeModal,
-                                                }) => (
-                                                    <div>
-                                                        <p className="mb-[8px]">
-                                                            댓글을 삭제할까요?
-                                                        </p>
-                                                        {/* <div className="flex gap-[4px]">
                                                             <ButtonClear
+                                                                text1="네"
+                                                                text2="아니요"
                                                                 handleClick={(
                                                                     e
                                                                 ) => {
                                                                     handleDeleteComment(
                                                                         item.id
                                                                     );
+                                                                    closeModal();
                                                                 }}
-                                                                text1="네"
-                                                            />
-                                                            <ButtonClear
-                                                                handleClick={(
+                                                                handleClick2={(
                                                                     e
                                                                 ) => {
                                                                     closeModal();
                                                                 }}
-                                                                text1="아니요"
                                                             />
-                                                        </div> */}
-                                                        <ButtonClear
-                                                            text1="네"
-                                                            text2="아니요"
-                                                            handleClick={(
-                                                                e
-                                                            ) => {
-                                                                handleDeleteComment(
-                                                                    item.id
-                                                                );
-                                                                closeModal();
-                                                            }}
-                                                            handleClick2={(
-                                                                e
-                                                            ) => {
-                                                                closeModal();
-                                                            }}
-                                                        />
-                                                    </div>
-                                                )}
-                                            >
-                                                {({ openModal }) => (
-                                                    <div onClick={openModal}>
-                                                        <p className="mini text-gray-300 cursor-pointer">
-                                                            삭제하기
-                                                        </p>
-                                                    </div>
-                                                )}
-                                            </ModalManager>
+                                                        </div>
+                                                    )}
+                                                >
+                                                    {({ openModal }) => (
+                                                        <div
+                                                            onClick={openModal}
+                                                        >
+                                                            <p className="mini text-gray-300 cursor-pointer">
+                                                                {" | "}삭제하기
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </ModalManager>
+                                            ) : null}
                                         </div>
                                     </div>
                                 </div>

@@ -1,21 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 function HospitalListFormForDoctor({ ...props }) {
     const getRandomImageNumber = () => Math.floor(Math.random() * 17) + 1;
-    const [selectedHospitalId, setSelectedHospitalId] = useState(null);
-
-    const handleHospitalSelect = (id) => {
-        console.log("서치모달 8번");
-        setSelectedHospitalId(id);
-        props.setGetHospitalId(id);
-        props.onClose();
-    };
-
-    useEffect(() => {
-        console.log("selectedHospitalId:", selectedHospitalId);
-        props.setGetHospitalId(selectedHospitalId);
-    }, [selectedHospitalId]);
-
     return (
         <>
             {props.hospitalList &&
@@ -42,20 +28,7 @@ function HospitalListFormForDoctor({ ...props }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div
-                                    className="flex-shrink-0 cursor-pointer"
-                                    // onClick={() => {
-                                    //     setSelectedHospitalId(item.id);
-                                    //     console.log(
-                                    //         "선택된 병원 아이디값은:",
-                                    //         item.id
-                                    //     );
-                                    //     props.onClose(); // 여기에서 onClose 함수를 호출합니다
-                                    // }}
-                                    onClick={() =>
-                                        handleHospitalSelect(item.id)
-                                    }
-                                >
+                                <div className="flex-shrink-0">
                                     <p>선택</p>
                                 </div>
                             </div>

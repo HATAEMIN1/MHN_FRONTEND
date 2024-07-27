@@ -32,7 +32,7 @@ function SearchInputForDoctor({ ...props }) {
         }
     };
 
-    console.log(hospitalList);
+    // console.log(hospitalList);
 
     return (
         <div className="flex border-b py-[6px] px-[8px]">

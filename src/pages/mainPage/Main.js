@@ -9,12 +9,20 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function Main() {
     const [location, setLocation] = useState(null);
     const [hospitalData, setHospitalData] = useState([]);
     const [boardPosts, setBoardPosts] = useState([]);
     const [sortBy, setSortBy] = useState("distance");
+
+    const loginState = useSelector((state) => {
+        console.log(state.userSlice);
+        console.log(state.userSlice.id);
+    });
+
+    // console.log(loginState);
 
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {
@@ -52,8 +60,8 @@ function Main() {
             if (location) {
                 try {
                     const response = await axiosInstance.get(
-                        // `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
-                        `/hospitals?latitude=37.3835006&longitude=126.9606728`
+                        `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                        // `/hospitals?latitude=37.3835006&longitude=126.9606728`
                     );
                     const hospitals = response.data;
 
