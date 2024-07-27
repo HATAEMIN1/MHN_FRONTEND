@@ -18,11 +18,13 @@ function SearchModalManager({ modalOpen, ...props }) {
         <>
             {React.cloneElement(modalOpen, { onClick: openModal })}
             {isModalOpen && (
-                <SearchModal
-                    onClose={closeModal}
-                    {...props}
-                    setGetHospitalId={props.setGetHospitalId}
-                /> // 기존 props 유지
+                <div className="fixed inset-0 z-50">
+                    <SearchModal
+                        onClose={closeModal}
+                        {...props}
+                        setGetHospitalId={props.setGetHospitalId}
+                    />{" "}
+                </div>
             )}
         </>
     );

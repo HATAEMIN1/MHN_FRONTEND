@@ -29,7 +29,7 @@ function SearchModal({ onClose, onFilterChange, ...props }) {
 
     return (
         <div
-            className="w-full fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center modal-overlay "
+            className="w-full fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center modal-overlay"
             onClick={handleOutsideClick}
             style={{ zIndex: 999 }}
         >
