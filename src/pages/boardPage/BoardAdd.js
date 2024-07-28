@@ -1,6 +1,6 @@
-// src/components/BoardAdd.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import axiosInstance from "../../utils/axios";
 import Header from "../../layouts/header/Header";
 import ModalManager from "../../components/modal/ModalManager";
@@ -14,6 +14,7 @@ function BoardAdd({ onAddPost }) {
     const [images, setImages] = useState([]);
     const [imageError, setImageError] = useState("");
     const navigate = useNavigate();
+    const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
     const handleTitleChange = (event) => {
         const value = event.target.value;
@@ -54,7 +55,7 @@ function BoardAdd({ onAddPost }) {
             const formData = new FormData();
             formData.append("title", title);
             formData.append("content", content);
-            formData.append("memberId", 1); // 실제 memberId 값을 설정해주세요.
+            formData.append("memberId", memberId); // Redux에서 가져온 memberId 추가
             images.forEach((image) => {
                 formData.append("files", image);
             });

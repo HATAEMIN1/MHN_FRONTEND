@@ -5,6 +5,7 @@ import Searchbar from "../../components/search/Searchbar";
 import NavBar from "../../layouts/nav/NavBar";
 import FilterModalManager from "../../components/modal/FilterModalManager";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function timeSince(date) {
     const now = new Date();
@@ -148,7 +149,7 @@ function BoardList() {
                             key={index}
                             className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start h-64"
                         >
-                            <div className="w-full h-40 mb-4 overflow-hidden">
+                            <div className="w-full h-40 mb-4 overflow-hidden shadow-md">
                                 {post.imageList &&
                                     post.imageList.length > 0 && (
                                         <img
@@ -162,7 +163,7 @@ function BoardList() {
                                 <div className="font-bold text-base text-left text-black truncate">
                                     {post.title}
                                 </div>
-                                <span className="text-sm text-gray-600 whitespace-nowrap">
+                                <span className="text-sm text-gray-200 whitespace-nowrap">
                                     {timeSince(post.createDate)}
                                 </span>
                             </div>

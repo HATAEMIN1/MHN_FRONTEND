@@ -4,10 +4,8 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axios";
 import ButtonBlack from "../../components/button/ButtonBlack";
 
-
 import Identity from "./Identity";
 import { useNavigate } from "react-router-dom";
-
 
 function UserRegister() {
     const {
