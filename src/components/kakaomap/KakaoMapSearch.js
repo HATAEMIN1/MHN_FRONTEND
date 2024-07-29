@@ -50,7 +50,7 @@ function KakaoMapSearch({ ...props }) {
         // 지도에 마커와 인포윈도우를 표시하는 함수입니다
         function displayMarker(locPosition, message) {
             // 마커를 생성합니다
-            const imageSrc = "/assets/images/likeIcon_color.svg"; // <=====================현재위치의 마커 모양
+            const imageSrc = "/assets/images/testMarkerIcon_black.svg"; // <=====================현재위치의 마커 모양
             const imageSize = new kakao.maps.Size(50, 50); // 마커 이미지의 이미지 크기입니다
             const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지를 생성합니다
 

@@ -1,11 +1,13 @@
-// BoardView.jsx
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
+import axiosInstance from "../../utils/axios";
+import BoardComment from "./BoardComment";
+import { useSelector } from "react-redux";
 
 function timeAgo(date) {
     const now = new Date();
@@ -29,115 +31,106 @@ function timeAgo(date) {
     return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
-function BoardView({ posts }) {
+function BoardView() {
     const { bdId } = useParams();
-    const post = posts[bdId];
-
+    const navigate = useNavigate();
+    const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
-    const [comments, setComments] = useState([]);
-    const [commentText, setCommentText] = useState("");
-    const [visibleComments, setVisibleComments] = useState(3); // 초기 표시할 댓글 수
-    const [showFoldButton, setShowFoldButton] = useState(false); // 댓글 접기 버튼 상태
-
-    const currentUserId = "currentUserId"; // 현재 사용자 ID (나중에 서버에서 가져올 값)
-
-    const commentsRef = useRef(null);
+    const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (commentsRef.current) {
-                const { scrollTop, scrollHeight, clientHeight } =
-                    commentsRef.current;
-                if (scrollTop + clientHeight >= scrollHeight - 5) {
-                    setShowFoldButton(true);
-                } else {
-                    setShowFoldButton(false);
-                }
-            }
-        };
-
-        if (commentsRef.current) {
-            commentsRef.current.addEventListener("scroll", handleScroll);
+        if (memberId !== undefined) {
+            // memberId가 유효한 값인지 확인
+            axiosInstance
+                .get(`/boards/view?freeBoardId=${bdId}&memberId=${memberId}`)
+                .then((response) => {
+                    const postData = response.data.data;
+                    console.log("postData:", postData); // 디버깅을 위해 추가
+                    setPost(postData);
+                    setLikes(postData.likeCount || 0); // likes 값이 없으면 0으로 초기화
+                    setLiked(postData.likedByCurrentUser); // 서버에서 가져오는 값으로 설정
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching post:", error); // 에러 디버깅을 위해 추가
+                    setError(error);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false);
+            setError(new Error("User is not authenticated."));
         }
+    }, [bdId, memberId]);
 
-        return () => {
-            if (commentsRef.current) {
-                commentsRef.current.removeEventListener("scroll", handleScroll);
-            }
-        };
-    }, [visibleComments]);
+    const handleCommentsUpdate = (newCommentCount) => {
+        setPost((prevPost) => ({ ...prevPost, commentCount: newCommentCount }));
+    };
 
-    if (!post) {
-        return <div>게시물을 찾을 수 없습니다.</div>;
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
-    const authorName = "겸둥이"; // 나중에 서버에서 가져올 값
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
 
-    const settings = {
-        dots: true,
-        infinite: false, // 마지막 이미지에서 멈추도록 설정
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-    };
+    if (!post || !post.member) {
+        return <div>게시물을 가져오는 데 문제가 발생했습니다.</div>;
+    }
 
     const handleLike = () => {
-        if (liked) {
-            setLikes(likes - 1);
-        } else {
-            setLikes(likes + 1);
-        }
-        setLiked(!liked);
+        const url = liked ? "/boards/unlike" : "/boards/like";
+        axiosInstance
+            .post(url, null, { params: { freeBoardId: bdId, memberId } })
+            .then(() => {
+                setLikes((prevLikes) =>
+                    liked ? prevLikes - 1 : prevLikes + 1
+                );
+                setLiked(!liked);
+            })
+            .catch((error) => {
+                console.error(
+                    "There was an error updating the like status:",
+                    error
+                );
+            });
     };
 
-    const handleCommentSubmit = () => {
-        if (commentText.trim() !== "") {
-            setComments([
-                ...comments,
-                {
-                    id: comments.length,
-                    userId: currentUserId,
-                    content: commentText,
-                    createdAt: new Date(),
-                    profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
-                },
-            ]);
-            setCommentText("");
-        }
-    };
-
-    const handleLoadMoreComments = () => {
-        setVisibleComments(visibleComments + 3); // 더보기 클릭 시 추가로 표시할 댓글 수
-    };
-
-    const handleFoldComments = () => {
-        setVisibleComments(3); // 댓글 접기 시 초기 표시 댓글 수로 되돌림
-        setShowFoldButton(false);
-        if (commentsRef.current) {
-            commentsRef.current.scrollTo(0, 0); // 스크롤을 최상단으로 이동
-        }
-    };
-
-    const handleDeleteComment = (id) => {
-        setComments(comments.filter((comment) => comment.id !== id));
+    const handleDelete = () => {
+        axiosInstance
+            .delete(`/boards/view`, { params: { freeBoardId: bdId, memberId } })
+            .then(() => {
+                navigate("/boards"); // 삭제 후 게시판 목록으로 리디렉션
+            })
+            .catch((error) => {
+                console.error("There was an error deleting the post:", error);
+            });
     };
 
     return (
         <div className="pt-5 pb-7">
             <Header title="자유게시판" />
             <div className="flex items-center mb-5">
-                <div> {authorName}</div>
+                <div>{post.member.nickName}</div>
                 <div style={{ marginLeft: "10px" }}>
-                    {timeAgo(post.createdAt)}
+                    {timeAgo(post.createDate)}
                 </div>
             </div>
             <div className="mb-5">
-                <Slider {...settings}>
-                    {post.images.map((image, index) => (
+                <Slider
+                    dots={true}
+                    infinite={false}
+                    speed={500}
+                    slidesToShow={1}
+                    slidesToScroll={1}
+                >
+                    {post.imageList.map((image, index) => (
                         <div key={index}>
                             <img
-                                src={URL.createObjectURL(image)}
+                                src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${image.fileName}`}
                                 alt={`uploaded ${index}`}
                                 className="w-full h-96 object-cover"
                             />
@@ -145,148 +138,52 @@ function BoardView({ posts }) {
                     ))}
                 </Slider>
             </div>
-            <div className="mb-5 flex items-center">
-                <button
-                    onClick={handleLike}
-                    className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-gray-500"
-                >
-                    <img
-                        src={
-                            liked
-                                ? `${process.env.PUBLIC_URL}/assets/images/likeIcon_color.svg`
-                                : `${process.env.PUBLIC_URL}/assets/images/likeIcon_clear.svg`
-                        }
-                        alt="like"
-                        className="w-5 h-5 mr-1"
-                    />
-                    좋아요 {liked ? "취소" : ""} {likes}
-                </button>
+            <div className="mb-5 flex items-center justify-between">
                 <div className="flex items-center">
-                    <img
-                        src={`${process.env.PUBLIC_URL}/assets/images/commentIcon.svg`}
-                        alt="comment"
-                        className="w-5 h-5 mr-1"
-                    />
-                    댓글 {comments.length}
+                    <button
+                        onClick={handleLike}
+                        className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-gray-200"
+                    >
+                        <img
+                            src={
+                                liked
+                                    ? `${process.env.PUBLIC_URL}/assets/images/likeIcon_color.svg`
+                                    : `${process.env.PUBLIC_URL}/assets/images/likeIcon_clear.svg`
+                            }
+                            alt="like"
+                            className="w-5 h-5 mr-1"
+                        />
+                        좋아요 {liked ? "취소" : ""} {likes}
+                    </button>
+                    <div className="flex items-center">
+                        <img
+                            src={`${process.env.PUBLIC_URL}/assets/images/commentIcon.svg`}
+                            alt="comment"
+                            className="w-5 h-5 mr-1"
+                        />
+                        댓글 {post.commentCount}
+                    </div>
                 </div>
+                {post.member.id === memberId && (
+                    <button
+                        onClick={handleDelete}
+                        className="flex items-center border-none bg-transparent cursor-pointer text-gray-200"
+                    >
+                        삭제
+                    </button>
+                )}
             </div>
             <div className="mb-5">
                 <h2 className="text-lg font-bold">{post.title}</h2>
             </div>
             <div className="text-base">{post.content}</div>
-            <div className="mt-4">
-                <h3 className="text-sm text-gray-500">
-                    {comments.length}개의 댓글
-                </h3>
-                <div
-                    ref={commentsRef}
-                    className="comment-scroll max-h-80 overflow-y-auto"
-                >
-                    {" "}
-                    {/* 스크롤 추가 */}
-                    <style>
-                        {`
-                        /* For Chrome, Edge, and Safari */
-                        .comment-scroll::-webkit-scrollbar {
-                            width: 3px;
-                        }
-                        .comment-scroll::-webkit-scrollbar-thumb {
-                            background-color: #888;
-                            border-radius: 3px;
-                        }
-                        .comment-scroll::-webkit-scrollbar-track {
-                            background: transparent;
-                        }
 
-                        /* For Firefox */
-                        .comment-scroll {
-                            scrollbar-width: thin;
-                            scrollbar-color: #888 transparent;
-                        }
-                        `}
-                    </style>
-                    {comments
-                        .slice(0, visibleComments)
-                        .map((comment, index) => (
-                            <div
-                                key={index}
-                                className="mb-4 flex justify-between items-center"
-                            >
-                                <div className="flex">
-                                    <div className="w-10 h-10 rounded-full overflow-hidden mr-2">
-                                        <img
-                                            src={comment.profileImage}
-                                            alt="profile"
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                    <div>
-                                        <div className="font-bold">
-                                            {comment.userId}
-                                        </div>
-                                        <div className="text-sm">
-                                            {comment.content}
-                                        </div>
-                                        <div className="text-xs text-gray-500 flex items-center">
-                                            {timeAgo(comment.createdAt)}
-                                            <button className="ml-2 border-none bg-transparent text-gray-500 cursor-pointer">
-                                                댓글달기
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                {comment.userId === currentUserId && (
-                                    <button
-                                        onClick={() =>
-                                            handleDeleteComment(comment.id)
-                                        }
-                                        className="border-none bg-transparent text-gray-500 cursor-pointer"
-                                    >
-                                        삭제
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                </div>
-                {visibleComments < comments.length && ( // 더보기 버튼 조건부 렌더링
-                    <button
-                        onClick={handleLoadMoreComments}
-                        className="border-none bg-transparent text-gray-500 cursor-pointer block mx-auto my-4"
-                    >
-                        댓글 더보기
-                    </button>
-                )}
-                {showFoldButton &&
-                    visibleComments >= comments.length && ( // 접기 버튼 조건부 렌더링
-                        <button
-                            onClick={handleFoldComments}
-                            className="border-none bg-transparent text-gray-500 cursor-pointer block mx-auto my-4"
-                        >
-                            댓글 접기
-                        </button>
-                    )}
-            </div>
-            <div className="absolute bottom-16 left-0 w-full px-4 py-2 bg-white border-t border-gray-300 flex items-center">
-                <div className="flex items-center w-full border border-gray-300 rounded-lg px-4 py-2">
-                    <input
-                        type="text"
-                        value={commentText}
-                        onChange={(e) => setCommentText(e.target.value)}
-                        placeholder="댓글을 입력하세요"
-                        className="flex-1 mr-4 border-none outline-none p-2 box-border"
-                    />
-                    <button
-                        onClick={handleCommentSubmit}
-                        className="border-none bg-transparent text-gray-500 cursor-pointer p-0 flex items-center"
-                    >
-                        <img
-                            src="/assets/images/enterIcon.svg"
-                            alt="댓글 달기"
-                            className="w-5 h-5s"
-                        />
-                    </button>
-                </div>
-            </div>
+            {/* BoardComment 컴포넌트를 추가하고 필요한 props 전달 */}
+            <BoardComment
+                freeBoardId={post.id}
+                memberId={memberId}
+                onCommentsUpdate={handleCommentsUpdate}
+            />
 
             <NavBar />
         </div>

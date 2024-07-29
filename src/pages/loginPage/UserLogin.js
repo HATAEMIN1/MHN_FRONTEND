@@ -1,34 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Header from "../../layouts/header/Header";
 import ButtonBlack from "../../components/button/ButtonBlack";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../store/thunkFunction";
 
 function UserLogin() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
-    const onSubmit = (data) => console.log(data);
-    console.log(errors);
+        reset,
+    } = useForm({ mode: "onSubmit" });
+    const [loginError, setLoginError] = useState(""); // 로그인 에러 메시지 상태 추가
+    const dispatch = useDispatch();
+
+    const onSubmit = async (data) => {
+        try {
+            const resultAction = await dispatch(loginUser(data));
+            if (loginUser.fulfilled.match(resultAction)) {
+                if (resultAction.payload.error) {
+                    setLoginError("이메일이나 비밀번호가 일치하지 않습니다.");
+                } else {
+                    reset();
+                    navigate("/");
+                }
+            } else if (loginUser.rejected.match(resultAction)) {
+                setLoginError(
+                    "로그인 중 오류가 발생했습니다. 다시 시도해 주세요."
+                );
+            }
+        } catch (err) {
+            setLoginError("로그인 중 예기치 못한 오류가 발생했습니다.");
+        }
+    };
+
     return (
         <>
-            <Header></Header>
+            <div className="bg-white top-0 z-50 w-[100%]  top-0 left-0 right-0 absolute h-[65px] px-[16px] flex items-center justify-between">
+                <div className="h-[100%] flex items-center">
+                    <img
+                        src="/assets/images/backIcon.svg"
+                        alt=""
+                        className="w-[30px] h-[30px] cursor-pointer"
+                        onClick={() => {
+                            navigate("/");
+                        }}
+                    />
+                </div>
+
+                <div className="h-[100%] flex items-center">
+                    <img
+                        src="/assets/images/backIcon.svg"
+                        alt=""
+                        className="w-[30px] h-[30px] invisible"
+                    />
+                </div>
+                {/* 테스트 아이콘36 / 헤더폰트 20px / */}
+            </div>
             <div className="w-[210px] mx-auto h-[152px] mb-16">
                 <img src="/assets/logoWhite.png" className="w-full" />
             </div>
-
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
                     placeholder="Email"
                     {...register("Email", {
-                        required: true,
-                        pattern: /^\S+@\S+$/i,
+                        required: {
+                            value: true,
+                            message: "이메일을 입력 해주세요.",
+                        },
+                        pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: "이메일 형식이 맞지 않습니다.",
+                        },
                     })}
-                    className="border-b w-full p-4 mb-8 focus:outline-none focus:ring-0"
+                    className="border-b w-full p-4 mb-2 focus:outline-none focus:ring-0"
+                    onChange={() => setLoginError("")}
                 />
+                {errors.Email && (
+                    <div className="text-red-500 text-xs w-full  p-4 ">
+                        {errors.Email.message}
+                    </div>
+                )}
                 <input
                     type="password"
                     placeholder="Password"
@@ -36,13 +92,25 @@ function UserLogin() {
                         max: 15,
                         min: 8,
                         maxLength: 15,
-                        pattern:
-                            /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/i,
+                        pattern: {
+                            value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/i,
+                            message: "비밀번호가 맞지 않습니다.",
+                        },
                     })}
-                    className="border-b w-full p-4 mb-8 focus:outline-none focus:ring-0"
+                    className="border-b w-full p-4 mb-2 focus:outline-none focus:ring-0"
+                    onChange={() => setLoginError("")}
                 />
-
-                {/*<input type="submit" />*/}
+                {errors.Password && (
+                    <div className="text-red-500 text-xs w-full p-4">
+                        {errors.Password.message}
+                    </div>
+                )}
+                {loginError && (
+                    <p className="text-red-500 text-xs w-full p-4">
+                        {loginError}
+                    </p>
+                )}
+                <div className="p-2"></div>
                 <ButtonBlack
                     text1="로그인"
                     width="100%"

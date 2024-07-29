@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import axiosInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const { IMP } = window;
 function Payment() {
     const navigate = useNavigate();
+    const selector = useSelector((state) => state.userSlice);
     const pg = "kakaopay";
     const merchantUid = generateRandomString("merchantUid");
     const customerUid = generateRandomString("billingKey");
-    const userName = "포트원";
+    const userName = selector.nickname;
     const tel = "02-1234-1234";
+    const userId = selector.id;
     function generateRandomString(prefix) {
         // 현재 시간을 밀리초 단위로 가져옵니다.
         const timestamp = new Date().getTime();
@@ -57,14 +60,13 @@ function Payment() {
             amount: 8900, // (결제금액)
             buyer_name: userName, // (고객이름)
             buyer_tel: tel, // (구매자 전화번호)
-            // buyer_email: "gkxoals33@gmail.com", // 구매자 이메일
             m_redirect_url: "http://localhost:3000/subscription/payment",
         };
         /* 4. 결제 창 호출하기 */
         IMP.request_pay(data, callback);
     };
     /* 3. 콜백 함수 정의하기 */
-    const callback = (response) => {
+    const callback = async (response) => {
         console.log("리스폰스값들: ");
         console.log(response);
         const {
@@ -79,11 +81,11 @@ function Payment() {
             error_msg,
         } = response;
         // const error_msg = response.error_msg;
-        // const merchant_uid = response.merchant_uid; //주문번호
-        // const imp_uid = response.imp_uid; //고유번호
         if (response.success) {
             console.log("결제 성공");
-            paymentSubmit(
+            ReservationPayment(customerUid); // 결제 예약
+            await paymentSubmit(
+                userId,
                 pg_provider,
                 paid_amount,
                 merchant_uid,
@@ -94,12 +96,13 @@ function Payment() {
                 imp_uid,
                 error_msg
             ); //결제내역 저장
-            ReservationPayment();
+            navigate(`/subscription/${selector.id}`);
         } else {
             alert(`결제 실패: ${error_msg}`);
         }
     };
     const paymentSubmit = async (
+        userId,
         pg_provider,
         paid_amount,
         merchant_uid,
@@ -112,6 +115,7 @@ function Payment() {
     ) => {
         try {
             const body = {
+                memberId: userId,
                 impUid: imp_uid,
                 pg: pg_provider,
                 amount: paid_amount,
@@ -124,32 +128,30 @@ function Payment() {
             };
             const res = await axiosInstance.post("/subscriptions", body);
             console.log(res.data, "디비저장완료");
-            // navigate("/subscription/:userId");
         } catch (e) {
             console.log("디비저장실패", e);
         }
     };
-    const ReservationPayment = async () => {
+    const ReservationPayment = async (customer_uid) => {
         try {
-            const res = axiosInstance.get("/payments");
-
             const billingKeyRequestData = {
+                customer_uid: customer_uid,
                 schedules: [
                     {
                         merchant_uid: generateRandomString("Reservation"),
                         schedule_at: Math.floor(Date.now() / 1000) + 86400, // 예: 24시간 후
+                        // schedule_at: Math.floor(Date.now() / 1000) + 60, // 현재 시간 기준으로 1분 후
                         currency: "KRW",
                         amount: 8900, // 예시 금액
-                        name: "정기결제 상품",
+                        name: "정기결제 상품(예약)",
                         buyer_name: userName,
-                        buyer_email: "gildong@example.com",
-                        buyer_tel: "010-1234-5678",
+                        buyer_tel: tel,
                     },
                 ],
             };
 
             const response = await axiosInstance.post(
-                "/billing",
+                "payments/billing",
                 billingKeyRequestData
             );
             console.log("결제 예약 성공:", response.data);
@@ -166,7 +168,7 @@ function Payment() {
                     <h2 className="subtitle1">주문 고객</h2>
                     <div className="flex">
                         <p className="body2">{userName}</p>
-                        <p className="body2">{tel}</p>
+                        <p className="body2">({tel})</p>
                     </div>
                 </div>
                 <div>

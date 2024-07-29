@@ -40,7 +40,7 @@ import AdminTest from "./components/test/AdminTest";
 import Approval from "./components/test/Approval";
 import Report from "./components/test/Report";
 import Stats from "./components/test/Stats";
-
+import BoardSearchList from "./pages/boardPage/BoardSearchList";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -103,6 +103,10 @@ function App() {
                                 <Route
                                     path="/boards/:bdId"
                                     element={<BoardView posts={posts} />}
+                                />
+                                <Route
+                                    path="/boards/search"
+                                    element={<BoardSearchList />}
                                 />
                                 <Route
                                     path="/boards/new"
@@ -200,7 +204,6 @@ function App() {
                                     path="/admin/stats"
                                     element={<Stats />}
                                 />
-
                             </Routes>
                             {/* Account관련 경로들 싹 빠진듯 --> 내일 확인해야함 */}
                         </div>

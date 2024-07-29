@@ -69,6 +69,7 @@ function HospitalMap() {
               )
             : "거리 계산 중",
     }));
+
     return (
         <>
             <div className="mb-[10px]">
