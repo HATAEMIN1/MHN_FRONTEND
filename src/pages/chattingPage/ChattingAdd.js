@@ -6,27 +6,11 @@ import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import { useDispatch, useSelector } from "react-redux";
+import { addChatRoom } from "../../store/chatRoomSlice";
 
-const WS_ENDPOINT = "http://localhost:8080/ws"; // Update with your WebSocket endpoint
+const WS_ENDPOINT = "http://localhost:8080/ws";
 const CHAT_SEND_MESSAGES_URL = "/app/chat.sendMessages";
-/* 
-public class ChatMessageDTO { <- we'll send this to chat_send_messages_url
-    @Id
-    private String chatRoomId;
-    @Builder.Default
-    List<ChatMessage> messages = new ArrayList<>();
-}
-public class ChatMessage { <- list of this goes inside chatMessageDTO as messages
-    @Id
-    private Long id; 
-    private String chatRoomId;
-    private Long senderId;
-    private Long recipientId;
-    private String content;
-    @Builder.Default
-    private Instant createdAt = Instant.now();
-}
-*/
 const CHAT_JOIN_ROOM_URL = "/app/chat.joinRoom";
 
 // const initialMessages = [
@@ -64,9 +48,11 @@ function ChattingAdd() {
     const chatBodyRef = useRef(null);
     const stompClientRef = useRef(null); // Reference to the STOMP client
     const [chatRoomId, setChatRoomId] = useState("");
+    const userId = useSelector((state) => state.userSlice.id);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        setSenderId(Math.floor(Math.random() * 500));
+        setSenderId(userId);
         setRecipientId(Math.floor(Math.random() * 500));
     }, []);
 
@@ -79,7 +65,6 @@ function ChattingAdd() {
                     `/chat/room/${senderId}/${recipientId}`
                 );
                 const chatRoomId = response.data;
-                console.log("fetched chat room id in chattingAdd:", chatRoomId);
                 setChatRoomId(chatRoomId);
             } catch (error) {
                 console.error("Error fetching chat room ID", error);
@@ -107,7 +92,6 @@ function ChattingAdd() {
     }, [senderId, recipientId]);
 
     const fetchChatRoomDTO = async () => {
-        console.log("chatRoomId:", chatRoomId);
         if (chatRoomId === "") {
             return;
         }
@@ -122,7 +106,7 @@ function ChattingAdd() {
                 "서울 금천구 가산디지털2로 144 현대테라타워 가산DK " +
                 Math.floor(Math.random() * 20) +
                 "층";
-            console.log("chatroom:", chatRoom);
+            dispatch(addChatRoom(chatRoom));
 
             const postResponse = await axiosInstance.post(
                 "chat/room",
@@ -134,10 +118,11 @@ function ChattingAdd() {
                 }
             );
 
+            console.log("chatroom to save:", chatRoom);
             console.log("Saved new chat room:", postResponse.data);
         } catch (error) {
             console.error(
-                "Error getting chatRoomDTO of chatRoomId 11_12_cf26ec75-5944-4ee3-8687-cf3cfcdecfca",
+                `Error getting chatRoomDTO of chatRoomId ${chatRoomId}`,
                 error
             );
         }
@@ -271,18 +256,14 @@ function ChattingAdd() {
                 JSON.stringify(chatMessageDTO)
             );
             console.log("Messages sent to server:", chatMessageDTO);
-            // if (stompClientRef.current) {
-            //     stompClientRef.current.disconnect(() => {
-            //         console.log("Disconnected from WebSocket");
-            //     });
-            // }
+
             // Set up a one-time listener for the response
             const subscription = stompClientRef.current.subscribe(
                 `/user/${senderId}/private`,
                 (message) => {
                     const response = JSON.parse(message.body);
                     if (response.chatRoomId) {
-                        console.log("Messages saved successfully:", response);
+                        // console.log("Messages saved successfully:", response);
                         subscription.unsubscribe(); // Unsubscribe after receiving the response
                     } else {
                         console.error("Failed to save messages:", response);
@@ -328,36 +309,13 @@ function ChattingAdd() {
             recipientId,
             content: inputValue,
             createdAt: new Date().toISOString(),
-            // toLocaleTimeString([], {
-            //     hour: "2-digit",
-            //     minute: "2-digit",
-            // }),
-            type: "sent", // then how to know when once received message and how to simulate this...
+            type: "sent",
         };
 
         // Update local state with the new message
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            newMessage,
-            // {
-            //     ...newMessage,
-            //     timestamp: new Date().toLocaleTimeString([], {
-            //         hour: "2-digit",
-            //         minute: "2-digit",
-            //     }),
-            //     type: "sent",
-            // },
-        ]);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
 
         setInputValue("");
-        // if (stompClientRef.current) {
-        //     stompClientRef.current.send(
-        //         CHAT_SEND_MESSAGE_URL,
-        //         {},
-        //         JSON.stringify(newMessage)
-        //     );
-        //     setInputValue("");
-        // }
     };
 
     // works

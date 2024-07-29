@@ -27,7 +27,7 @@ function ChattingView() {
                     `/chat/room/${senderId}/${recipientId}`
                 );
                 const chatRoomId = response.data;
-                console.log("fetched chat room id:", chatRoomId);
+                // console.log("fetched chat room id:", chatRoomId);
                 if (chatRoomId) {
                     fetchMessages(chatRoomId);
                 }
@@ -41,7 +41,7 @@ function ChattingView() {
                 const response = await axiosInstance.get(
                     `/chat/messages/${chatRoomId}`
                 );
-                console.log("fetched messages:", response.data);
+                // console.log("fetched messages:", response.data);
                 setMessages(response.data);
                 setHasPreviousMessages(response.data.length > 0);
             } catch (error) {
@@ -211,7 +211,6 @@ function ChattingView() {
                                 </span>
                             </div>
                         </div>
-
                     ))}
             </div>
             <NavBar />
