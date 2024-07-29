@@ -6,6 +6,7 @@ import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
 import Stomp from "stompjs";
 import SockJS from "sockjs-client";
+import { useSelector } from "react-redux";
 
 const WS_ENDPOINT = "http://localhost:8080/ws"; // Update with your WebSocket endpoint
 const CHAT_SEND_MESSAGES_URL = "/app/chat.sendMessages";
@@ -64,9 +65,10 @@ function ChattingAdd() {
     const chatBodyRef = useRef(null);
     const stompClientRef = useRef(null); // Reference to the STOMP client
     const [chatRoomId, setChatRoomId] = useState("");
+    const userId = useSelector((state) => state.userSlice.id);
 
     useEffect(() => {
-        setSenderId(Math.floor(Math.random() * 500));
+        setSenderId(userId);
         setRecipientId(Math.floor(Math.random() * 500));
     }, []);
 
@@ -79,7 +81,7 @@ function ChattingAdd() {
                     `/chat/room/${senderId}/${recipientId}`
                 );
                 const chatRoomId = response.data;
-                console.log("fetched chat room id in chattingAdd:", chatRoomId);
+                // console.log("fetched chat room id in chattingAdd:", chatRoomId);
                 setChatRoomId(chatRoomId);
             } catch (error) {
                 console.error("Error fetching chat room ID", error);
@@ -107,7 +109,7 @@ function ChattingAdd() {
     }, [senderId, recipientId]);
 
     const fetchChatRoomDTO = async () => {
-        console.log("chatRoomId:", chatRoomId);
+        // console.log("chatRoomId:", chatRoomId);
         if (chatRoomId === "") {
             return;
         }
@@ -122,7 +124,7 @@ function ChattingAdd() {
                 "서울 금천구 가산디지털2로 144 현대테라타워 가산DK " +
                 Math.floor(Math.random() * 20) +
                 "층";
-            console.log("chatroom:", chatRoom);
+            // console.log("chatroom:", chatRoom);
 
             const postResponse = await axiosInstance.post(
                 "chat/room",
@@ -134,7 +136,7 @@ function ChattingAdd() {
                 }
             );
 
-            console.log("Saved new chat room:", postResponse.data);
+            // console.log("Saved new chat room:", postResponse.data);
         } catch (error) {
             console.error(
                 "Error getting chatRoomDTO of chatRoomId 11_12_cf26ec75-5944-4ee3-8687-cf3cfcdecfca",
@@ -282,7 +284,7 @@ function ChattingAdd() {
                 (message) => {
                     const response = JSON.parse(message.body);
                     if (response.chatRoomId) {
-                        console.log("Messages saved successfully:", response);
+                        // console.log("Messages saved successfully:", response);
                         subscription.unsubscribe(); // Unsubscribe after receiving the response
                     } else {
                         console.error("Failed to save messages:", response);
