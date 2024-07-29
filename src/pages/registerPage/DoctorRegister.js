@@ -27,32 +27,23 @@ function DoctorRegister() {
     const [getHospitalId, setGetHospitalId] = useState("");
 
     const handleSearch = async () => {
-        // if (getHospitalId) {
-        try {
-            const response = await axiosInstance.get(
-                `/hospitals/view?id=${getHospitalId}`
-            );
-            console.log("33번줄", response.data);
-            setSelectedHospitalName(response.data.name);
-        } catch (error) {
-            console.error("병원 정보를 가져오는 중 오류 발생:", error);
+        if (getHospitalId) {
+            try {
+                const response = await axiosInstance.get(
+                    `/hospitals/view?id=${getHospitalId}`
+                );
+                console.log("33번줄", response.data);
+                setSelectedHospitalName(response.data.name);
+            } catch (error) {
+                console.error("병원 정보를 가져오는 중 오류 발생:", error);
+            }
         }
-        // }
     };
 
     useEffect(() => {
         handleSearch();
     }, [getHospitalId]);
 
-    const handleModalOpen = () => {
-        console.log("모달 버튼 클릭됨");
-    };
-
-    const handleButtonClick = (e) => {
-        e.preventDefault(); // 기본 동작 방지
-        // 여기에 각 버튼에 대한 로직을 추가할 수 있습니다.
-        console.log("버튼 클릭됨");
-    };
     const onSubmit = async (data) => {
         if (!isEmailVerified) {
             setError("email", {
@@ -61,14 +52,18 @@ function DoctorRegister() {
             });
             return;
         }
+        if (!getHospitalId) {
+            alert("병원을 선택해주세요.");
+            return;
+        }
         try {
-            const response = await axiosInstance.post("/register", {
+            const response = await axiosInstance.post("/doctors/register", {
                 email: data.email,
                 password: data.password,
-                nickName: data.nickName,
+                hospitalId: getHospitalId,
             });
             if (response.status === 200) {
-                navigate("/users/login");
+                navigate("/doctors/register/pending");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -104,9 +99,13 @@ function DoctorRegister() {
             return;
         }
         try {
-            const response = await axiosInstance.post("/sendemail", null, {
-                params: { email },
-            });
+            const response = await axiosInstance.post(
+                "/doctors/sendemail",
+                null,
+                {
+                    params: { email },
+                }
+            );
             if (response.status === 200) {
                 setEmailValidMessage("인증 코드가 전송되었습니다.");
                 setIsVerificationCodeSent(true);
@@ -139,7 +138,7 @@ function DoctorRegister() {
             return;
         }
         try {
-            const response = await axiosInstance.post("/verify", null, {
+            const response = await axiosInstance.post("/doctors/verify", null, {
                 params: { email, code },
             });
             if (response.status === 200) {
@@ -262,10 +261,6 @@ function DoctorRegister() {
                         {errors.passwordConfirm.message}
                     </p>
                 )}
-                {/* 찾기 버튼을 누르면 카카오  */}
-                {/* 지도에서 병원 이름으로 검색합니다. */}
-                {/* 이름과 일치되는 병원리스트가 먼저 출력되고, 클릭하면 해당 병원의 정보중 - 이름이 올라옵니다. */}
-                {/* 해당 병원의 아이디값을 디비로 전송합니다. */}
 
                 <SearchModalManager
                     type="button"
@@ -279,11 +274,14 @@ function DoctorRegister() {
                                         : "재직중인 동물병원 이름 - 닉네임 대신 사용됩니다."
                                 }
                                 className=" w-full p-4 border-none focus:outline-none focus:ring-0 in"
-                                // disabled={true}
                                 readOnly
                             />
                             <div style={{ cursor: "pointer" }}>
-                                <ButtonBlack text1="찾기"></ButtonBlack>
+                                <ButtonBlack
+                                    text1="찾기"
+                                    type="button"
+                                    handleClick={(e) => e.preventDefault()}
+                                />
                             </div>
                         </div>
                     }
@@ -307,7 +305,7 @@ function DoctorRegister() {
                         노력하겠습니다🥰
                     </p>
                 </div>
-                {/* {getHospitalId} */}
+
                 <ModalManager
                     modalContent={({ closeModal }) => (
                         <div>
@@ -316,36 +314,31 @@ function DoctorRegister() {
                             <ButtonClear
                                 text1="네"
                                 text2="아니요"
-                                handleClick={(e) => {
-                                    // handleDeleteComment(
-                                    //     item.id
-                                    // );
-                                    alert("전송할거임");
-                                    closeModal();
-                                    // 여기에 새로 넘어가야할 페이지 navigate to도 해줘야함.
-                                }}
-                                handleClick2={(e) => {
+                                handleClick={() => {
+                                    handleSubmit(onSubmit)();
                                     closeModal();
                                 }}
+                                handleClick2={closeModal}
                             />
                         </div>
                     )}
                 >
                     {({ openModal }) => (
-                        <div onClick={openModal}>
-                            <ButtonBlack
-                                type="submit"
-                                text1="회원가입 요청하기"
-                                width="100%"
-                                height="45px"
-                                // 들어가야할 함수 -> 폼제출 + 모달오픈
-                                // 모달 안내문구 -
-                            ></ButtonBlack>
-                        </div>
+                        <ButtonBlack
+                            type="button"
+                            text1="회원가입 요청하기"
+                            width="100%"
+                            height="45px"
+                            handleClick={(e) => {
+                                e.preventDefault();
+                                openModal();
+                            }}
+                        />
                     )}
                 </ModalManager>
             </form>
         </>
     );
 }
+
 export default DoctorRegister;

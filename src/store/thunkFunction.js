@@ -20,3 +20,23 @@ export const loginUser = createAsyncThunk(
         }
     }
 );
+
+export const loginDoctor = createAsyncThunk(
+    "loginDoctor",
+    async (body, thunkAPI) => {
+        try {
+            const res = await axiosInstance.post("/doctor/login", null, {
+                params: {
+                    username: body.Email,
+                    password: body.Password,
+                },
+            });
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            return thunkAPI.rejectWithValue(
+                error.response.data || error.message
+            );
+        }
+    }
+);

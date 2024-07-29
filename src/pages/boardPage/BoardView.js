@@ -110,10 +110,19 @@ function BoardView() {
             });
     };
 
+    const profileImageUrl = post.member.profileImageUrl
+        ? `http://localhost:8080${post.member.profileImageUrl}`
+        : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
+
     return (
         <div className="pt-5 pb-7">
             <Header title="자유게시판" />
             <div className="flex items-center mb-5">
+                <img
+                    src={profileImageUrl}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full mr-3"
+                />
                 <div>{post.member.nickName}</div>
                 <div style={{ marginLeft: "10px" }}>
                     {timeAgo(post.createDate)}
