@@ -54,8 +54,8 @@ const CHAT_JOIN_ROOM_URL = "/app/chat.joinRoom";
 // ];
 
 function ChattingAdd() {
-    const senderId = 11;
-    const recipientId = 12;
+    const [senderId, setSenderId] = useState(null);
+    const [recipientId, setRecipientId] = useState(null);
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [isChatExpired, setIsChatExpired] = useState(false);
@@ -65,18 +65,21 @@ function ChattingAdd() {
     const stompClientRef = useRef(null); // Reference to the STOMP client
     const [chatRoomId, setChatRoomId] = useState("");
 
+    useEffect(() => {
+        setSenderId(Math.floor(Math.random() * 500));
+        setRecipientId(Math.floor(Math.random() * 500));
+    }, []);
+
     // works
     useEffect(() => {
         const fetchChatRoomId = async () => {
+            if (senderId == null || recipientId == null) return;
             try {
                 const response = await axiosInstance.get(
                     `/chat/room/${senderId}/${recipientId}`
                 );
                 const chatRoomId = response.data;
-                console.log(
-                    "fetched new chat room id in chattingAdd:",
-                    chatRoomId
-                );
+                console.log("fetched chat room id in chattingAdd:", chatRoomId);
                 setChatRoomId(chatRoomId);
             } catch (error) {
                 console.error("Error fetching chat room ID", error);
@@ -102,6 +105,46 @@ function ChattingAdd() {
         window.addEventListener("resize", adjustChatBodyHeight);
         return () => window.removeEventListener("resize", adjustChatBodyHeight);
     }, [senderId, recipientId]);
+
+    const fetchChatRoomDTO = async () => {
+        console.log("chatRoomId:", chatRoomId);
+        if (chatRoomId === "") {
+            return;
+        }
+        try {
+            const response = await axiosInstance.get(`chat/room/${chatRoomId}`);
+            const chatRoomDTO = response.data;
+            const chatRoom = chatRoomDTO.chatRoom;
+            chatRoom.title =
+                "코드랩아카데미병원" + Math.floor(Math.random() * 500);
+            chatRoom.likes = Math.floor(Math.random() * 500);
+            chatRoom.address =
+                "서울 금천구 가산디지털2로 144 현대테라타워 가산DK " +
+                Math.floor(Math.random() * 20) +
+                "층";
+            console.log("chatroom:", chatRoom);
+
+            const postResponse = await axiosInstance.post(
+                "chat/room",
+                chatRoom,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            console.log("Saved new chat room:", postResponse.data);
+        } catch (error) {
+            console.error(
+                "Error getting chatRoomDTO of chatRoomId 11_12_cf26ec75-5944-4ee3-8687-cf3cfcdecfca",
+                error
+            );
+        }
+    };
+    useEffect(() => {
+        fetchChatRoomDTO();
+    }, [chatRoomId]);
 
     // works
     useEffect(() => {
