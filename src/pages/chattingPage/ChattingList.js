@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link } from "react-router-dom";
@@ -6,10 +6,42 @@ import FilterModalManager from "../../components/modal/FilterModalManager";
 import Searchbar from "../../components/search/Searchbar";
 import ChattingListForm from "../../components/Form/ChattingListForm";
 import PlusButton from "../../components/button/PlusButton";
+import axiosInstance from "../../utils/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setChatRooms } from "../../store/chatRoomSlice";
 
 function ChattingList() {
+    const dispatch = useDispatch();
+    const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+    const [filteredChatrooms, setFilteredChatrooms] = useState([]);
+
+    const fetchChatrooms = async () => {
+        try {
+            const response = await axiosInstance.get("/chatrooms");
+            dispatch(setChatRooms(response.data));
+            setFilteredChatrooms(response.data); // Initialize with all chatrooms
+        } catch (error) {
+            console.error("Error fetching chatrooms:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchChatrooms();
+    }, []);
+
     const handleModalOpen = () => {
         console.log("모달 버튼 클릭됨");
+    };
+
+    const onSearch = (searchVal) => {
+        console.log(searchVal);
+        const filtered = chatrooms.filter(
+            (chatroom) =>
+                chatroom.title.includes(searchVal) ||
+                chatroom.address.includes(searchVal)
+        );
+        console.log("filtered chatrooms:", filtered);
+        setFilteredChatrooms(filtered);
     };
 
     return (
@@ -31,7 +63,7 @@ function ChattingList() {
             {/* tab메뉴 end */}
             {/* 검색창 + 필터모달버튼 start */}
             <div className="flex items-center gap-[8px] mb-[20px]">
-                <Searchbar />
+                <Searchbar onSearch={onSearch} />
                 <FilterModalManager
                     modalOpen={
                         <div
@@ -52,7 +84,7 @@ function ChattingList() {
             {/* 검색창 + 필터모달버튼 end */}
             {/* 채팅창 리스트 start*/}
             <div>
-                <ChattingListForm />
+                <ChattingListForm filteredChatrooms={filteredChatrooms} />
             </div>
             <PlusButton />
             <NavBar />

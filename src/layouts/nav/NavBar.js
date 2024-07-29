@@ -7,8 +7,6 @@ import ButtonClear from "../../components/button/ButtonClear";
 function NavBar() {
     const navigate = useNavigate();
     const loginState = useSelector((state) => {
-        console.log(state.userSlice);
-        console.log(state.userSlice.id);
         return state.userSlice;
     });
     const location = useLocation();

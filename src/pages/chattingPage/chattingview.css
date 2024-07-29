@@ -10,6 +10,18 @@
     position: relative; /* Ensure child elements can be positioned relative to this container */
 }
 
+.chat-body-view {
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    position: relative; /* Ensure child elements can be positioned relative to this container */
+}
+
 .system-message {
     position: sticky;
     top: 0;
@@ -55,7 +67,7 @@
 .timestamp {
     display: block;
     font-size: 12px;
-    color: #aaa;
+    color: white;
     text-align: right;
     margin-top: 5px;
     white-space: nowrap;
