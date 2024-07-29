@@ -2,24 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 
-function ChattingListForm() {
-    const [chatrooms, setChatrooms] = useState([]);
-
-    useEffect(() => {
-        // Fetch chatrooms from the backend
-        axiosInstance
-            .get("/chatrooms")
-            .then((response) => {
-                setChatrooms(response.data);
-            })
-            .catch((error) => {
-                console.error(
-                    "There was an error fetching the chatrooms!",
-                    error
-                );
-            });
-    }, []);
-
+function ChattingListForm({ chatrooms }) {
     return (
         <>
             {chatrooms.map((chatroom, idx) => {

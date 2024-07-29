@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link } from "react-router-dom";
@@ -9,44 +9,37 @@ import PlusButton from "../../components/button/PlusButton";
 import axiosInstance from "../../utils/axios";
 
 function ChattingList() {
+    const [chatrooms, setChatrooms] = useState([]);
+    const [filteredChatrooms, setFilteredChatrooms] = useState([]);
+
+    const fetchChatrooms = async () => {
+        try {
+            const response = await axiosInstance.get("/chatrooms");
+            setChatrooms(response.data);
+            setFilteredChatrooms(response.data); // Initialize with all chatrooms
+        } catch (error) {
+            console.error("Error fetching chatrooms:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchChatrooms();
+    }, []);
+
     const handleModalOpen = () => {
         console.log("모달 버튼 클릭됨");
     };
 
-    // useEffect(() => {
-    //     const fetchChatRoomDTO = async () => {
-    //         try {
-    //             const response = await axiosInstance.get(
-    //                 "chat/room/11_12_cf26ec75-5944-4ee3-8687-cf3cfcdecfca"
-    //             );
-    //             const chatRoomDTO = response.data;
-    //             const chatRoom = chatRoomDTO.chatRoom;
-    //             chatRoom.title = "코드랩아카데미병원";
-    //             chatRoom.likes = 300;
-    //             chatRoom.address =
-    //                 "서울 금천구 가산디지털2로 144 현대테라타워 가산DK 1층";
-    //             console.log("chatroom:", chatRoom);
-
-    //             const postResponse = await axiosInstance.post(
-    //                 "chat/room",
-    //                 chatRoom,
-    //                 {
-    //                     headers: {
-    //                         "Content-Type": "application/json",
-    //                     },
-    //                 }
-    //             );
-
-    //             console.log("Saved new chat room:", postResponse.data);
-    //         } catch (error) {
-    //             console.error(
-    //                 "Error getting chatRoomDTO of chatRoomId 11_12_cf26ec75-5944-4ee3-8687-cf3cfcdecfca",
-    //                 error
-    //             );
-    //         }
-    //     };
-    //     fetchChatRoomDTO();
-    // }, []);
+    const onSearch = (searchVal) => {
+        console.log(searchVal);
+        const filtered = chatrooms.filter(
+            (chatroom) =>
+                chatroom.title.includes(searchVal) ||
+                chatroom.address.includes(searchVal)
+        );
+        console.log("filtered chatrooms:", filtered);
+        setFilteredChatrooms(filtered);
+    };
 
     return (
         <>
@@ -67,7 +60,7 @@ function ChattingList() {
             {/* tab메뉴 end */}
             {/* 검색창 + 필터모달버튼 start */}
             <div className="flex items-center gap-[8px] mb-[20px]">
-                <Searchbar />
+                <Searchbar onSearch={onSearch} />
                 <FilterModalManager
                     modalOpen={
                         <div
@@ -88,7 +81,7 @@ function ChattingList() {
             {/* 검색창 + 필터모달버튼 end */}
             {/* 채팅창 리스트 start*/}
             <div>
-                <ChattingListForm />
+                <ChattingListForm chatrooms={filteredChatrooms} />
             </div>
             <PlusButton />
             <NavBar />

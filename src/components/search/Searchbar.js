@@ -6,6 +6,7 @@ function Searchbar({ onSearch }) {
     function handleSearch(e) {
         if (e.key === "Enter" || e.type === "click") {
             onSearch(search); // 페이지에서 전달받은 검색 로직 실행
+            setSearch("");
         }
     }
 
