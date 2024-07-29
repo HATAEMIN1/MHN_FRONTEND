@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../utils/axios";
 import NavBar from "../../layouts/nav/NavBar";
@@ -7,45 +7,9 @@ import Header from "../../layouts/header/Header";
 function AccountEdit() {
     const userId = useSelector((state) => state.userSlice.id);
     const [nickName, setNickName] = useState("");
-    const [email, setEmail] = useState("");
-    const [tel, setTel] = useState("");
-    const [name, setName] = useState("");
-    const [profileImageUrl, setProfileImageUrl] = useState(
-        "/assets/images/default_profile.png"
-    );
     const [password, setPassword] = useState("");
     const [file, setFile] = useState(null);
     const [errors, setErrors] = useState({});
-
-    useEffect(() => {
-        const fetchMemberInfo = async () => {
-            try {
-                const response = await axiosInstance.get(`/members/edit`, {
-                    params: { id: userId },
-                });
-                const { email, nickName, profileImageUrl, tel, name } =
-                    response.data;
-
-                setEmail(email);
-                setNickName(nickName || "");
-                const absoluteProfileImageUrl = profileImageUrl
-                    ? `http://localhost:8080${profileImageUrl}`
-                    : "/assets/images/default_profile.png";
-                setProfileImageUrl(absoluteProfileImageUrl);
-                setTel(tel || "");
-                setName(name || "");
-
-                console.log(
-                    "Fetched profileImageUrl: ",
-                    absoluteProfileImageUrl
-                ); // 절대 경로로 로그 출력
-            } catch (error) {
-                console.error("Error fetching member info:", error);
-            }
-        };
-
-        fetchMemberInfo();
-    }, [userId]);
 
     const validateNickName = (nickName) => {
         if (nickName.length < 2 || nickName.length > 8) {
@@ -115,6 +79,10 @@ function AccountEdit() {
         }
 
         try {
+            console.log("닉네임 업데이트 요청 데이터:", {
+                id: userId,
+                nickName,
+            });
             const params = new URLSearchParams();
             params.append("id", userId);
             params.append("nickName", nickName);
@@ -133,6 +101,10 @@ function AccountEdit() {
             return;
         }
         try {
+            console.log("비밀번호 업데이트 요청 데이터:", {
+                id: userId,
+                password,
+            });
             const params = new URLSearchParams();
             params.append("id", userId);
             params.append("password", password);
@@ -154,17 +126,15 @@ function AccountEdit() {
         formData.append("file", file);
 
         try {
-            const response = await axiosInstance.post(
-                `/users/profile-image`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-            const absoluteProfileImageUrl = `http://localhost:8080${response.data}`;
-            setProfileImageUrl(absoluteProfileImageUrl); // 업데이트된 이미지 URL 절대 경로로 설정
+            console.log("프로필 이미지 업데이트 요청 데이터:", {
+                id: userId,
+                file,
+            });
+            await axiosInstance.post(`/users/profile-image`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             alert("프로필 이미지가 성공적으로 업데이트되었습니다.");
         } catch (error) {
             console.error("Error updating profile image:", error);
@@ -177,12 +147,12 @@ function AccountEdit() {
             <form>
                 <Header title="회원정보 수정" />
                 <div className="h-full flex flex-col items-center justify-evenly">
+                    {/* img s */}
                     <div className="py-[30px]">
                         <div className="relative">
                             <img
-                                src={profileImageUrl}
+                                src="/assets/images/dog44.png"
                                 className="w-24 h-24 rounded-full"
-                                alt="Profile"
                             />
                             <input
                                 type="file"
@@ -198,19 +168,17 @@ function AccountEdit() {
                                 <img
                                     src="/assets/images/camera_W.svg"
                                     className="w-5 h-5"
-                                    alt="Edit"
                                 />
                             </label>
                         </div>
                     </div>
+                    {/* input s */}
                     <div className="flex flex-col w-full max-w-md border border-gray-200 rounded-lg px-5 py-4 gap-3 justify-center text-primary-300">
                         <div className="flex justify-between border-b border-gray-500 py-3 gap-2 items-center">
                             <span className="subtitle1">회원번호</span>
                             <input
                                 placeholder="회원번호**"
                                 className="body2 flex-grow text-sub-100 text-right focus:outline-none"
-                                value={userId}
-                                readOnly
                             />
                         </div>
                         <div className="flex flex-col justify-between border-b border-gray-500 py-3 gap-2">
@@ -226,7 +194,6 @@ function AccountEdit() {
                                     src="/assets/images/editIcon.svg"
                                     className="cursor-pointer w-4 h-4"
                                     onClick={updateNickName}
-                                    alt="Edit"
                                 />
                             </div>
                             {errors.nickName && (
@@ -240,8 +207,6 @@ function AccountEdit() {
                             <input
                                 placeholder="이메일**"
                                 className="body2 flex-grow text-sub-100 text-right focus:outline-none"
-                                value={email}
-                                readOnly
                             />
                         </div>
                         <div className="flex flex-col justify-between border-b border-gray-500 py-3 gap-2">
@@ -258,7 +223,6 @@ function AccountEdit() {
                                     src="/assets/images/editIcon.svg"
                                     className="cursor-pointer w-4 h-4"
                                     onClick={updatePassword}
-                                    alt="Edit"
                                 />
                             </div>
                             {errors.password && (
@@ -273,13 +237,10 @@ function AccountEdit() {
                                 <input
                                     placeholder="등록하기"
                                     className="body2 flex-grow text-sub-100 text-right focus:outline-none"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
                                 />
                                 <img
                                     src="/assets/images/editIcon.svg"
                                     className="cursor-pointer w-4 h-4"
-                                    alt="Edit"
                                 />
                             </div>
                         </div>
@@ -289,13 +250,10 @@ function AccountEdit() {
                                 <input
                                     placeholder="인증하기"
                                     className="body2 flex-grow text-sub-100 text-right focus:outline-none"
-                                    value={tel}
-                                    onChange={(e) => setTel(e.target.value)}
                                 />
                                 <img
                                     src="/assets/images/editIcon.svg"
                                     className="cursor-pointer w-4 h-4"
-                                    alt="Edit"
                                 />
                             </div>
                         </div>

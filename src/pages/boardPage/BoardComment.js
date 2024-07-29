@@ -197,38 +197,44 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
     };
 
     const renderReplies = (replies) => {
-        return replies.map((reply, index) => (
-            <div
-                key={index}
-                className="ml-8 mb-4 flex justify-between items-center reply"
-            >
-                <div className="flex">
-                    <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                        <img
-                            src={reply.profileImage}
-                            alt="profile"
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
-                    <div>
-                        <div className="font-bold">{reply.nickName}</div>{" "}
-                        {/* 닉네임 표시 */}
-                        <div className="text-sm">{reply.content}</div>
-                        <div className="text-xs text-gray-500 flex items-center">
-                            {timeAgo(reply.createDate)}
+        return replies.map((reply, index) => {
+            const profileImageUrl = reply.profileImage
+                ? `http://localhost:8080${reply.profileImage}`
+                : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
+
+            return (
+                <div
+                    key={index}
+                    className="ml-8 mb-4 flex justify-between items-center reply"
+                >
+                    <div className="flex">
+                        <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                            <img
+                                src={profileImageUrl}
+                                alt="profile"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+                        <div>
+                            <div className="font-bold">{reply.nickName}</div>{" "}
+                            {/* 닉네임 표시 */}
+                            <div className="text-sm">{reply.content}</div>
+                            <div className="text-xs text-gray-500 flex items-center">
+                                {timeAgo(reply.createDate)}
+                            </div>
                         </div>
                     </div>
+                    {reply.memberId === memberId && (
+                        <button
+                            onClick={() => handleDeleteReply(reply.id)}
+                            className="border-none bg-transparent text-gray-500 cursor-pointer"
+                        >
+                            삭제
+                        </button>
+                    )}
                 </div>
-                {reply.memberId === memberId && (
-                    <button
-                        onClick={() => handleDeleteReply(reply.id)}
-                        className="border-none bg-transparent text-gray-500 cursor-pointer"
-                    >
-                        삭제
-                    </button>
-                )}
-            </div>
-        ));
+            );
+        });
     };
 
     useEffect(() => {
@@ -267,74 +273,81 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                     }
                     `}
                 </style>
-                {comments.slice(0, visibleComments).map((comment, index) => (
-                    <div key={index} className="mb-4">
-                        <div className="flex justify-between items-center">
-                            <div className="flex">
-                                <div className="w-10 h-10 rounded-full overflow-hidden mr-2">
-                                    <img
-                                        src={comment.profileImage}
-                                        alt="profile"
-                                        className="w-full h-full object-cover"
-                                    />
+                {comments.slice(0, visibleComments).map((comment, index) => {
+                    const profileImageUrl = comment.profileImage
+                        ? `http://localhost:8080${comment.profileImage}`
+                        : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
+
+                    return (
+                        <div key={index} className="mb-4">
+                            <div className="flex justify-between items-center">
+                                <div className="flex">
+                                    <div className="w-10 h-10 rounded-full overflow-hidden mr-2">
+                                        <img
+                                            src={profileImageUrl}
+                                            alt="profile"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div>
+                                        <div className="font-bold">
+                                            {comment.nickName}{" "}
+                                            {/* 닉네임 표시 */}
+                                        </div>
+                                        <div className="text-sm">
+                                            {comment.content}
+                                        </div>
+                                        <div className="text-xs text-gray-500 flex items-center">
+                                            {timeAgo(comment.createDate)}
+                                            <button
+                                                className="ml-2 border-none bg-transparent text-gray-500 cursor-pointer"
+                                                onClick={() =>
+                                                    handleReplyClick(comment.id)
+                                                }
+                                            >
+                                                댓글달기
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className="font-bold">
-                                        {comment.nickName} {/* 닉네임 표시 */}
-                                    </div>
-                                    <div className="text-sm">
-                                        {comment.content}
-                                    </div>
-                                    <div className="text-xs text-gray-500 flex items-center">
-                                        {timeAgo(comment.createDate)}
-                                        <button
-                                            className="ml-2 border-none bg-transparent text-gray-500 cursor-pointer"
-                                            onClick={() =>
-                                                handleReplyClick(comment.id)
-                                            }
-                                        >
-                                            댓글달기
-                                        </button>
-                                    </div>
-                                </div>
+                                {comment.memberId === memberId && (
+                                    <button
+                                        onClick={() =>
+                                            handleDeleteComment(comment.id)
+                                        }
+                                        className="border-none bg-transparent text-gray-500 cursor-pointer"
+                                    >
+                                        삭제
+                                    </button>
+                                )}
                             </div>
-                            {comment.memberId === memberId && (
-                                <button
-                                    onClick={() =>
-                                        handleDeleteComment(comment.id)
-                                    }
-                                    className="border-none bg-transparent text-gray-500 cursor-pointer"
-                                >
-                                    삭제
-                                </button>
+                            {replyParentId === comment.id && (
+                                <div className="ml-8 mb-4 flex items-center">
+                                    <input
+                                        type="text"
+                                        value={replyText}
+                                        onChange={handleReplyTextChange}
+                                        placeholder="대댓글을 입력하세요"
+                                        className={`flex-1 mr-4 border border-gray-300 rounded-lg px-4 py-2 ${commentError ? "border-red-500" : ""}`}
+                                    />
+                                    <button
+                                        onClick={() =>
+                                            handleReplySubmit(comment.id)
+                                        }
+                                        className="border-none bg-transparent text-gray-500 cursor-pointer p-0 flex items-center"
+                                    >
+                                        <img
+                                            src="/assets/images/enterIcon.svg"
+                                            alt="대댓글 달기"
+                                            className="w-5 h-5"
+                                        />
+                                    </button>
+                                </div>
                             )}
+                            {comment.replies && renderReplies(comment.replies)}
                         </div>
-                        {replyParentId === comment.id && (
-                            <div className="ml-8 mb-4 flex items-center">
-                                <input
-                                    type="text"
-                                    value={replyText}
-                                    onChange={handleReplyTextChange}
-                                    placeholder="대댓글을 입력하세요"
-                                    className={`flex-1 mr-4 border border-gray-300 rounded-lg px-4 py-2 ${commentError ? "border-red-500" : ""}`}
-                                />
-                                <button
-                                    onClick={() =>
-                                        handleReplySubmit(comment.id)
-                                    }
-                                    className="border-none bg-transparent text-gray-500 cursor-pointer p-0 flex items-center"
-                                >
-                                    <img
-                                        src="/assets/images/enterIcon.svg"
-                                        alt="대댓글 달기"
-                                        className="w-5 h-5"
-                                    />
-                                </button>
-                            </div>
-                        )}
-                        {comment.replies && renderReplies(comment.replies)}
-                    </div>
-                ))}
+                    );
+                })}
             </div>
             {visibleComments < comments.length && (
                 <button

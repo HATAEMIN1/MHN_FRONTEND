@@ -43,6 +43,7 @@ import BoardSearchList from "./pages/boardPage/BoardSearchList";
 import { useDispatch, useSelector } from "react-redux";
 import { setChatRooms } from "./store/chatRoomSlice";
 import axiosInstance from "./utils/axios";
+import DoctorRegisterPending from "./pages/registerPage/DoctorRegisterPending";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -92,6 +93,11 @@ function App() {
                                     path="/doctors/register"
                                     element={<DoctorRegister />}
                                 />
+                                <Route
+                                    path="/doctors/register/pending"
+                                    element={<DoctorRegisterPending />}
+                                />
+
                                 <Route path="/" element={<Main />} />
                                 {/*채팅*/}
                                 <Route path="/chat" element={<ChatRoom />} />
