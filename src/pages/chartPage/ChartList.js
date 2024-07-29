@@ -4,6 +4,7 @@ import NavBar from "../../layouts/nav/NavBar";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 import { useSelector } from "react-redux";
+import { SubscriptionComponent } from "../../components/subscription/SubscriptionComponent";
 
 function ChartList() {
     const navigate = useNavigate();
@@ -57,6 +58,7 @@ function ChartList() {
             navigate("/users/login");
         }
     }, []);
+    SubscriptionComponent();
     return (
         <>
             <Header title="진료기록" write="charts/new" />

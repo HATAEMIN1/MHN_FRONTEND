@@ -32,6 +32,7 @@ export const loginDoctor = createAsyncThunk(
         } catch (error) {
             console.log(error);
             return thunkAPI.rejectWithValue(
+
                 error.response?.data || error.message
             );
         }
