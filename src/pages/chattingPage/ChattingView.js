@@ -16,8 +16,6 @@ function ChattingView() {
     const { senderId, recipientId } = useParams();
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
-    const [isChatExpired, setIsChatExpired] = useState(false);
-    const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
     const [hasPreviousMessages, setHasPreviousMessages] = useState(false);
     const chatBodyRef = useRef(null);
     const stompClientRef = useRef(null); // Reference to the STOMP client
@@ -46,11 +44,6 @@ function ChattingView() {
                 console.log("fetched messages:", response.data);
                 setMessages(response.data);
                 setHasPreviousMessages(response.data.length > 0);
-                if (response.data.length > 0) {
-                    setIsChatExpired(true); // If there are previous messages, the chat isn't expired
-                } else {
-                    setIsChatExpired(false); // No previous messages means chat can be active
-                }
             } catch (error) {
                 console.error("Error fetching messages", error);
             }
@@ -78,25 +71,6 @@ function ChattingView() {
         window.addEventListener("resize", adjustChatBodyHeight);
         return () => window.removeEventListener("resize", adjustChatBodyHeight);
     }, []);
-
-    useEffect(() => {
-        if (!hasPreviousMessages && !isChatExpired) {
-            const startTime = Date.now();
-            const timer = setInterval(() => {
-                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-                const remainingTime = 300 - elapsedTime;
-                if (remainingTime <= 0) {
-                    setIsChatExpired(true);
-                    setCountdown(0);
-                    clearInterval(timer);
-                } else {
-                    setCountdown(remainingTime);
-                }
-            }, 1000);
-
-            return () => clearInterval(timer);
-        }
-    }, [hasPreviousMessages, isChatExpired]);
 
     useEffect(() => {
         if (chatBodyRef.current) {
@@ -189,7 +163,11 @@ function ChattingView() {
                 hour: "2-digit",
                 minute: "2-digit",
             }),
+            type: "sent",
         };
+
+        // Update local state with the new message
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
 
         if (stompClientRef.current) {
             stompClientRef.current.send(
@@ -210,14 +188,9 @@ function ChattingView() {
 
     return (
         <>
-            <Header title="1:1 채팅" />
-            <div className="chat-body" ref={chatBodyRef}>
-                {!hasPreviousMessages && !isChatExpired && (
-                    <div className="system-message">
-                        5분 이상 메시지가 없으면 채팅이 종료됩니다. (
-                        {formatTime(countdown)})
-                    </div>
-                )}
+            <Header title="1:1 채팅 기록" />
+            <div className="chat-body-view" ref={chatBodyRef}>
+                <div className="system-message">종료된 채팅입니다.</div>
                 {hasPreviousMessages &&
                     messages.map((msg) => (
                         <div
@@ -239,24 +212,7 @@ function ChattingView() {
                             </div>
                         </div>
                     ))}
-                {isChatExpired && (
-                    <div className="system-message">종료된 채팅입니다.</div>
-                )}
             </div>
-            {!hasPreviousMessages && !isChatExpired && (
-                <div className="chat-footer">
-                    <input
-                        type="text"
-                        placeholder="메시지 입력..."
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                    />
-                    <button className="send-button" onClick={handleSendMessage}>
-                        ↑
-                    </button>
-                </div>
-            )}
             <NavBar />
         </>
     );
