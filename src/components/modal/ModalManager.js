@@ -18,11 +18,13 @@ function ModalManager({ children, modalContent }) {
                 ? children({ openModal })
                 : children}
             {isModalOpen && (
-                <Modal onClose={closeModal}>
-                    {typeof modalContent === "function"
-                        ? modalContent({ closeModal })
-                        : modalContent}
-                </Modal>
+                <div className="fixed inset-0 z-50">
+                    <Modal onClose={closeModal}>
+                        {typeof modalContent === "function"
+                            ? modalContent({ closeModal })
+                            : modalContent}
+                    </Modal>
+                </div>
             )}
         </>
     );

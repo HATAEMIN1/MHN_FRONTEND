@@ -43,7 +43,7 @@ function Modal({ onClose, children }) {
 
     return (
         <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-20 flex items-center justify-center modal-overlay"
+            className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center modal-overlay"
             onClick={handleOutsideClick}
         >
             <div style={modalContainerStyle}>

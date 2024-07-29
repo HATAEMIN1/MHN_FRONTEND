@@ -1,11 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import ModalManager from "../../components/modal/ModalManager";
-import ButtonClear from "../../components/button/ButtonClear";
+import { Link, useLocation } from "react-router-dom";
 
 function NavBar() {
-    const navigate = useNavigate();
     const loginState = useSelector((state) => {
         console.log(state.userSlice);
         console.log(state.userSlice.id);
@@ -55,7 +52,7 @@ function NavBar() {
         },
         {
             title: "진료기록",
-            route: "/users/login",
+            route: "/charts",
             grayIcon: "medicalHistory_gray",
             blackIcon: "medicalHistory_black",
         },
@@ -110,41 +107,7 @@ function NavBar() {
                         const isActive = location.pathname === item.route;
                         const isActive2 = location.pathname === item.route2;
                         // console.log(location.pathname);
-                        return item.route == "/users/login" ? (
-                            <ModalManager
-                                modalContent={({ closeModal }) => (
-                                    <div>
-                                        <p className="mb-[8px]">
-                                            로그인 유저만 이용 가능합니다.
-                                        </p>
-
-                                        <ButtonClear
-                                            text1="로그인페이지로"
-                                            text2="원래페이지로"
-                                            handleClick={(e) => {
-                                                navigate("/users/login");
-                                                closeModal();
-                                            }}
-                                            handleClick2={(e) => {
-                                                closeModal();
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                            >
-                                {({ openModal }) => (
-                                    <div onClick={openModal}>
-                                        <li className="text-center mini">
-                                            <img
-                                                src={`/assets/images/${isActive ? item.blackIcon : isActive2 ? item.blackIcon : item.grayIcon}.svg`}
-                                                className="m-auto"
-                                            />
-                                            {item.title}
-                                        </li>
-                                    </div>
-                                )}
-                            </ModalManager>
-                        ) : (
+                        return (
                             <Link to={item.route} key={idx}>
                                 <li className="text-center mini">
                                     <img

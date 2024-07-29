@@ -16,8 +16,14 @@ function Main() {
     const [hospitalData, setHospitalData] = useState([]);
     const [boardPosts, setBoardPosts] = useState([]);
     const [sortBy, setSortBy] = useState("distance");
-    const selector = useSelector((state) => state.userSlice);
-    console.log(selector);
+
+
+    const loginState = useSelector((state) => {
+        console.log(state.userSlice);
+        console.log(state.userSlice.id);
+    });
+
+
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {
         navigate(pageUrl);
@@ -55,6 +61,7 @@ function Main() {
                 try {
                     const response = await axiosInstance.get(
                         `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                        // `/hospitals?latitude=37.3835006&longitude=126.9606728`
                     );
                     const hospitals = response.data;
 

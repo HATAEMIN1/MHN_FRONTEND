@@ -4,6 +4,7 @@ import NavBar from "../../layouts/nav/NavBar";
 import { Link, useParams } from "react-router-dom";
 import KakaoMapView from "../../components/kakaomap/KakaoMapView";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function HospitalView() {
     // const [bookmark, setBookmark] = useState(false);
@@ -13,10 +14,16 @@ function HospitalView() {
     //     setBookmark(!bookmark);
     //     console.log(bookmark);
     // }
+
+    const loginState = useSelector((state) => {
+        console.log(state.userSlice);
+        console.log(state.userSlice.id);
+        return state.userSlice;
+    });
     const [hospitalInfo, setHospitalInfo] = useState({});
     const [randomImageNumber, setRandomImageNumber] = useState(null);
     const { hpId } = useParams();
-    const memberId = 4;
+    // const memberId = 4;
     useEffect(() => {
         console.log("부모 hospitalInfo::", hospitalInfo);
     }, [hospitalInfo]);
@@ -25,7 +32,7 @@ function HospitalView() {
         // console.log("북마크 추가할거임");
         const body = {
             // memberId값 나중엔 로그인 유저 아이디값으로 대체되어야 함
-            memberId: memberId,
+            memberId: loginState.id,
             hospitalId: hpId,
         };
 
@@ -58,7 +65,7 @@ function HospitalView() {
         try {
             const response = await axiosInstance.get(
                 // `/hospitals/bmk?hospitalId=${hpId}&memberId=${나중에 여기 로그인유저값 들어가야함}`
-                `/hospitals/bmk?hospitalId=${hpId}&memberId=${memberId}`
+                `/hospitals/bmk?hospitalId=${hpId}&memberId=${loginState.id}`
             );
             setBookmarkState(response.data);
             console.log("bmk상태는::", response.data);
@@ -108,7 +115,30 @@ function HospitalView() {
                     <div className="flex gap-[2px]8">
                         {/* <div onClick={handleOnclick}> */}
                         <div>
-                            {bookmarkState ? (
+                            {loginState.email ? (
+                                bookmarkState ? (
+                                    <div onClick={deleteBMK}>
+                                        <img
+                                            src="/assets/images/bmkIcon_color.svg"
+                                            alt="Remove Bookmark"
+                                        />
+                                    </div>
+                                ) : (
+                                    <div onClick={addBMK}>
+                                        <img
+                                            src="/assets/images/bmkIcon_clear.svg"
+                                            alt="Add Bookmark"
+                                        />
+                                    </div>
+                                )
+                            ) : (
+                                <img
+                                    src="/assets/images/bmkIcon_clear.svg"
+                                    alt="Add Bookmark"
+                                    className="invisible"
+                                />
+                            )}
+                            {/* {bookmarkState ? (
                                 <div onClick={deleteBMK}>
                                     <img
                                         src="/assets/images/bmkIcon_color.svg"
@@ -121,17 +151,6 @@ function HospitalView() {
                                         src="/assets/images/bmkIcon_clear.svg"
                                         alt="Add Bookmark"
                                     />
-                                </div>
-                            )}
-                            {/* {bookmark ? (
-                                // 이거는 누르면 delete axios로 실행되게 해야함
-                                <div onClick={deleteBMK}>
-                                    <img src="/assets/images/bmkIcon_color.svg" />
-                                </div>
-                            ) : (
-                                // 이거 누르면 create axios로 실행되게 해야함
-                                <div onClick={addBMK}>
-                                    <img src="/assets/images/bmkIcon_clear.svg" />
                                 </div>
                             )} */}
                         </div>

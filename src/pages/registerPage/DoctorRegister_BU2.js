@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import SearchModalManager from "../../components/modal/SearchModalManager";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
-import ModalManager from "../../components/modal/ModalManager";
-import ButtonClear from "../../components/button/ButtonClear";
 
 function DoctorRegister() {
     const {
@@ -262,33 +260,33 @@ function DoctorRegister() {
                         {errors.passwordConfirm.message}
                     </p>
                 )}
-                {/* 찾기 버튼을 누르면 카카오  */}
-                {/* 지도에서 병원 이름으로 검색합니다. */}
-                {/* 이름과 일치되는 병원리스트가 먼저 출력되고, 클릭하면 해당 병원의 정보중 - 이름이 올라옵니다. */}
-                {/* 해당 병원의 아이디값을 디비로 전송합니다. */}
+                <div className="flex justify-between items-center border-b mb-8">
+                    <input
+                        type="text"
+                        placeholder={
+                            selectedHospitalName
+                                ? `${selectedHospitalName}`
+                                : "재직중인 동물병원 이름 - 닉네임 대신 사용됩니다."
+                        }
+                        className=" w-full p-4 border-none focus:outline-none focus:ring-0 in"
+                        // disabled={true}
+                        readOnly
+                    />
+                    {/* 찾기 버튼을 누르면 카카오  */}
+                    {/* 지도에서 병원 이름으로 검색합니다. */}
+                    {/* 이름과 일치되는 병원리스트가 먼저 출력되고, 클릭하면 해당 병원의 정보중 - 이름이 올라옵니다. */}
+                    {/* 해당 병원의 아이디값을 디비로 전송합니다. */}
 
-                <SearchModalManager
-                    type="button"
-                    modalOpen={
-                        <div className="flex justify-between items-center border-b mb-8">
-                            <input
-                                type="text"
-                                placeholder={
-                                    selectedHospitalName
-                                        ? `${selectedHospitalName}`
-                                        : "재직중인 동물병원 이름 - 닉네임 대신 사용됩니다."
-                                }
-                                className=" w-full p-4 border-none focus:outline-none focus:ring-0 in"
-                                // disabled={true}
-                                readOnly
-                            />
+                    <SearchModalManager
+                        type="button"
+                        modalOpen={
                             <div style={{ cursor: "pointer" }}>
                                 <ButtonBlack text1="찾기"></ButtonBlack>
                             </div>
-                        </div>
-                    }
-                    setGetHospitalId={setGetHospitalId}
-                />
+                        }
+                        setGetHospitalId={setGetHospitalId}
+                    />
+                </div>
 
                 <div className="mb-[20px]">
                     <p className="text-center text-gray-300">
@@ -308,42 +306,14 @@ function DoctorRegister() {
                     </p>
                 </div>
                 {/* {getHospitalId} */}
-                <ModalManager
-                    modalContent={({ closeModal }) => (
-                        <div>
-                            <p className="mb-[8px]">회원가입요청을 보낼까요?</p>
-
-                            <ButtonClear
-                                text1="네"
-                                text2="아니요"
-                                handleClick={(e) => {
-                                    // handleDeleteComment(
-                                    //     item.id
-                                    // );
-                                    alert("전송할거임");
-                                    closeModal();
-                                    // 여기에 새로 넘어가야할 페이지 navigate to도 해줘야함.
-                                }}
-                                handleClick2={(e) => {
-                                    closeModal();
-                                }}
-                            />
-                        </div>
-                    )}
-                >
-                    {({ openModal }) => (
-                        <div onClick={openModal}>
-                            <ButtonBlack
-                                type="submit"
-                                text1="회원가입 요청하기"
-                                width="100%"
-                                height="45px"
-                                // 들어가야할 함수 -> 폼제출 + 모달오픈
-                                // 모달 안내문구 -
-                            ></ButtonBlack>
-                        </div>
-                    )}
-                </ModalManager>
+                <ButtonBlack
+                    type="submit"
+                    text1="회원가입 요청하기"
+                    width="100%"
+                    height="45px"
+                    // 들어가야할 함수 -> 폼제출 + 모달오픈
+                    // 모달 안내문구 -
+                ></ButtonBlack>
             </form>
         </>
     );
