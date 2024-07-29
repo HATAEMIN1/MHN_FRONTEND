@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axiosInstance from "../../utils/axios";
 
-function ChattingListForm({ chatrooms }) {
+function ChattingListForm({ filteredChatrooms }) {
     return (
         <>
-            {chatrooms.map((chatroom, idx) => {
+            {filteredChatrooms.map((chatroom, idx) => {
                 return (
                     <Link
                         key={`${chatroom.senderId}-${chatroom.recipientId}-${idx}`}
