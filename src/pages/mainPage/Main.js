@@ -9,13 +9,15 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function Main() {
     const [location, setLocation] = useState(null);
     const [hospitalData, setHospitalData] = useState([]);
     const [boardPosts, setBoardPosts] = useState([]);
     const [sortBy, setSortBy] = useState("distance");
-
+    const selector = useSelector((state) => state.userSlice);
+    console.log(selector);
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {
         navigate(pageUrl);
