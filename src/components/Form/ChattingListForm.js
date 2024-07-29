@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axiosInstance from "../../utils/axios";
 
 function ChattingListForm() {
     const [chatrooms, setChatrooms] = useState([]);
 
-    const api = axios.create({
-        baseURL: 'http://localhost:8080', 
-    });
-
     useEffect(() => {
         // Fetch chatrooms from the backend
-        api.get('/api/chatrooms')
-            .then(response => {
+        axiosInstance
+            .get("/chatrooms")
+            .then((response) => {
                 setChatrooms(response.data);
             })
-            .catch(error => {
-                console.error("There was an error fetching the chatrooms!", error);
+            .catch((error) => {
+                console.error(
+                    "There was an error fetching the chatrooms!",
+                    error
+                );
             });
     }, []);
 
-    
     return (
         <>
             {chatrooms.map((chatroom, idx) => {
                 return (
-                    <Link key={`${chatroom.senderId}-${chatroom.recipientId}-${idx}`}
-                    to={`/chatboards/${chatroom.senderId}/${chatroom.recipientId}`} className="w-full block">
+                    <Link
+                        key={`${chatroom.senderId}-${chatroom.recipientId}-${idx}`}
+                        to={`/chatboards/${chatroom.senderId}/${chatroom.recipientId}`}
+                        className="w-full block"
+                    >
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">
                                 <div className="w-[80px] flex-shrink-0 ">
