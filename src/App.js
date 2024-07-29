@@ -20,13 +20,12 @@ import ChartView from "./pages/chartPage/ChartView";
 import ChartAdd from "./pages/chartPage/ChartAdd";
 import DChattingReqList from "./pages/chattingPage/DChattingReqList";
 import ChatRoom from "./components/chat/ChatRoom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Account from "./pages/accountPage/Account";
 import Intro from "./pages/mainPage/Intro";
 import Main from "./pages/mainPage/Main";
 import AccountEdit from "./pages/accountPage/AccountEdit";
 import AccountChatting from "./pages/accountPage/AccountChatting";
-import AccountChattingView from "./pages/accountPage/AccountChattingView";
 import AccountHospital from "./pages/accountPage/AccountHospital";
 import AccountBoard from "./pages/accountPage/AccountBoard";
 import AccountPetList from "./pages/accountPage/AccountPetList";
@@ -41,9 +40,28 @@ import Approval from "./components/test/Approval";
 import Report from "./components/test/Report";
 import Stats from "./components/test/Stats";
 import BoardSearchList from "./pages/boardPage/BoardSearchList";
+import { useDispatch, useSelector } from "react-redux";
+import { setChatRooms } from "./store/chatRoomSlice";
+import axiosInstance from "./utils/axios";
+import DoctorRegisterPending from "./pages/registerPage/DoctorRegisterPending";
 
 function App() {
     const [posts, setPosts] = useState([]);
+    const dispatch = useDispatch();
+    // const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+
+    const fetchChatrooms = async () => {
+        try {
+            const response = await axiosInstance.get("/chatrooms");
+            dispatch(setChatRooms(response.data));
+        } catch (error) {
+            console.error("Error fetching chatrooms:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchChatrooms();
+    }, []); //chatrooms
 
     const handleAddPost = (newPost) => {
         setPosts([...posts, newPost]);
@@ -75,6 +93,11 @@ function App() {
                                     path="/doctors/register"
                                     element={<DoctorRegister />}
                                 />
+                                <Route
+                                    path="/doctors/register/pending"
+                                    element={<DoctorRegisterPending />}
+                                />
+
                                 <Route path="/" element={<Main />} />
                                 {/*채팅*/}
                                 <Route path="/chat" element={<ChatRoom />} />
@@ -150,10 +173,6 @@ function App() {
                                 <Route
                                     path="/account/chatting"
                                     element={<AccountChatting />}
-                                />
-                                <Route
-                                    path="/account/chatting/:chatId"
-                                    element={<AccountChattingView />}
                                 />
                                 <Route
                                     path="/account/hospitals"

@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {over} from 'stompjs';
-import SockJS from 'sockjs-client';
+import React, { useEffect, useState } from "react";
+import { over } from "stompjs";
+import SockJS from "sockjs-client";
 
 let stompClient = null;
 
@@ -8,42 +8,44 @@ const ChatRoom = () => {
     const [privateChats, setPrivateChats] = useState(new Map());
     const [tab, setTab] = useState("CHATROOM");
     const [userData, setUserData] = useState({
-        userId:null,
-        username:"",
-        receiverId:null,
-        receivername:"",
-        connected:false,
-        message:""
+        userId: null,
+        username: "",
+        receiverId: null,
+        receivername: "",
+        connected: false,
+        message: "",
     });
-    useEffect(()=>{
-        console.log("userData:",userData);
-    }, [userData]);
+    // useEffect(() => {
+    //     // console.log("userData:",userData);
+    // }, [userData]);
 
     const connect = () => {
-        let Sock = new SockJS('http://localhost:8080/ws');
+        let Sock = new SockJS("http://localhost:8080/ws");
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
-    }
+    };
     const registerUser = () => {
         connect();
-    }
+    };
     const onError = (error) => {
         console.log("Error:", error);
-    }
+    };
     const onConnected = () => {
-        console.log('connected to chat...');
-        setUserData({...userData, "connected":true});
-        stompClient.subscribe("/user" + userData.userId + "/private" + onPrivateMessage);
+        console.log("connected to chat...");
+        setUserData({ ...userData, connected: true });
+        stompClient.subscribe(
+            "/user" + userData.userId + "/private" + onPrivateMessage
+        );
         userJoin();
-    }
+    };
     const userJoin = () => {
         let chatMessage = {
             senderId: userData.userId,
             senderName: userData.username,
-            status:"JOIN"
-          };
+            status: "JOIN",
+        };
         stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-    }
+    };
     const onPrivateMessage = (data) => {
         console.log("data sent to onPrivateMessage:", data);
         let parsedData = JSON.parse(data.body);
@@ -57,16 +59,16 @@ const ChatRoom = () => {
             privateChats.set(parsedData.senderId, newPrivateChats);
             setPrivateChats(new Map(privateChats));
         }
-    }
+    };
 
     return (
         <div>
             <h1>ChatRoom</h1>
             <button type="button" onClick={registerUser}>
                 connect
-            </button> 
+            </button>
         </div>
-    )
-}
+    );
+};
 
 export default ChatRoom;

@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import axiosInstance from "../../utils/axios";
 
-function ChattingListForm({ chatrooms }) {
+function ChattingListForm({ filteredChatrooms }) {
+    const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+    console.log("chatrooms:", chatrooms);
+    console.log("fileredChatRooms:", filteredChatrooms);
+    const displayChatrooms =
+        filteredChatrooms.length > 0 ? filteredChatrooms : chatrooms;
     return (
         <>
-            {chatrooms.map((chatroom, idx) => {
+            {displayChatrooms.map((chatroom, idx) => {
                 return (
                     <Link
                         key={`${chatroom.senderId}-${chatroom.recipientId}-${idx}`}

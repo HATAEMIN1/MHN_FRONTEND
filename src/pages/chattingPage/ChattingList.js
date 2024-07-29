@@ -6,25 +6,11 @@ import FilterModalManager from "../../components/modal/FilterModalManager";
 import Searchbar from "../../components/search/Searchbar";
 import ChattingListForm from "../../components/Form/ChattingListForm";
 import PlusButton from "../../components/button/PlusButton";
-import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function ChattingList() {
-    const [chatrooms, setChatrooms] = useState([]);
-    const [filteredChatrooms, setFilteredChatrooms] = useState([]);
-
-    const fetchChatrooms = async () => {
-        try {
-            const response = await axiosInstance.get("/chatrooms");
-            setChatrooms(response.data);
-            setFilteredChatrooms(response.data); // Initialize with all chatrooms
-        } catch (error) {
-            console.error("Error fetching chatrooms:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchChatrooms();
-    }, []);
+    const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+    const [filteredChatrooms, setFilteredChatrooms] = useState(chatrooms);
 
     const handleModalOpen = () => {
         console.log("모달 버튼 클릭됨");
@@ -81,7 +67,7 @@ function ChattingList() {
             {/* 검색창 + 필터모달버튼 end */}
             {/* 채팅창 리스트 start*/}
             <div>
-                <ChattingListForm chatrooms={filteredChatrooms} />
+                <ChattingListForm filteredChatrooms={filteredChatrooms} />
             </div>
             <PlusButton />
             <NavBar />

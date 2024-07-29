@@ -16,13 +16,20 @@ function Main() {
     const [hospitalData, setHospitalData] = useState([]);
     const [boardPosts, setBoardPosts] = useState([]);
     const [sortBy, setSortBy] = useState("distance");
+    const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+    console.log("chatrooms:", chatrooms);
 
+    let firstChatRoom = null;
+    let secondChatRoom = null;
+    if (chatrooms != [] && chatrooms.length > 0) {
+        firstChatRoom = chatrooms[0];
+        if (chatrooms.length > 1) secondChatRoom = chatrooms[1];
+    }
 
     const loginState = useSelector((state) => {
         console.log(state.userSlice);
         console.log(state.userSlice.id);
     });
-
 
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {
@@ -205,45 +212,82 @@ function Main() {
                                             </SwiperSlide>
                                         ))
                                     ) : (
-                                        <p>
-                                            게시판 정보를 불러오는 중 오류가
-                                            발생했습니다.
+                                        <p className="text-sm font-bold">
+                                            아직 게시판 정보가 없습니다.
                                         </p>
                                     )}
                                 </Swiper>
                             </div>
                         </div>
                     </div>
-                    <div className="mb-[45px]">
-                        <div className="flex items-center ">
+                    <div className="mb-[40px]">
+                        <div className="flex items-center mb-[5px]">
                             <Link to="/chatboards" className="flex">
                                 <p className="title">1:1 채팅 게시판</p>
                                 <img src="/assets/images/nextIcon.svg" />
                             </Link>
                         </div>
                         <div>
-                            <ul>
-                                <li className="mb-[12px]">
-                                    <p className="body1">title</p>
-                                    <p className="body2">contentsssssssss</p>
-                                    <div className="flex gap-[4px] mini">
-                                        <p>writer</p>
-                                        <p>|좋아요</p>
-                                        <img src="/assets/images/likeIcon_color.svg" />
-                                    </div>
-                                </li>
-                                <li className="mb-[12px]">
-                                    <p className="body1">title</p>
-                                    <p className="body2">
-                                        contentsssssssssssssssss
-                                    </p>
-                                    <div className="flex gap-[4px] mini">
-                                        <p>writer</p>
-                                        <p>|좋아요</p>
-                                        <img src="/assets/images/likeIcon_color.svg" />
-                                    </div>
-                                </li>
-                            </ul>
+                            {firstChatRoom ? (
+                                <ul>
+                                    <Link
+                                        to={`/chatboards/${firstChatRoom?.senderId}/${firstChatRoom?.recipientId}`}
+                                        className="flex"
+                                    >
+                                        <li className="mb-[14px]">
+                                            <p className="body1 font-bold">
+                                                {firstChatRoom?.title}
+                                            </p>
+                                            <p className="body2">
+                                                {firstChatRoom?.address}
+                                            </p>
+                                            <div className="flex gap-[4px] mini">
+                                                <p>
+                                                    writer ID:{" "}
+                                                    {firstChatRoom?.senderId}
+                                                </p>
+                                                <p>
+                                                    | 좋아요{" "}
+                                                    {firstChatRoom?.likes}
+                                                </p>
+                                                <img src="/assets/images/likeIcon_color.svg" />
+                                            </div>
+                                        </li>
+                                    </Link>
+                                    {secondChatRoom && (
+                                        <Link
+                                            to={`/chatboards/${secondChatRoom?.senderId}/${secondChatRoom?.recipientId}`}
+                                            className="flex"
+                                        >
+                                            <li className="mb-[14px]">
+                                                <p className="body1 font-bold">
+                                                    {secondChatRoom?.title}
+                                                </p>
+                                                <p className="body2">
+                                                    {secondChatRoom?.address}
+                                                </p>
+                                                <div className="flex gap-[4px] mini">
+                                                    <p>
+                                                        writer ID:{" "}
+                                                        {
+                                                            secondChatRoom?.senderId
+                                                        }
+                                                    </p>
+                                                    <p>
+                                                        | 좋아요{" "}
+                                                        {secondChatRoom?.likes}
+                                                    </p>
+                                                    <img src="/assets/images/likeIcon_color.svg" />
+                                                </div>
+                                            </li>
+                                        </Link>
+                                    )}
+                                </ul>
+                            ) : (
+                                <div className="text-sm ml-[5px] font-bold">
+                                    아직 채팅방이 없습니다.
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="flex items-center">
@@ -252,20 +296,22 @@ function Main() {
                             <img src="/assets/images/nextIcon.svg" />
                         </Link>
                     </div>
-                    <div className="flex gap-[8px]">
-                        <p
-                            className={`cursor-pointer ${sortBy === "distance" ? "font-bold" : ""}`}
-                            onClick={() => setSortBy("distance")}
-                        >
-                            가까운 순 |
-                        </p>
-                        <p
-                            className={`cursor-pointer ${sortBy === "rating" ? "font-bold" : ""}`}
-                            onClick={() => setSortBy("rating")}
-                        >
-                            별점 높은 순
-                        </p>
-                    </div>
+                    {hospitalData.length > 0 && (
+                        <div className="flex gap-[8px]">
+                            <p
+                                className={`cursor-pointer ${sortBy === "distance" ? "font-bold" : ""}`}
+                                onClick={() => setSortBy("distance")}
+                            >
+                                가까운 순 |
+                            </p>
+                            <p
+                                className={`cursor-pointer ${sortBy === "rating" ? "font-bold" : ""}`}
+                                onClick={() => setSortBy("rating")}
+                            >
+                                별점 높은 순
+                            </p>
+                        </div>
+                    )}
                     <div className="px-[4px]">
                         <div className="overflow-hidden">
                             <Swiper
@@ -313,9 +359,8 @@ function Main() {
                                         }
                                     )
                                 ) : (
-                                    <p>
-                                        병원 정보를 불러오는 중 오류가
-                                        발생했습니다.
+                                    <p className="text-sm font-bold">
+                                        아직 병원 정보가 없습니다.
                                     </p>
                                 )}
                             </Swiper>
