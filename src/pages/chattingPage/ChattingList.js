@@ -6,28 +6,11 @@ import FilterModalManager from "../../components/modal/FilterModalManager";
 import Searchbar from "../../components/search/Searchbar";
 import ChattingListForm from "../../components/Form/ChattingListForm";
 import PlusButton from "../../components/button/PlusButton";
-import axiosInstance from "../../utils/axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setChatRooms } from "../../store/chatRoomSlice";
+import { useSelector } from "react-redux";
 
 function ChattingList() {
-    const dispatch = useDispatch();
     const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
-    const [filteredChatrooms, setFilteredChatrooms] = useState([]);
-
-    const fetchChatrooms = async () => {
-        try {
-            const response = await axiosInstance.get("/chatrooms");
-            dispatch(setChatRooms(response.data));
-            setFilteredChatrooms(response.data); // Initialize with all chatrooms
-        } catch (error) {
-            console.error("Error fetching chatrooms:", error);
-        }
-    };
-
-    useEffect(() => {
-        fetchChatrooms();
-    }, []);
+    const [filteredChatrooms, setFilteredChatrooms] = useState(chatrooms);
 
     const handleModalOpen = () => {
         console.log("모달 버튼 클릭됨");
