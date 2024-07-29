@@ -24,6 +24,7 @@ const userSlice = createSlice({
                 }
                 setCookie("member", JSON.stringify(payload));
                 console.log("fulfilled");
+                return { ...state, ...payload };
             })
             .addCase(loginUser.pending, (state, action) => {
                 console.log("pending");
