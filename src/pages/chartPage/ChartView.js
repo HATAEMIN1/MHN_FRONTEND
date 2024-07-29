@@ -58,10 +58,13 @@ function ChartView() {
                     {chartData.uploadFileNames &&
                         chartData.uploadFileNames.map((item, idx) => {
                             return (
-                                <div className="p-2 w-[576px] ">
+                                <div
+                                    key={idx}
+                                    className="p-2 w-[576px] h-[250px]"
+                                >
                                     <img
                                         src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item}`}
-                                        className="w-full rounded-md"
+                                        className="w-full rounded-md h-full"
                                     />
                                 </div>
                             );

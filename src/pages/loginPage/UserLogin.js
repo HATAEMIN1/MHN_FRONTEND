@@ -39,7 +39,27 @@ function UserLogin() {
 
     return (
         <>
-            <Header></Header>
+            <div className="bg-white top-0 z-50 w-[100%]  top-0 left-0 right-0 absolute h-[65px] px-[16px] flex items-center justify-between">
+                <div className="h-[100%] flex items-center">
+                    <img
+                        src="/assets/images/backIcon.svg"
+                        alt=""
+                        className="w-[30px] h-[30px] cursor-pointer"
+                        onClick={() => {
+                            navigate("/");
+                        }}
+                    />
+                </div>
+
+                <div className="h-[100%] flex items-center">
+                    <img
+                        src="/assets/images/backIcon.svg"
+                        alt=""
+                        className="w-[30px] h-[30px] invisible"
+                    />
+                </div>
+                {/* 테스트 아이콘36 / 헤더폰트 20px / */}
+            </div>
             <div className="w-[210px] mx-auto h-[152px] mb-16">
                 <img src="/assets/logoWhite.png" className="w-full" />
             </div>

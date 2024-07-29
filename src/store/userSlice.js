@@ -3,6 +3,7 @@ import { getCookie, removeCookie, setCookie } from "../utils/cookieUtil";
 import { loginUser } from "./thunkFunction";
 
 const initState = {
+    id: "",
     email: "",
 };
 
@@ -17,9 +18,6 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
-                console.log(action.payload);
-                console.log("스테이트는");
-                console.log(state);
                 const payload = action.payload;
                 if (payload.error) {
                     return payload.error;
@@ -31,13 +29,11 @@ const userSlice = createSlice({
                 console.log("pending");
             })
             .addCase(loginUser.rejected, (state, action) => {
-                console.log(action);
+                removeCookie("member");
                 const error = action.error;
-                console.log(error);
                 if (error) {
                     return error;
                 }
-                removeCookie("member");
             });
     },
 });

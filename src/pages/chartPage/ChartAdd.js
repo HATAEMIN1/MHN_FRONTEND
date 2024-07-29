@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import DatePicker from "react-datepicker";
@@ -8,18 +8,19 @@ import axiosInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 import ModalManager from "../../components/modal/ModalManager";
 import ButtonBlack from "../../components/button/ButtonBlack";
+import { useSelector } from "react-redux";
 
 function ChartAdd() {
+    const memberId = useSelector((state) => {
+        return state.userSlice.id;
+    });
     const navigate = useNavigate();
-    const pets = [
-        { id: 1, name: "멍멍이" },
-        { id: 2, name: "야옹이" },
-        { id: 3, name: "짹짹이" },
-    ];
     const [images, setImages] = useState([]);
+    const [submitError, setSubmitError] = useState("");
     const [imageError, setImageError] = useState("");
+    const [pet, setPet] = useState([{ name: "펫이 없습니다" }]);
     const [formData, setFormData] = useState({
-        petId: 4,
+        petId: "",
         hospital: "",
         selectedPet: "",
         dig: "",
@@ -41,24 +42,18 @@ function ChartAdd() {
         return date.toISOString().split("T")[0];
     };
     const handleChartSubmit = async (closeModal) => {
-        // const body = {
-        //     petId: formData.petId,
-        //     hospitalName: formData.hospital,
-        //     petName: formData.petName,
-        //     visitDate: formData.visitDate,
-        //     diseaseName: formData.dig,
-        //     description: formData.description,
-        // };
-        const formDataList = new FormData();
+        if (!validateImages()) {
+            return;
+        }
 
-        // 차트 데이터 추가
+        const formDataList = new FormData();
         formDataList.append("petId", formData.petId);
+        console.log(formData.petId);
         formDataList.append("hospitalName", formData.hospital);
         formDataList.append("petName", formData.selectedPet);
         formDataList.append("visitDate", formatDate(formData.startDate));
         formDataList.append("diseaseName", formData.dig);
         formDataList.append("description", formData.description);
-        // 이미지 파일 추가
         images.forEach((file, index) => {
             formDataList.append(`files`, file);
         });
@@ -68,7 +63,6 @@ function ChartAdd() {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log(res.data);
             setImages([]); // 이미지 상태 초기화
             setImageError(""); // 에러 메시지 초기화
             closeModal();
@@ -86,7 +80,27 @@ function ChartAdd() {
         setImages([...images, ...files]);
         setImageError("");
     };
-    console.log(formData.startDate);
+    const validateImages = () => {
+        if (images.length === 0) {
+            setSubmitError("이미지를 최소 1개 이상 첨부해주세요.");
+            return false;
+        }
+        setSubmitError("");
+        return true;
+    };
+    const petInfo = async () => {
+        const params = { memberId };
+        const res = await axiosInstance.get("/pets", { params });
+        console.log(res.data);
+        setPet(res.data);
+    };
+    useEffect(() => {
+        if (memberId) {
+            petInfo();
+        } else {
+            navigate("/users/login");
+        }
+    }, [memberId]);
     return (
         <>
             <form>
@@ -111,7 +125,9 @@ function ChartAdd() {
                                 button="작성하기"
                                 handleClick={(e) => {
                                     e.preventDefault(); // 추가: 폼 제출 방지
-                                    openModal();
+                                    if (validateImages()) {
+                                        openModal();
+                                    }
                                 }}
                             />
                         </div>
@@ -134,16 +150,29 @@ function ChartAdd() {
                         <select
                             className="h-[52px] w-full rounded-md border-2 px-4 appearance-none focus:outline-none focus:ring-0"
                             value={formData.selectedPet}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                const selectedPetName = e.target.value;
+                                const selectedPet = pet.find(
+                                    (p) => p.name === selectedPetName
+                                );
+                                setFormData((prevData) => ({
+                                    ...prevData,
+                                    selectedPet: selectedPetName,
+                                    petId: selectedPet ? selectedPet.id : "",
+                                }));
+                            }}
                         >
-                            {pets.map((pet) => (
-                                <option key={pet.id} value={pet.name}>
-                                    {pet.name}
-                                </option>
-                            ))}
+                            <option value="" disabled>
+                                펫을 선택하세요
+                            </option>
+                            {pet &&
+                                pet.map((pet) => (
+                                    <option key={pet.name} value={pet.name}>
+                                        {pet.name}
+                                    </option>
+                                ))}
                         </select>
                     </div>
-
                     <div className="p-2 relative">
                         <h2 className="py-2">진료 일자</h2>
                         <DatePicker
@@ -196,11 +225,21 @@ function ChartAdd() {
                         </div>
 
                         <textarea
-                            className="h-[184px] w-full rounded-md border-2 p-4 focus:outline-none focus:ring-0"
+                            className="h-[184px] w-full rounded-md border-2 p-4 focus:outline-none focus:ring-0 resize-none"
                             onChange={handleChange}
                             name="description"
                         />
                     </div>
+                    {imageError && (
+                        <p className="px-2 text-red-500 text-xs">
+                            {imageError}
+                        </p>
+                    )}
+                    {submitError && (
+                        <p className="px-2 text-red-500 text-sm">
+                            {submitError}
+                        </p>
+                    )}
                     <div className="flex flex-wrap gap-8 px-4  ">
                         {images.map((image, index) => (
                             <div
