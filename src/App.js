@@ -47,7 +47,7 @@ import axiosInstance from "./utils/axios";
 function App() {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
-    const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+    // const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
 
     const fetchChatrooms = async () => {
         try {
@@ -60,7 +60,7 @@ function App() {
 
     useEffect(() => {
         fetchChatrooms();
-    }, [chatrooms]);
+    }, []); //chatrooms
 
     const handleAddPost = (newPost) => {
         setPosts([...posts, newPost]);

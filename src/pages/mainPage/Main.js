@@ -17,6 +17,7 @@ function Main() {
     const [boardPosts, setBoardPosts] = useState([]);
     const [sortBy, setSortBy] = useState("distance");
     const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
+    console.log("chatrooms:", chatrooms);
 
     let firstChatRoom = null;
     let secondChatRoom = null;
