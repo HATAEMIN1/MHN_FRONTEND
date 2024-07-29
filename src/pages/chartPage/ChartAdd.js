@@ -19,7 +19,7 @@ function ChartAdd() {
     const [images, setImages] = useState([]);
     const [imageError, setImageError] = useState("");
     const [formData, setFormData] = useState({
-        petId: 1,
+        petId: 4,
         hospital: "",
         selectedPet: "",
         dig: "",

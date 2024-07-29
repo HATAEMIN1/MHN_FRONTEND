@@ -211,6 +211,7 @@ function ChattingView() {
                                 </span>
                             </div>
                         </div>
+
                     ))}
             </div>
             <NavBar />

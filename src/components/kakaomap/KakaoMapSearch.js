@@ -1,5 +1,6 @@
 // 병원 찾기 맵에 들어갈 지도
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function KakaoMapSearch({ ...props }) {
     const [location, setLocation] = useState(null);
@@ -7,6 +8,10 @@ function KakaoMapSearch({ ...props }) {
     const mapRef = useRef(null);
     const markersRef = useRef([]);
     const infowindowRef = useRef(null);
+    const navigate = useNavigate();
+    const navigateToPage = (pageUrl) => {
+        navigate(pageUrl);
+    };
 
     function mapSet() {
         const kakao = window.kakao;
@@ -125,8 +130,11 @@ function KakaoMapSearch({ ...props }) {
                 const marker = new kakao.maps.Marker({
                     map: map,
                     position: markerPosition,
-                    // title: hospital.name,
                     image: markerImage,
+                });
+
+                kakao.maps.event.addListener(marker, "click", () => {
+                    navigateToPage(`/hospitals/${hospital.id}`);
                 });
 
                 //======추가시작

@@ -3,28 +3,33 @@ import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import { Link, useParams } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonClear from "../../components/button/ButtonClear";
 
 //n분전 구현
-function timeAgo(date) {
+function getTimeAgo(dateString) {
     const now = new Date();
-    const secondsPast = (now.getTime() - new Date(date).getTime()) / 1000;
+    const past = new Date(dateString);
+    const diffInSeconds = Math.floor((now - past) / 1000);
 
-    if (secondsPast < 60) {
-        return `${Math.floor(secondsPast)}초 전`;
+    if (diffInSeconds < 60) {
+        return "방금 전";
+    } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes}분 전`;
+    } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours}시간 전`;
+    } else if (diffInSeconds < 2592000) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days}일 전`;
+    } else if (diffInSeconds < 31536000) {
+        const months = Math.floor(diffInSeconds / 2592000);
+        return `${months}개월 전`;
+    } else {
+        const years = Math.floor(diffInSeconds / 31536000);
+        return `${years}년 전`;
     }
-    if (secondsPast < 3600) {
-        return `${Math.floor(secondsPast / 60)}분 전`;
-    }
-    if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전`;
-    }
-    if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전`;
-    }
-    if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전`;
-    }
-    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function HospitalReview() {
@@ -44,8 +49,6 @@ function HospitalReview() {
             const trueCount = rating.filter(Boolean).length;
             const newComment = {
                 content: commentText,
-                // 여기 디비에서 불러올 때 어차피 다시 createAt쓸거니까 주석처리할예정
-                // createdAt: new Date(),
                 profileImage: `${process.env.PUBLIC_URL}/assets/images/profile_default.png`,
                 likeCount: trueCount,
             };
@@ -86,6 +89,21 @@ function HospitalReview() {
     useEffect(() => {
         fetchHospitalComment();
     }, [shouldRefetch]);
+
+    const handleDeleteComment = async (commentId, closeModal) => {
+        console.log("댓글 삭제할거임");
+
+        try {
+            const response = await axiosInstance.delete(
+                `/hospitals/review?id=${commentId}`
+            );
+            console.log(comments);
+            setShouldRefetch(true);
+            closeModal(); // 모달 닫기
+        } catch (error) {
+            console.error("삭제요청실패", error);
+        }
+    };
 
     return (
         <>
@@ -175,7 +193,9 @@ function HospitalReview() {
                     </button>
                 </div>
                 {/* 댓글입력폼 end */}
+
                 {comments.map((item) => {
+                    // console.log(item);
                     return (
                         <div className="mb-[20px]">
                             <div className="flex justify-between items-center">
@@ -191,10 +211,69 @@ function HospitalReview() {
                                         <p className="body2 text-sub-200">
                                             {item.comment}
                                         </p>
-                                        <p className="mini text-gray-300">
-                                            {/* {timeAgo(item.createdAt)} */}
-                                            {item.createdAt}
-                                        </p>
+                                        <div className="flex gap-[4px]">
+                                            <p className="mini text-gray-300">
+                                                {getTimeAgo(item.createdAt)} |
+                                            </p>
+                                            {/* 나중에 삭제하기버튼은 로그인유저값이랑 댓글작성자 아이디값 동일할때만 보이도록 프론트단에서 처리해야함 삼항연산자 */}
+
+                                            <ModalManager
+                                                modalContent={({
+                                                    closeModal,
+                                                }) => (
+                                                    <div>
+                                                        <p className="mb-[8px]">
+                                                            댓글을 삭제할까요?
+                                                        </p>
+                                                        {/* <div className="flex gap-[4px]">
+                                                            <ButtonClear
+                                                                handleClick={(
+                                                                    e
+                                                                ) => {
+                                                                    handleDeleteComment(
+                                                                        item.id
+                                                                    );
+                                                                }}
+                                                                text1="네"
+                                                            />
+                                                            <ButtonClear
+                                                                handleClick={(
+                                                                    e
+                                                                ) => {
+                                                                    closeModal();
+                                                                }}
+                                                                text1="아니요"
+                                                            />
+                                                        </div> */}
+                                                        <ButtonClear
+                                                            text1="네"
+                                                            text2="아니요"
+                                                            handleClick={(
+                                                                e
+                                                            ) => {
+                                                                handleDeleteComment(
+                                                                    item.id
+                                                                );
+                                                                closeModal();
+                                                            }}
+                                                            handleClick2={(
+                                                                e
+                                                            ) => {
+                                                                closeModal();
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
+                                            >
+                                                {({ openModal }) => (
+                                                    <div onClick={openModal}>
+                                                        <p className="mini text-gray-300 cursor-pointer">
+                                                            삭제하기
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </ModalManager>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex gap-[2px]">
