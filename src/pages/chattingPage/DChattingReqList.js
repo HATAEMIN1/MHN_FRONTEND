@@ -2,8 +2,13 @@ import React from "react";
 import Header from "../../layouts/header/Header";
 import ChattingListForm from "../../components/Form/ChattingListForm";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function DChattingReqList() {
+    const loginState = useSelector((state) => {
+        console.log(state.userSlice);
+        // console.log(state.userSlice.id);
+    });
     const hospitalExam = [
         {
             content:

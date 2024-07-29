@@ -25,7 +25,7 @@ function DoctorLogin() {
                     setLoginError("이메일이나 비밀번호가 일치하지 않습니다.");
                 } else {
                     reset();
-                    navigate("/");
+                    navigate("/doctors/chatting");
                 }
             } else if (loginDoctor.rejected.match(resultAction)) {
                 setLoginError(

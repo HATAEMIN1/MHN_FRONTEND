@@ -35,6 +35,17 @@ function Approval() {
             console.log(error);
         }
     }
+    async function requestApproval(doctorId) {
+        try {
+            const res = await axiosInstance.put(
+                `/doctors/register/statusmodi?id=${doctorId}`
+            );
+            console.log(res.data);
+            setDoctorList(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         getAllDoctorList();
@@ -102,10 +113,7 @@ function Approval() {
                                             ? "bg-gray-300 text-gray-600"
                                             : "bg-primary-300 text-primary-400 hover:bg-sub-200"
                                     }`}
-                                    onClick={() =>
-                                        // handleApprove(doctors.id)
-                                        alert("수락버튼 눌림")
-                                    }
+                                    onClick={() => requestApproval(doctors.id)}
                                     disabled={
                                         doctors.doctorStatus === "FULFILLED"
                                     }
