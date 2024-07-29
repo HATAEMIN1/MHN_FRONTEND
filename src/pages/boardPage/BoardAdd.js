@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axiosInstance from "../../utils/axios";
@@ -15,6 +15,12 @@ function BoardAdd({ onAddPost }) {
     const [imageError, setImageError] = useState("");
     const navigate = useNavigate();
     const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
+
+    useEffect(() => {
+        if (!memberId) {
+            navigate("/users/login");
+        }
+    }, [memberId, navigate]);
 
     const handleTitleChange = (event) => {
         const value = event.target.value;
