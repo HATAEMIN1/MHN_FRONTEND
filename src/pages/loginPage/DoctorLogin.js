@@ -1,17 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../layouts/header/Header";
 import ButtonBlack from "../../components/button/ButtonBlack";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { loginDoctor } from "../../store/thunkFunction";
 
 function DoctorLogin() {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
-    const onSubmit = (data) => console.log(data);
-    console.log(errors);
+        reset,
+    } = useForm({ mode: "onSubmit" });
+    const [loginError, setLoginError] = useState(""); // 로그인 에러 메시지 상태 추가
+    const dispatch = useDispatch();
+
+    const onSubmit = async (data) => {
+        try {
+            const resultAction = await dispatch(loginDoctor(data));
+            if (loginDoctor.fulfilled.match(resultAction)) {
+                if (resultAction.payload.error) {
+                    setLoginError("이메일이나 비밀번호가 일치하지 않습니다.");
+                } else {
+                    reset();
+                    navigate("/doctors/chatting");
+                }
+            } else if (loginDoctor.rejected.match(resultAction)) {
+                setLoginError(
+                    "로그인 중 오류가 발생했습니다. 다시 시도해 주세요."
+                );
+            }
+        } catch (err) {
+            setLoginError("로그인 중 예기치 못한 오류가 발생했습니다.");
+        }
+    };
     return (
         <>
             <Header></Header>
@@ -24,11 +48,23 @@ function DoctorLogin() {
                     type="text"
                     placeholder="Email"
                     {...register("Email", {
-                        required: true,
-                        pattern: /^\S+@\S+$/i,
+                        required: {
+                            value: true,
+                            message: "이메일을 입력 해주세요.",
+                        },
+                        pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: "이메일 형식이 맞지 않습니다.",
+                        },
                     })}
                     className="border-b w-full p-4 mb-8 focus:outline-none focus:ring-0"
+                    onChange={() => setLoginError("")}
                 />
+                {errors.Email && (
+                    <div className="text-red-500 text-xs w-full  p-4 ">
+                        {errors.Email.message}
+                    </div>
+                )}
                 <input
                     type="password"
                     placeholder="Password"
@@ -36,11 +72,24 @@ function DoctorLogin() {
                         max: 15,
                         min: 8,
                         maxLength: 15,
-                        pattern:
-                            /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/i,
+                        pattern: {
+                            value: /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/i,
+                            message: "비밀번호가 맞지 않습니다.",
+                        },
                     })}
+                    onChange={() => setLoginError("")}
                     className="border-b w-full p-4 mb-8 focus:outline-none focus:ring-0"
                 />
+                {errors.Password && (
+                    <div className="text-red-500 text-xs w-full p-4">
+                        {errors.Password.message}
+                    </div>
+                )}
+                {loginError && (
+                    <p className="text-red-500 text-xs w-full p-4">
+                        {loginError}
+                    </p>
+                )}
 
                 {/*<input type="submit" />*/}
                 <ButtonBlack
