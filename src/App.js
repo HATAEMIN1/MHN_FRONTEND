@@ -41,6 +41,7 @@ import Approval from "./components/test/Approval";
 import Report from "./components/test/Report";
 import Stats from "./components/test/Stats";
 import BoardSearchList from "./pages/boardPage/BoardSearchList";
+import DoctorRegisterPending from "./pages/registerPage/DoctorRegisterPending";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -75,6 +76,11 @@ function App() {
                                     path="/doctors/register"
                                     element={<DoctorRegister />}
                                 />
+                                <Route
+                                    path="/doctors/register/pending"
+                                    element={<DoctorRegisterPending />}
+                                />
+
                                 <Route path="/" element={<Main />} />
                                 {/*채팅*/}
                                 <Route path="/chat" element={<ChatRoom />} />
