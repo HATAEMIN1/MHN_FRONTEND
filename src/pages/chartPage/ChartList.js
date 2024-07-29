@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function ChartList() {
-    const chartId = "1";
+    const navigate = useNavigate();
+    const memberId = useSelector((state) => {
+        console.log(state.userSlice.id);
+        return state.userSlice.id;
+    });
     const [chartData, setChartData] = useState([]);
+
     function getTimeAgo(dateString) {
         const now = new Date();
         const past = new Date(dateString);
@@ -33,7 +39,10 @@ function ChartList() {
     }
     const chartDataInfo = async () => {
         try {
-            const res = await axiosInstance.get("/charts");
+            const params = { memberId };
+            const res = await axiosInstance.get("/charts", {
+                params,
+            });
             setChartData(res.data);
             console.log(res.data);
         } catch (error) {
@@ -42,7 +51,11 @@ function ChartList() {
     };
 
     useEffect(() => {
-        chartDataInfo();
+        if (memberId) {
+            chartDataInfo();
+        } else {
+            navigate("/users/login");
+        }
     }, []);
     return (
         <>
@@ -54,7 +67,10 @@ function ChartList() {
                             to={`/charts/${item.id}`}
                             className="col-span-1 justify-self-start"
                         >
-                            <div className="cardWrap w-full " key={index}>
+                            <div
+                                className="cardWrap w-full "
+                                key={item.createdAt}
+                            >
                                 <div className="w-[230px] h-[180px] ">
                                     <img
                                         src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item.imgUrl}`}

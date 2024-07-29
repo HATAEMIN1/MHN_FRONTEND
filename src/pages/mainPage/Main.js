@@ -17,12 +17,12 @@ function Main() {
     const [boardPosts, setBoardPosts] = useState([]);
     const [sortBy, setSortBy] = useState("distance");
 
+
     const loginState = useSelector((state) => {
         console.log(state.userSlice);
         console.log(state.userSlice.id);
     });
 
-    // console.log(loginState);
 
     const navigate = useNavigate();
     const navigateToPage = (pageUrl) => {

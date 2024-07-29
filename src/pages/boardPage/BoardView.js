@@ -7,6 +7,7 @@ import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
 import BoardComment from "./BoardComment";
+import { useSelector } from "react-redux";
 
 function timeAgo(date) {
     const now = new Date();
@@ -19,15 +20,15 @@ function timeAgo(date) {
         return `${Math.floor(secondsPast / 60)}분 전`;
     }
     if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전}`;
+        return `${Math.floor(secondsPast / 3600)}시간 전`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전}`;
+        return `${Math.floor(secondsPast / 86400)}일 전`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전}`;
+    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function BoardView() {
@@ -38,25 +39,35 @@ function BoardView() {
     const [error, setError] = useState(null);
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
-    const memberId = 1; // 임시로 1로 설정
+    const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
     useEffect(() => {
-        axiosInstance
-            .get(`/boards/view?freeBoardId=${bdId}&memberId=${memberId}`)
-            .then((response) => {
-                const postData = response.data.data;
-                console.log("postData:", postData); // 디버깅을 위해 추가
-                setPost(postData);
-                setLikes(postData.likeCount || 0); // likes 값이 없으면 0으로 초기화
-                setLiked(postData.likedByCurrentUser); // 서버에서 가져오는 값으로 설정
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error fetching post:", error); // 에러 디버깅을 위해 추가
-                setError(error);
-                setLoading(false);
-            });
+        if (memberId !== undefined) {
+            // memberId가 유효한 값인지 확인
+            axiosInstance
+                .get(`/boards/view?freeBoardId=${bdId}&memberId=${memberId}`)
+                .then((response) => {
+                    const postData = response.data.data;
+                    console.log("postData:", postData); // 디버깅을 위해 추가
+                    setPost(postData);
+                    setLikes(postData.likeCount || 0); // likes 값이 없으면 0으로 초기화
+                    setLiked(postData.likedByCurrentUser); // 서버에서 가져오는 값으로 설정
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching post:", error); // 에러 디버깅을 위해 추가
+                    setError(error);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false);
+            setError(new Error("User is not authenticated."));
+        }
     }, [bdId, memberId]);
+
+    const handleCommentsUpdate = (newCommentCount) => {
+        setPost((prevPost) => ({ ...prevPost, commentCount: newCommentCount }));
+    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -103,7 +114,7 @@ function BoardView() {
         <div className="pt-5 pb-7">
             <Header title="자유게시판" />
             <div className="flex items-center mb-5">
-                <div>{post.member.name}</div>
+                <div>{post.member.nickName}</div>
                 <div style={{ marginLeft: "10px" }}>
                     {timeAgo(post.createDate)}
                 </div>
@@ -131,7 +142,7 @@ function BoardView() {
                 <div className="flex items-center">
                     <button
                         onClick={handleLike}
-                        className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-gray-500"
+                        className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-gray-200"
                     >
                         <img
                             src={
@@ -156,7 +167,7 @@ function BoardView() {
                 {post.member.id === memberId && (
                     <button
                         onClick={handleDelete}
-                        className="flex items-center border-none bg-transparent cursor-pointer text-gray-600"
+                        className="flex items-center border-none bg-transparent cursor-pointer text-gray-200"
                     >
                         삭제
                     </button>
@@ -168,7 +179,11 @@ function BoardView() {
             <div className="text-base">{post.content}</div>
 
             {/* BoardComment 컴포넌트를 추가하고 필요한 props 전달 */}
-            <BoardComment freeBoardId={post.id} memberId={memberId} />
+            <BoardComment
+                freeBoardId={post.id}
+                memberId={memberId}
+                onCommentsUpdate={handleCommentsUpdate}
+            />
 
             <NavBar />
         </div>

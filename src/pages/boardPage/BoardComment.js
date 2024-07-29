@@ -15,15 +15,15 @@ function timeAgo(date) {
         return `${Math.floor(secondsPast / 3600)}시간 전`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전}`;
+        return `${Math.floor(secondsPast / 86400)}일 전`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전}`;
+    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
-const BoardComment = ({ freeBoardId, memberId }) => {
+const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
     const [comments, setComments] = useState([]);
     const [visibleComments, setVisibleComments] = useState(3);
     const [showFoldButton, setShowFoldButton] = useState(false);
@@ -34,10 +34,15 @@ const BoardComment = ({ freeBoardId, memberId }) => {
     const commentsRef = useRef(null);
 
     useEffect(() => {
+        fetchComments();
+    }, [freeBoardId]);
+
+    const fetchComments = () => {
         axiosInstance
             .get(`/boards/comment?freeBoardId=${freeBoardId}`)
             .then((response) => {
                 setComments(response.data);
+                onCommentsUpdate(response.data.length); // 댓글 개수 업데이트
             })
             .catch((error) => {
                 console.error(
@@ -45,7 +50,7 @@ const BoardComment = ({ freeBoardId, memberId }) => {
                     error
                 );
             });
-    }, [freeBoardId]);
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -90,11 +95,10 @@ const BoardComment = ({ freeBoardId, memberId }) => {
         };
 
         axiosInstance
-            .post("/boards/comment", null, { params: payload })
-            .then((response) => {
-                const newComment = response.data;
-                setComments([...comments, newComment]);
+            .post("/boards/comment", payload)
+            .then(() => {
                 setCommentText("");
+                fetchComments(); // 댓글 목록 다시 가져오기
             })
             .catch((error) => {
                 console.error("There was an error posting the comment:", error);
@@ -120,21 +124,11 @@ const BoardComment = ({ freeBoardId, memberId }) => {
         };
 
         axiosInstance
-            .post("/boards/comment", null, { params: payload })
-            .then((response) => {
-                const newReply = response.data;
-                const updatedComments = comments.map((comment) => {
-                    if (comment.id === parentId) {
-                        return {
-                            ...comment,
-                            replies: [...(comment.replies || []), newReply],
-                        };
-                    }
-                    return comment;
-                });
-                setComments(updatedComments);
+            .post("/boards/comment", payload)
+            .then(() => {
                 setReplyText("");
                 setReplyParentId(null);
+                fetchComments(); // 댓글 목록 다시 가져오기
             })
             .catch((error) => {
                 console.error("There was an error posting the reply:", error);
@@ -154,7 +148,28 @@ const BoardComment = ({ freeBoardId, memberId }) => {
     };
 
     const handleDeleteComment = (id) => {
-        setComments(comments.filter((comment) => comment.id !== id));
+        axiosInstance
+            .delete(`/boards/delcomment`, { params: { commentId: id } })
+            .then(() => {
+                fetchComments(); // 댓글 목록 다시 가져오기
+            })
+            .catch((error) => {
+                console.error(
+                    "There was an error deleting the comment:",
+                    error
+                );
+            });
+    };
+
+    const handleDeleteReply = (id) => {
+        axiosInstance
+            .delete(`/boards/delcomment`, { params: { commentId: id } })
+            .then(() => {
+                fetchComments(); // 댓글 목록 다시 가져오기
+            })
+            .catch((error) => {
+                console.error("There was an error deleting the reply:", error);
+            });
     };
 
     const handleReplyClick = (parentId) => {
@@ -196,16 +211,17 @@ const BoardComment = ({ freeBoardId, memberId }) => {
                         />
                     </div>
                     <div>
-                        <div className="font-bold">{reply.userId}</div>
+                        <div className="font-bold">{reply.nickName}</div>{" "}
+                        {/* 닉네임 표시 */}
                         <div className="text-sm">{reply.content}</div>
                         <div className="text-xs text-gray-500 flex items-center">
                             {timeAgo(reply.createDate)}
                         </div>
                     </div>
                 </div>
-                {reply.userId === memberId && (
+                {reply.memberId === memberId && (
                     <button
-                        onClick={() => handleDeleteComment(reply.id)}
+                        onClick={() => handleDeleteReply(reply.id)}
                         className="border-none bg-transparent text-gray-500 cursor-pointer"
                     >
                         삭제
@@ -214,6 +230,10 @@ const BoardComment = ({ freeBoardId, memberId }) => {
             </div>
         ));
     };
+
+    useEffect(() => {
+        console.log("Comments updated:", comments);
+    }, [comments]);
 
     return (
         <div className="mt-4">
@@ -260,7 +280,7 @@ const BoardComment = ({ freeBoardId, memberId }) => {
                                 </div>
                                 <div>
                                     <div className="font-bold">
-                                        {comment.userId}
+                                        {comment.nickName} {/* 닉네임 표시 */}
                                     </div>
                                     <div className="text-sm">
                                         {comment.content}
@@ -278,7 +298,7 @@ const BoardComment = ({ freeBoardId, memberId }) => {
                                     </div>
                                 </div>
                             </div>
-                            {comment.userId === memberId && (
+                            {comment.memberId === memberId && (
                                 <button
                                     onClick={() =>
                                         handleDeleteComment(comment.id)
