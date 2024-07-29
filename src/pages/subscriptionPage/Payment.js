@@ -4,16 +4,18 @@ import NavBar from "../../layouts/nav/NavBar";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import axiosInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const { IMP } = window;
 function Payment() {
     const navigate = useNavigate();
+    const selector = useSelector((state) => state.userSlice);
     const pg = "kakaopay";
     const merchantUid = generateRandomString("merchantUid");
     const customerUid = generateRandomString("billingKey");
-    const userName = "포트원";
+    const userName = selector.nickname;
     const tel = "02-1234-1234";
-    const userId = 1;
+    const userId = selector.id;
     function generateRandomString(prefix) {
         // 현재 시간을 밀리초 단위로 가져옵니다.
         const timestamp = new Date().getTime();
@@ -64,7 +66,7 @@ function Payment() {
         IMP.request_pay(data, callback);
     };
     /* 3. 콜백 함수 정의하기 */
-    const callback = (response) => {
+    const callback = async (response) => {
         console.log("리스폰스값들: ");
         console.log(response);
         const {
@@ -82,7 +84,7 @@ function Payment() {
         if (response.success) {
             console.log("결제 성공");
             ReservationPayment(customerUid); // 결제 예약
-            paymentSubmit(
+            await paymentSubmit(
                 userId,
                 pg_provider,
                 paid_amount,
@@ -94,7 +96,7 @@ function Payment() {
                 imp_uid,
                 error_msg
             ); //결제내역 저장
-            navigate("/subscription/:userId");
+            navigate(`/subscription/${selector.id}`);
         } else {
             alert(`결제 실패: ${error_msg}`);
         }
@@ -166,7 +168,7 @@ function Payment() {
                     <h2 className="subtitle1">주문 고객</h2>
                     <div className="flex">
                         <p className="body2">{userName}</p>
-                        <p className="body2">{tel}</p>
+                        <p className="body2">({tel})</p>
                     </div>
                 </div>
                 <div>
