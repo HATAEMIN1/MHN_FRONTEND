@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axios";
-import * as logger from "sass";
 
 export const loginUser = createAsyncThunk(
     "loginUser",
