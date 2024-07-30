@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
+
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -34,6 +35,7 @@ function DChattingReqList() {
                                     <img
                                         src="/assets/logoColor.png"
                                         className="block w-full rounded-[4px]"
+
                                     />
                                 </div>
                                 <div>

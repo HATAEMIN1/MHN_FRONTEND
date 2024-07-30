@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function DoctorRegisterPending() {
     return (
@@ -25,6 +26,11 @@ function DoctorRegisterPending() {
                 <p className="mini text-gray-300">
                     가입 승인은 약 하루정도 소요됩니다.
                 </p>
+                <Link to="/">
+                    <button className="h-[45px] w-full bg-primary-300 text-white rounded-[4px] my-[8px]">
+                        멍햄냥 둘러보기
+                    </button>
+                </Link>
             </div>
             {/* 버튼 추가해서 멍햄냥둘러보기 ? 메인페이지로 넘어가게 할지 고민중. */}
         </div>
