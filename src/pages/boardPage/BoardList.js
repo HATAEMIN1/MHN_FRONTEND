@@ -17,15 +17,15 @@ function timeSince(date) {
         return `${Math.floor(secondsPast / 60)}분 전`;
     }
     if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전}`;
+        return `${Math.floor(secondsPast / 3600)}시간 전`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전}`;
+        return `${Math.floor(secondsPast / 86400)}일 전`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전}`;
+    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function BoardList() {
@@ -34,9 +34,11 @@ function BoardList() {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [pageRange, setPageRange] = useState([0, 4]);
+    const [totalElements, setTotalElements] = useState(null); // totalElements 상태 추가
     const [filter, setFilter] = useState("latest");
     const navigate = useNavigate();
+
+    const PAGE_SIZE = 4; // 한 페이지에 보여줄 게시물 수
 
     useEffect(() => {
         fetchPosts(currentPage, filter);
@@ -46,15 +48,27 @@ function BoardList() {
         setLoading(true);
         const apiEndpoint =
             filter === "likes"
-                ? `/boards/likes?memberId=1&page=${page}&size=4`
+                ? `/boards/likes?memberId=1&page=${page}&size=${PAGE_SIZE}`
                 : filter === "oldest"
-                  ? `/boards/oldest?memberId=1&page=${page}&size=4`
-                  : `/boards?page=${page}&size=4`;
+                  ? `/boards/oldest?memberId=1&page=${page}&size=${PAGE_SIZE}`
+                  : `/boards?page=${page}&size=${PAGE_SIZE}`;
+        console.log("API Endpoint: ", apiEndpoint); // 디버깅
         axiosInstance
             .get(apiEndpoint)
             .then((response) => {
+                console.log("API Response: ", response.data); // 디버깅
                 setPosts(response.data.data.content);
-                setTotalPages(response.data.data.totalPages);
+                const totalElementsFromResponse =
+                    response.data.data.totalElements;
+                if (totalElements === null) {
+                    setTotalElements(totalElementsFromResponse); // 첫 페이지 요청 시 totalElements 설정
+                }
+                console.log("Total Elements: ", totalElements); // 디버깅
+                const totalPagesCalculated = Math.ceil(
+                    totalElementsFromResponse / PAGE_SIZE
+                );
+                console.log("Total Pages Calculated: ", totalPagesCalculated); // 디버깅
+                setTotalPages(totalPagesCalculated);
                 setLoading(false);
             })
             .catch((error) => {
@@ -64,19 +78,9 @@ function BoardList() {
     };
 
     const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
-    const handleNextRange = () => {
-        const newStart = pageRange[0] + 1;
-        const newEnd = Math.min(newStart + 4, totalPages - 1);
-        setPageRange([newStart, newEnd]);
-    };
-
-    const handlePrevRange = () => {
-        const newEnd = pageRange[0] - 1;
-        const newStart = Math.max(newEnd - 4, 0);
-        setPageRange([newStart, newEnd]);
+        if (page >= 0 && page < totalPages) {
+            setCurrentPage(page);
+        }
     };
 
     const handleSearch = (query) => {
@@ -86,6 +90,7 @@ function BoardList() {
     const handleFilterChange = (newFilter) => {
         setFilter(newFilter);
         setCurrentPage(0);
+        setTotalElements(null); // 필터 변경 시 totalElements 초기화
     };
 
     if (loading) {
@@ -95,6 +100,22 @@ function BoardList() {
     if (error) {
         return <div>Error: {error.message}</div>;
     }
+
+    const renderPageButtons = () => {
+        const buttons = [];
+        for (let i = 0; i < totalPages; i++) {
+            buttons.push(
+                <button
+                    key={i}
+                    onClick={() => handlePageChange(i)}
+                    className={`mx-1 px-3 py-1 border rounded ${currentPage === i ? "bg-gray-300" : "bg-white"}`}
+                >
+                    {i + 1}
+                </button>
+            );
+        }
+        return buttons;
+    };
 
     return (
         <div className="w-full flex flex-col min-h-screen">
@@ -173,37 +194,18 @@ function BoardList() {
             </div>
             <div className="sticky bottom-0 bg-white py-4 shadow-md">
                 <div className="flex justify-center">
-                    {pageRange[0] > 0 && (
+                    {currentPage > 0 && (
                         <button
-                            onClick={handlePrevRange}
+                            onClick={() => handlePageChange(currentPage - 1)}
                             className="mx-1 px-3 py-1 border rounded bg-white"
                         >
                             &lt;
                         </button>
                     )}
-                    {Array.from(
-                        {
-                            length: Math.min(
-                                pageRange[1] - pageRange[0] + 1,
-                                totalPages - pageRange[0]
-                            ),
-                        },
-                        (_, index) => {
-                            const pageIndex = pageRange[0] + index;
-                            return (
-                                <button
-                                    key={pageIndex}
-                                    onClick={() => handlePageChange(pageIndex)}
-                                    className={`mx-1 px-3 py-1 border rounded ${currentPage === pageIndex ? "bg-gray-300" : "bg-white"}`}
-                                >
-                                    {pageIndex + 1}
-                                </button>
-                            );
-                        }
-                    )}
-                    {pageRange[1] < totalPages - 1 && (
+                    {renderPageButtons()}
+                    {currentPage < totalPages - 1 && (
                         <button
-                            onClick={handleNextRange}
+                            onClick={() => handlePageChange(currentPage + 1)}
                             className="mx-1 px-3 py-1 border rounded bg-white"
                         >
                             &gt;

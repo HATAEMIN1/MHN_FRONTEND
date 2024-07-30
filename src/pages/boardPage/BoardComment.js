@@ -12,15 +12,15 @@ function timeAgo(date) {
         return `${Math.floor(secondsPast / 60)}분 전`;
     }
     if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전`;
+        return `${Math.floor(secondsPast / 3600)}시간 전}`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전`;
+        return `${Math.floor(secondsPast / 86400)}일 전}`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전`;
+    return `${Math.floor(secondsPast / 31536000)}년 전}`;
 }
 
 const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
@@ -77,6 +77,11 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
     }, [visibleComments]);
 
     const handleCommentSubmit = () => {
+        if (!memberId) {
+            alert("로그인한 유저만 댓글을 작성할 수 있습니다.");
+            return;
+        }
+
         if (commentText.trim() === "") {
             setCommentError("댓글을 입력하세요.");
             return;
@@ -106,6 +111,11 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
     };
 
     const handleReplySubmit = (parentId) => {
+        if (!memberId) {
+            alert("로그인한 유저만 대댓글을 작성할 수 있습니다.");
+            return;
+        }
+
         if (replyText.trim() === "") {
             setCommentError("대댓글을 입력하세요.");
             return;
