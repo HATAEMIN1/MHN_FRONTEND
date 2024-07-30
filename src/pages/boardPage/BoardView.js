@@ -42,46 +42,40 @@ function BoardView() {
     const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
     useEffect(() => {
-        if (memberId !== undefined) {
-            // memberId가 유효한 값인지 확인
-            axiosInstance
-                .get(`/boards/view?freeBoardId=${bdId}&memberId=${memberId}`)
-                .then((response) => {
-                    const postData = response.data.data;
-                    console.log("postData:", postData); // 디버깅을 위해 추가
-                    setPost(postData);
-                    setLikes(postData.likeCount || 0); // likes 값이 없으면 0으로 초기화
-                    setLiked(postData.likedByCurrentUser); // 서버에서 가져오는 값으로 설정
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error fetching post:", error); // 에러 디버깅을 위해 추가
-                    setError(error);
-                    setLoading(false);
+        const fetchPost = async () => {
+            try {
+                const params = { freeBoardId: bdId };
+                if (memberId) {
+                    params.memberId = memberId;
+                }
+                const response = await axiosInstance.get("/boards/view", {
+                    params,
                 });
-        } else {
-            setLoading(false);
-            setError(new Error("User is not authenticated."));
-        }
+                const postData = response.data.data;
+                setPost(postData);
+                setLikes(postData.likeCount || 0); // likes 값이 없으면 0으로 초기화
+                setLiked(postData.likedByCurrentUser); // 서버에서 가져오는 값으로 설정
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching post:", error); // 에러 디버깅을 위해 추가
+                setError(error);
+                setLoading(false);
+            }
+        };
+
+        fetchPost();
     }, [bdId, memberId]);
 
     const handleCommentsUpdate = (newCommentCount) => {
         setPost((prevPost) => ({ ...prevPost, commentCount: newCommentCount }));
     };
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
-
-    if (!post || !post.member) {
-        return <div>게시물을 가져오는 데 문제가 발생했습니다.</div>;
-    }
-
     const handleLike = () => {
+        if (!memberId) {
+            alert("로그인한 유저만 좋아요를 누를 수 있습니다.");
+            return;
+        }
+
         const url = liked ? "/boards/unlike" : "/boards/like";
         axiosInstance
             .post(url, null, { params: { freeBoardId: bdId, memberId } })
@@ -110,19 +104,22 @@ function BoardView() {
             });
     };
 
-    const profileImageUrl = post.member.profileImageUrl
-        ? `http://localhost:8080${post.member.profileImageUrl}`
-        : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    if (!post || !post.member) {
+        return <div>게시물을 가져오는 데 문제가 발생했습니다.</div>;
+    }
 
     return (
         <div className="pt-5 pb-7">
             <Header title="자유게시판" />
             <div className="flex items-center mb-5">
-                <img
-                    src={profileImageUrl}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full mr-3"
-                />
                 <div>{post.member.nickName}</div>
                 <div style={{ marginLeft: "10px" }}>
                     {timeAgo(post.createDate)}
@@ -136,15 +133,21 @@ function BoardView() {
                     slidesToShow={1}
                     slidesToScroll={1}
                 >
-                    {post.imageList.map((image, index) => (
-                        <div key={index}>
-                            <img
-                                src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${image.fileName}`}
-                                alt={`uploaded ${index}`}
-                                className="w-full h-96 object-cover"
-                            />
+                    {post.imageList && post.imageList.length > 0 ? (
+                        post.imageList.map((image, index) => (
+                            <div key={index}>
+                                <img
+                                    src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${image.fileName}`}
+                                    alt={`uploaded ${index}`}
+                                    className="w-full h-96 object-cover"
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
+                            <p className="text-gray-500">이미지가 없습니다</p>
                         </div>
-                    ))}
+                    )}
                 </Slider>
             </div>
             <div className="mb-5 flex items-center justify-between">

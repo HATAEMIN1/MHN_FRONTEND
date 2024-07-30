@@ -68,7 +68,6 @@ function Main() {
                 try {
                     const response = await axiosInstance.get(
                         `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
-                        // `/hospitals?latitude=37.3835006&longitude=126.9606728`
                     );
                     const hospitals = response.data;
 
@@ -183,17 +182,18 @@ function Main() {
                                                     className="cursor-pointer"
                                                 >
                                                     <div className="bg-white w-[300px] py-[8px] rounded-[4px] border px-[16px]">
-                                                        {post.imageList &&
-                                                            post.imageList
-                                                                .length > 0 && (
-                                                                <div className="w-[270px] h-[160px] mb-[4px] rounded-[4px] overflow-hidden">
+                                                        <div className="w-[270px] h-[160px] mb-[4px] rounded-[4px] overflow-hidden bg-gray-200">
+                                                            {post.imageList &&
+                                                                post.imageList
+                                                                    .length >
+                                                                    0 && (
                                                                     <img
                                                                         src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${post.imageList[0].fileName}`}
                                                                         className="w-full h-full object-cover rounded-[4px]"
                                                                         alt="Post Image"
                                                                     />
-                                                                </div>
-                                                            )}
+                                                                )}
+                                                        </div>
                                                         <div className="flex justify-between">
                                                             <p>{post.title}</p>
                                                             <div className="flex items-center">
