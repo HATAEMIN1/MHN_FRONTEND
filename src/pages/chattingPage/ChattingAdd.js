@@ -58,8 +58,10 @@ function ChattingAdd() {
 
     // works
     useEffect(() => {
-        const fetchChatRoomId = async () => {
-            if (senderId == null || recipientId == null) return;
+        const fetchOrCreateChatRoom = async () => {
+            if (senderId == null) return;
+            // recipientId is null when chatroom is first created, until
+            // a doctor joins then the recipientId becomes doctor's id
             try {
                 const response = await axiosInstance.get(
                     `/chat/room/${senderId}/${recipientId}`
@@ -85,7 +87,7 @@ function ChattingAdd() {
             }
         };
 
-        fetchChatRoomId();
+        fetchOrCreateChatRoom();
         adjustChatBodyHeight();
         window.addEventListener("resize", adjustChatBodyHeight);
         return () => window.removeEventListener("resize", adjustChatBodyHeight);

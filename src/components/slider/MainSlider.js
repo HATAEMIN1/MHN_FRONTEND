@@ -18,8 +18,9 @@ function MainSlider() {
     };
 
     const images = [
-        "/assets/slideImage/test1.png",
-        "/assets/slideImage/test2.png",
+        "/assets/slideImage/banner1.png",
+        "/assets/slideImage/banner2.png",
+        "/assets/slideImage/banner3.png",
     ];
     return (
         <Slider {...settings}>
@@ -29,7 +30,7 @@ function MainSlider() {
                     <img
                         src={image}
                         className="w-full"
-                        style={{ height: "200px" }}
+                        style={{ height: "220px" }}
                     />
                 </div>
             ))}

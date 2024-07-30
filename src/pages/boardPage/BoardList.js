@@ -1,3 +1,4 @@
+// 댓글 인풋창 로그인유저에게만
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "../../layouts/header/Header";
@@ -5,6 +6,7 @@ import Searchbar from "../../components/search/Searchbar";
 import NavBar from "../../layouts/nav/NavBar";
 import FilterModalManager from "../../components/modal/FilterModalManager";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function timeSince(date) {
     const now = new Date();
@@ -17,15 +19,15 @@ function timeSince(date) {
         return `${Math.floor(secondsPast / 60)}분 전`;
     }
     if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전}`;
+        return `${Math.floor(secondsPast / 3600)}시간 전`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전}`;
+        return `${Math.floor(secondsPast / 86400)}일 전`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전}`;
+    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 function BoardList() {
@@ -36,6 +38,7 @@ function BoardList() {
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(null); // totalElements 상태 추가
     const [filter, setFilter] = useState("latest");
+    const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
     const navigate = useNavigate();
 
     const PAGE_SIZE = 4; // 한 페이지에 보여줄 게시물 수
@@ -101,6 +104,8 @@ function BoardList() {
         return <div>Error: {error.message}</div>;
     }
 
+    // console.log(posts);
+
     const renderPageButtons = () => {
         const buttons = [];
         for (let i = 0; i < totalPages; i++) {
@@ -119,7 +124,12 @@ function BoardList() {
 
     return (
         <div className="w-full flex flex-col min-h-screen">
-            <Header title="자유게시판" write="boards/new" />
+            {memberId ? (
+                <Header title="자유게시판" write="boards/new" />
+            ) : (
+                <Header title="자유게시판" write="users/login" />
+            )}
+
             <div className="py-[16px]">
                 <ul className="flex justify-around gap-[2px]">
                     <Link to="/chatboards" className="w-full">
@@ -192,7 +202,8 @@ function BoardList() {
                     ))}
                 </ul>
             </div>
-            <div className="sticky bottom-0 bg-white py-4 shadow-md">
+            {/* <div className="sticky bottom-0 bg-white py-4 shadow-md"> */}
+            <div className="sticky bottom-0 bg-white py-4 ">
                 <div className="flex justify-center">
                     {currentPage > 0 && (
                         <button

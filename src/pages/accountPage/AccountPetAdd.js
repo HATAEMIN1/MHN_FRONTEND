@@ -38,7 +38,7 @@ function AccountPetAdd() {
     };
 
     // 펫 등록
-    const handleAddPet = () => {
+    const handleAddPet = async () => {
         const formData = new FormData();
         formData.append("name", pet.name);
         formData.append("kind", pet.kind);
@@ -47,7 +47,7 @@ function AccountPetAdd() {
             formData.append("petImage", petImage);
         }
 
-        axiosInstance
+        await axiosInstance
             .post("pets/addpet", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",

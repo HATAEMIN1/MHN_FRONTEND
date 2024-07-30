@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 function ChattingList() {
     const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
     const [filteredChatrooms, setFilteredChatrooms] = useState(chatrooms);
+    const userId = useSelector((state) => state.userSlice.id);
 
     const handleModalOpen = () => {
         console.log("모달 버튼 클릭됨");
@@ -26,6 +27,16 @@ function ChattingList() {
         console.log("filtered chatrooms:", filtered);
         setFilteredChatrooms(filtered);
     };
+
+    useEffect(() => {
+        // if recipientId is null (i.e. no doctor has joined the chatroom yet), that chatroom is only visible if
+        // its senderId is the current logged in user's id, i.e. if the logged in user created chat room
+        const filtered = chatrooms.filter(
+            (chatroom) =>
+                chatroom.recipientId !== null || chatroom.senderId === userId
+        );
+        setFilteredChatrooms(filtered);
+    }, [chatrooms, userId]);
 
     return (
         <>
