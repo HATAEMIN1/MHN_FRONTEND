@@ -20,7 +20,8 @@ function MainSlider() {
     const images = [
         "/assets/slideImage/banner1.png",
         "/assets/slideImage/banner2.png",
-        "/assets/slideImage/banner3.png",
+        // "/assets/slideImage/banner3.png",
+        "/assets/slideImage/banner4.png",
     ];
     return (
         <Slider {...settings}>
