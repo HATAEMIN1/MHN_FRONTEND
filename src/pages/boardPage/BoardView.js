@@ -1,3 +1,4 @@
+// 페이지에 좋아요버튼 로그인유저에게만
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
@@ -40,7 +41,6 @@ function BoardView() {
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
     const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
-
     useEffect(() => {
         const fetchPost = async () => {
             try {

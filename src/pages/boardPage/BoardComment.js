@@ -1,3 +1,4 @@
+// 페이지 헤더에 등록연필버튼 로그인유저한테만 열리도록 모달 / 페이지 이동
 import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../utils/axios";
 
@@ -285,7 +286,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                 </style>
                 {comments.slice(0, visibleComments).map((comment, index) => {
                     const profileImageUrl = comment.profileImage
-                        ? `http://localhost:8080${comment.profileImage}`
+                        ? `${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${comment.profileImage}`
                         : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
 
                     return (
