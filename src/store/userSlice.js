@@ -28,6 +28,7 @@ const userSlice = createSlice({
             })
             .addCase(loginUser.pending, (state, action) => {
                 console.log("pending");
+                return state;
             })
             .addCase(loginUser.rejected, (state, action) => {
                 removeCookie("member");
@@ -35,6 +36,7 @@ const userSlice = createSlice({
                 if (error) {
                     return error;
                 }
+                return state;
             })
             .addCase(loginDoctor.fulfilled, (state, action) => {
                 const payload = action.payload;
