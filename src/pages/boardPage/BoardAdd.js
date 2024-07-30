@@ -16,11 +16,11 @@ function BoardAdd({ onAddPost }) {
     const navigate = useNavigate();
     const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
-    useEffect(() => {
-        if (!memberId) {
-            navigate("/users/login");
-        }
-    }, [memberId, navigate]);
+    // useEffect(() => {
+    //     if (!memberId) {
+    //         navigate("/users/login");
+    //     }
+    // }, [memberId, navigate]);
 
     const handleTitleChange = (event) => {
         const value = event.target.value;
