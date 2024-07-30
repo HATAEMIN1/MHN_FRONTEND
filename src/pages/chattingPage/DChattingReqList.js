@@ -1,13 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Header from "../../layouts/header/Header";
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function DChattingReqList() {
+    // Redux store에서 loginState를 가져옵니다.
+    const loginState = useSelector((state) => state.userSlice);
+    const navigate = useNavigate();
+
     const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
     const user = useSelector((state) => state.userSlice);
     console.log("logged in user:", user);
+
+    useEffect(() => {
+        // loginState가 존재하고 doctorStatus가 PENDING일 때만 리다이렉트합니다.
+        if (loginState && loginState.doctorStatus === "PENDING") {
+            navigate("/doctors/register/pending");
+        }
+    }, [loginState, navigate]);
+
+    // loginState가 없거나 doctorStatus가 PENDING이면 아무것도 렌더링하지 않습니다.
+    if (!loginState || loginState.doctorStatus === "PENDING") {
+        return null;
+    }
+
     // If chatrooms are not available or loading, show a placeholder message
     if (!chatrooms || chatrooms.length === 0) {
         return (
@@ -19,6 +35,7 @@ function DChattingReqList() {
             </>
         );
     }
+
     return (
         <>
             <Header title="실시간 채팅 요청" />
@@ -35,7 +52,6 @@ function DChattingReqList() {
                                     <img
                                         src="/assets/logoColor.png"
                                         className="block w-full rounded-[4px]"
-
                                     />
                                 </div>
                                 <div>
