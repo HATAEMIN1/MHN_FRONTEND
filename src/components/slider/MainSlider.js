@@ -20,18 +20,15 @@ function MainSlider() {
     const images = [
         "/assets/slideImage/banner1.png",
         "/assets/slideImage/banner2.png",
-        "/assets/slideImage/banner3.png",
+        // "/assets/slideImage/banner3.png",
+        "/assets/slideImage/banner4.png",
     ];
     return (
         <Slider {...settings}>
             {images.map((image, index) => (
                 // 각 이미지를 슬라이더 아이템으로 렌더링
-                <div key={index}>
-                    <img
-                        src={image}
-                        className="w-full"
-                        style={{ height: "220px" }}
-                    />
+                <div key={index} className="border border-gray-400">
+                    <img src={image} className="w-full h-full object-fill" />
                 </div>
             ))}
         </Slider>

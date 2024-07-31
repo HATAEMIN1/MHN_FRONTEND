@@ -40,6 +40,9 @@ module.exports = {
           400: "#fcfcfc",
         },
       },
+      boxShadow: {
+        "custom-shadow": "1px 4px 4px rgba(0, 0, 0, 0.25)",
+      },
     },
 
     primary: {
