@@ -111,12 +111,35 @@ function HospitalView() {
                     </ul>
                 </div>
                 {/* 병원정보 s */}
-                <div className="mb-[24px]">
-                    <div className="flex gap-[2px]8">
-                        {/* <div onClick={handleOnclick}> */}
-                        <div>
-                            {loginState.email ? (
-                                bookmarkState ? (
+                <div className="px-[16px]">
+                    <div className="mb-[24px]">
+                        <div className="flex gap-[2px]">
+                            {/* <div onClick={handleOnclick}> */}
+                            <div>
+                                {loginState.email ? (
+                                    bookmarkState ? (
+                                        <div onClick={deleteBMK}>
+                                            <img
+                                                src="/assets/images/bmkIcon_color.svg"
+                                                alt="Remove Bookmark"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div onClick={addBMK}>
+                                            <img
+                                                src="/assets/images/bmkIcon_clear.svg"
+                                                alt="Add Bookmark"
+                                            />
+                                        </div>
+                                    )
+                                ) : (
+                                    <img
+                                        src="/assets/images/bmkIcon_clear.svg"
+                                        alt="Add Bookmark"
+                                        className="invisible"
+                                    />
+                                )}
+                                {/* {bookmarkState ? (
                                     <div onClick={deleteBMK}>
                                         <img
                                             src="/assets/images/bmkIcon_color.svg"
@@ -130,39 +153,37 @@ function HospitalView() {
                                             alt="Add Bookmark"
                                         />
                                     </div>
-                                )
-                            ) : (
-                                <img
-                                    src="/assets/images/bmkIcon_clear.svg"
-                                    alt="Add Bookmark"
-                                    className="invisible"
-                                />
-                            )}
-                            {/* {bookmarkState ? (
-                                <div onClick={deleteBMK}>
-                                    <img
-                                        src="/assets/images/bmkIcon_color.svg"
-                                        alt="Remove Bookmark"
-                                    />
-                                </div>
-                            ) : (
-                                <div onClick={addBMK}>
-                                    <img
-                                        src="/assets/images/bmkIcon_clear.svg"
-                                        alt="Add Bookmark"
-                                    />
-                                </div>
-                            )} */}
+                                )} */}
+                            </div>
+                            <p className="subtitle2">{hospitalInfo.name}</p>
                         </div>
-                        <p className="subtitle2">{hospitalInfo.name}</p>
+                        <div className="pl-[24px]">
+                            <p className="body2 text-sub-200">
+                                {hospitalInfo.address}
+                            </p>
+                            <p className="body2 text-sub-100">
+                                {hospitalInfo.phone}
+                            </p>
+                        </div>
                     </div>
-                    <div className="pl-[24px]">
-                        <p className="body2 text-sub-200">
-                            {hospitalInfo.address}
-                        </p>
-                        <p className="body2 text-sub-100">
-                            {hospitalInfo.phone}
-                        </p>
+                    <div
+                        className="w-full rounded-[4px] px-[12px] py-[16px] m-auto inline-block mb-[24px]"
+                        style={{ background: "#FAFBFD" }}
+                    >
+                        <div className="flex justify-between border-b mb-[12px] border-gray-400">
+                            <p className="subtitle1">평일</p>
+                            <p className="text-gray-800">
+                                [월,화,수,금] 10:00 ~ 19:00
+                            </p>
+                        </div>
+                        <div className="flex justify-between border-b mb-[12px] border-gray-400">
+                            <p className="subtitle1">토요일</p>
+                            <p className="text-gray-800"> 10:00 ~ 19:00</p>
+                        </div>
+                        <div className="flex justify-between border-b mb-[12px] border-gray-400">
+                            <p className="subtitle1">공휴일</p>
+                            <p className="text-gray-800">휴진</p>
+                        </div>
                     </div>
                 </div>
                 <div>

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChatRooms } from "./store/chatRoomSlice";
 import axiosInstance from "./utils/axios";
 import { lazy } from "react";
+import KakaoRedirectPage from "./pages/kakaoPage/KakaoRedirectPage";
 const Intro = lazy(() => import("./pages/mainPage/Intro"));
 const UserLogin = lazy(() => import("./pages/loginPage/UserLogin"));
 const DoctorLogin = lazy(() => import("./pages/loginPage/DoctorLogin"));
@@ -94,7 +95,7 @@ function App() {
                 <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px]  sm:h-screen relative flex flex-col overflow-hidden border">
                     <div className="flex-grow overflow-hidden">
                         <div
-                            className={`h-full overflow-y-auto bg-white ${isMainPage ? "" : "px-[16px]"} py-[85px] no-scrollbar`}
+                            className={`h-full overflow-y-auto bg-white ${isMainPage ? "" : "px-[16px]"} pt-[65px] pb-[85px] no-scrollbar`}
                         >
                             <Suspense fallback={<Loading />}>
                                 <Routes>
@@ -268,6 +269,10 @@ function App() {
                                     <Route
                                         path="/admin/stats"
                                         element={<Stats />}
+                                    />
+                                    <Route
+                                        path="/member/kakao"
+                                        element={<KakaoRedirectPage />}
                                     />
                                 </Routes>
                             </Suspense>
