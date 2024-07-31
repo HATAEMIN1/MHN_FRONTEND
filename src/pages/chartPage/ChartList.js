@@ -9,7 +9,6 @@ import { SubscriptionComponent } from "../../components/subscription/Subscriptio
 function ChartList() {
     const navigate = useNavigate();
     const memberId = useSelector((state) => {
-        console.log(state.userSlice);
         return state.userSlice.id;
     });
     const [chartData, setChartData] = useState([]);
@@ -45,7 +44,6 @@ function ChartList() {
                 params,
             });
             setChartData(res.data);
-            console.log(res.data);
         } catch (error) {
             console.log(error);
         }

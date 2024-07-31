@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import "../../assets/css/promotion.scss";
+import { useSelector } from "react-redux";
 
 function Promotion({ ...props }) {
+    const selector = useSelector((state) => {
+        return state.userSlice;
+    });
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (selector.memberTypeList.length > 1) {
+            navigate(`/subscription/${selector.id}`);
+        }
+    }, []);
+
     return (
         <>
             <div className="promotion-container pt-[100px] pb-[70px] ">

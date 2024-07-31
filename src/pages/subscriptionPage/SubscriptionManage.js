@@ -36,20 +36,17 @@ function SubscriptionManage(props) {
             nextBillingDate: formatDate(res.data.nextBillingDate),
         };
         setMySubscription(formattedData);
-        console.log(formattedData);
     };
     const handleSubscriptionPaused = async () => {
         const res = await axiosInstance.post("/payments/unschedule", {
             memberId: mySubscription.id,
         });
-        console.log(res.data);
         mySubscribe();
     };
     useEffect(() => {
         mySubscribe();
     }, []);
     useEffect(() => {
-        console.log("유즈이펙트한번더옴");
         if (mySubscription && mySubscription.status === "CANCELLED") {
             navigate("/subscription");
         }
