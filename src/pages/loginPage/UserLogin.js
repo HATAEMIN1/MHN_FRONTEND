@@ -53,9 +53,9 @@ function UserLogin() {
                         }}
                     />
                 </div>
-                <div className="text-[20px] title text-primary-300">
-                    구독내역
-                </div>
+                {/*<div className="text-[20px] title text-primary-300">*/}
+                {/*    구독내역*/}
+                {/*</div>*/}
                 {/*<div className="h-[100%] flex items-center">*/}
                 {/*    <img*/}
                 {/*        src="/assets/images/backIcon.svg"*/}
