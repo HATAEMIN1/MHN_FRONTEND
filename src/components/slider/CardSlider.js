@@ -3,8 +3,8 @@ import React from "react";
 function CardSlider({ ...props }) {
     return (
         <>
-            <div className="bg-white w-[300px] rounded-[4px] px-2 py-2">
-                <div className="w-full h-[160px] mb-2 rounded-[4px] overflow-hidden">
+            <div className="bg-white w-[300px] rounded-[4px] px-4 py-3">
+                <div className="w-[270px] h-[160px] mb-2 rounded-[4px] overflow-hidden">
                     <img
                         // src="/assets/slideImage/test1.png"
                         src={

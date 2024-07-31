@@ -95,7 +95,7 @@ function App() {
                 <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px]  sm:h-screen relative flex flex-col overflow-hidden border">
                     <div className="flex-grow overflow-hidden">
                         <div
-                            className={`h-full overflow-y-auto bg-white ${isMainPage ? "" : "px-[16px]"} py-[85px] no-scrollbar`}
+                            className={`h-full overflow-y-auto bg-white ${isMainPage ? "" : "px-[16px]"} pt-[65px] pb-[85px] no-scrollbar`}
                         >
                             <Suspense fallback={<Loading />}>
                                 <Routes>

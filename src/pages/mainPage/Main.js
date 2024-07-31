@@ -152,7 +152,7 @@ function Main() {
                 <div>
                     <MainSlider />
                 </div>
-                <div className="bg-white rounded-t-[8px] rounded-r-[8px] px-4">
+                <div className="bg-whit pt-7 px-4 ">
                     <div className="mb-[45px] flex flex-col gap-4">
                         <div className="flex items-center">
                             <Link to="/boards" className="flex">
@@ -183,7 +183,7 @@ function Main() {
                                                     }
                                                     className="cursor-pointer"
                                                 >
-                                                    <div className="bg-white w-[300px] py-[8px] rounded-[4px] border px-[16px]">
+                                                    <div className="bg-white w-[300px] py-3 rounded-[4px] border px-4 border-gray-400">
                                                         <div className="w-[270px] h-[160px] mb-[4px] rounded-[4px] overflow-hidden bg-gray-200">
                                                             {post.imageList &&
                                                                 post.imageList
@@ -196,14 +196,16 @@ function Main() {
                                                                     />
                                                                 )}
                                                         </div>
-                                                        <div className="flex justify-between">
-                                                            <p>{post.title}</p>
+                                                        <div className="flex justify-between mt-2">
+                                                            <p className="body2 text-primary-300">
+                                                                {post.title}
+                                                            </p>
                                                             <div className="flex items-center">
                                                                 <img
                                                                     src="/assets/images/likeIcon_color.svg"
                                                                     alt="Like Icon"
                                                                 />
-                                                                <p className="ml-1">
+                                                                <p className="ml-1 subtitle1 text-sub-100">
                                                                     {post.likeCount ||
                                                                         0}
                                                                 </p>
@@ -214,7 +216,7 @@ function Main() {
                                             </SwiperSlide>
                                         ))
                                     ) : (
-                                        <p className="text-sm font-bold">
+                                        <p className="body1 text-sub-100">
                                             아직 게시판 정보가 없습니다.
                                         </p>
                                     )}
@@ -236,16 +238,16 @@ function Main() {
                                 <ul>
                                     <Link
                                         to={`/chatboards/${firstChatRoom?.senderId}/${firstChatRoom?.recipientId}`}
-                                        className="flex"
+                                        className="flex "
                                     >
-                                        <li className="mb-[14px]">
-                                            <p className="body1 font-bold">
+                                        <li className="mb-5 flex flex-col gap-1">
+                                            <p className="body1 text-primary-300">
                                                 {firstChatRoom?.title}
                                             </p>
-                                            <p className="body2">
+                                            <p className="body2 text-sub-100">
                                                 {firstChatRoom?.address}
                                             </p>
-                                            <div className="flex gap-[4px] mini">
+                                            <div className="flex gap-[4px] mini text-gray-300">
                                                 <p>
                                                     writer ID:{" "}
                                                     {firstChatRoom?.senderId}
@@ -263,14 +265,14 @@ function Main() {
                                             to={`/chatboards/${secondChatRoom?.senderId}/${secondChatRoom?.recipientId}`}
                                             className="flex"
                                         >
-                                            <li className="mb-[14px]">
-                                                <p className="body1 font-bold">
+                                            <li className="flex flex-col gap-1">
+                                                <p className="body1 text-primary-300">
                                                     {secondChatRoom?.title}
                                                 </p>
-                                                <p className="body2">
+                                                <p className="body2 text-sub-100">
                                                     {secondChatRoom?.address}
                                                 </p>
-                                                <div className="flex gap-[4px] mini">
+                                                <div className="flex gap-[4px] mini text-gray-300">
                                                     <p>
                                                         writer ID:{" "}
                                                         {
@@ -288,7 +290,7 @@ function Main() {
                                     )}
                                 </ul>
                             ) : (
-                                <div className="text-sm ml-[5px] font-bold">
+                                <div className="ml-[5px] body1 text-sub-100">
                                     아직 채팅방이 없습니다.
                                 </div>
                             )}
@@ -319,59 +321,58 @@ function Main() {
                                 </p>
                             </div>
                         )}
-                        <div className="flex w-full justify-center items-center">
-                            <div className="overflow-hidden">
-                                <Swiper
-                                    spaceBetween={8}
-                                    slidesPerView={"auto"}
-                                    className="mySwiper"
-                                >
-                                    {hospitalData.length > 0 ? (
-                                        sortHospitals(hospitalData, sortBy).map(
-                                            (item, idx) => {
-                                                if (idx <= 5) {
-                                                    return (
-                                                        <SwiperSlide
-                                                            key={item.id}
-                                                            className="!w-auto shadow-custom-shadow border border-gray-100"
+
+                        <div className="overflow-hidden">
+                            <Swiper
+                                spaceBetween={8}
+                                slidesPerView={"auto"}
+                                className="mySwiper"
+                            >
+                                {hospitalData.length > 0 ? (
+                                    sortHospitals(hospitalData, sortBy).map(
+                                        (item, idx) => {
+                                            if (idx <= 5) {
+                                                return (
+                                                    <SwiperSlide
+                                                        key={item.id}
+                                                        className="!w-auto"
+                                                    >
+                                                        <div
+                                                            onClick={() =>
+                                                                navigateToPage(
+                                                                    `/hospitals/${item.id}`
+                                                                )
+                                                            }
+                                                            className="cursor-pointer rounded-[4px] border border-gray-400"
                                                         >
-                                                            <div
-                                                                onClick={() =>
-                                                                    navigateToPage(
-                                                                        `/hospitals/${item.id}`
-                                                                    )
+                                                            <CardSlider
+                                                                imgRoute="/assets/images/ratingIcon_color.svg"
+                                                                title={
+                                                                    item.name
                                                                 }
-                                                                className="cursor-pointer \"
-                                                            >
-                                                                <CardSlider
-                                                                    imgRoute="/assets/images/ratingIcon_color.svg"
-                                                                    title={
-                                                                        item.name
-                                                                    }
-                                                                    bookmarkCount={
-                                                                        item.bookmarkCount
-                                                                    }
-                                                                    ratingAVG={
-                                                                        item.ratingAVG
-                                                                    }
-                                                                    randomImageNumber={
-                                                                        item.randomImageNumber
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </SwiperSlide>
-                                                    );
-                                                }
-                                                return null;
+                                                                bookmarkCount={
+                                                                    item.bookmarkCount
+                                                                }
+                                                                ratingAVG={
+                                                                    item.ratingAVG
+                                                                }
+                                                                randomImageNumber={
+                                                                    item.randomImageNumber
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </SwiperSlide>
+                                                );
                                             }
-                                        )
-                                    ) : (
-                                        <p className="text-sm font-bold">
-                                            아직 병원 정보가 없습니다.
-                                        </p>
-                                    )}
-                                </Swiper>
-                            </div>
+                                            return null;
+                                        }
+                                    )
+                                ) : (
+                                    <p className="body1 text-sub-100">
+                                        아직 병원 정보가 없습니다.
+                                    </p>
+                                )}
+                            </Swiper>
                         </div>
                     </div>
                 </div>
