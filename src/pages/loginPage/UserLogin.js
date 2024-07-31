@@ -53,14 +53,16 @@ function UserLogin() {
                         }}
                     />
                 </div>
-
-                <div className="h-[100%] flex items-center">
-                    <img
-                        src="/assets/images/backIcon.svg"
-                        alt=""
-                        className="w-[30px] h-[30px] invisible"
-                    />
+                <div className="text-[20px] title text-primary-300">
+                    구독내역
                 </div>
+                {/*<div className="h-[100%] flex items-center">*/}
+                {/*    <img*/}
+                {/*        src="/assets/images/backIcon.svg"*/}
+                {/*        alt=""*/}
+                {/*        className="w-[30px] h-[30px] invisible"*/}
+                {/*    />*/}
+                {/*</div>*/}
                 {/* 테스트 아이콘36 / 헤더폰트 20px / */}
             </div>
             <div className="w-[210px] mx-auto h-[152px] mb-16">
