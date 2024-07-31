@@ -28,15 +28,15 @@ function ChattingList() {
         setFilteredChatrooms(filtered);
     };
 
-    useEffect(() => {
-        // if recipientId is null (i.e. no doctor has joined the chatroom yet), that chatroom is only visible if
-        // its senderId is the current logged in user's id, i.e. if the logged in user created chat room
-        const filtered = chatrooms.filter(
-            (chatroom) =>
-                chatroom.recipientId !== null || chatroom.senderId === userId
-        );
-        setFilteredChatrooms(filtered);
-    }, [chatrooms, userId]);
+    // useEffect(() => {
+    //     // if recipientId is null (i.e. no doctor has joined the chatroom yet), that chatroom is only visible if
+    //     // its senderId is the current logged in user's id, i.e. if the logged in user created chat room
+    //     const filtered = chatrooms.filter(
+    //         (chatroom) =>
+    //             chatroom.recipientId !== null || chatroom.senderId === userId
+    //     );
+    //     setFilteredChatrooms(filtered);
+    // }, [chatrooms, userId]);
 
     return (
         <>

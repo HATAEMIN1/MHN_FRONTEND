@@ -13,29 +13,49 @@ const WS_ENDPOINT = "http://localhost:8080/ws";
 const CHAT_SEND_MESSAGES_URL = "/app/chat.sendMessages";
 const CHAT_JOIN_ROOM_URL = "/app/chat.joinRoom";
 
-// const initialMessages = [
-//     {
-//         id: 1,
-//         senderId: 10,
-//         content: "얘가 고기만 먹고 사료를 안 먹는데 어떻게 해야돼여???",
-//         timestamp: "오후 13:23",
-//         type: "received",
-//     },
-//     {
-//         id: 2,
-//         senderId: 10,
-//         content: "모르겠어요 ㅠㅜㅜㅜㅜㅠ",
-//         timestamp: "오후 13:24",
-//         type: "received",
-//     },
-//     {
-//         id: 3,
-//         senderId: 10,
-//         content: "어떻게 하나요?????????",
-//         timestamp: "오후 13:26",
-//         type: "received",
-//     },
-// ];
+const initialMessages = [
+    {
+        id: 1,
+        senderId: 10,
+        content: "안녕하세요 의사입니다.",
+        timestamp: "오후 13:23",
+        type: "received",
+    },
+    {
+        id: 2,
+        senderId: 10,
+        content: "어떤 증상이 있나요?",
+        timestamp: "오후 13:24",
+        type: "received",
+    },
+    {
+        id: 3,
+        senderId: 10,
+        content: "언제 예약 잡아드릴까요?",
+        timestamp: "오후 13:25",
+        type: "received",
+    },
+    {
+        id: 4,
+        senderId: 10,
+        content: "그럼 그때 뵙겠습니다 ^^",
+        timestamp: "오후 13:25",
+        type: "received",
+    },
+];
+
+function parseKoreanTimestamp(timestamp) {
+    const [period, time] = timestamp.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (period === "오후" && hours !== 12) {
+        hours += 12;
+    } else if (period === "오전" && hours === 12) {
+        hours = 0;
+    }
+
+    return new Date().setHours(hours, minutes, 0, 0);
+}
 
 function ChattingAdd() {
     const [senderId, setSenderId] = useState(null);
@@ -43,8 +63,8 @@ function ChattingAdd() {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [isChatExpired, setIsChatExpired] = useState(false);
-    const [countdown, setCountdown] = useState(30); // 5 minutes in seconds = 300
-    // const [simulatedMessages, setSimulatedMessages] = useState([]);
+    const [countdown, setCountdown] = useState(60); // 5 minutes in seconds = 300
+    const [simulatedMessages, setSimulatedMessages] = useState([]);
     const chatBodyRef = useRef(null);
     const stompClientRef = useRef(null); // Reference to the STOMP client
     const [chatRoomId, setChatRoomId] = useState("");
@@ -56,12 +76,20 @@ function ChattingAdd() {
         setRecipientId(Math.floor(Math.random() * 500));
     }, []);
 
+    // Scroll to the bottom whenever the messages state changes
+    useEffect(() => {
+        if (chatBodyRef.current) {
+            chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     // works
     useEffect(() => {
         const fetchOrCreateChatRoom = async () => {
-            if (senderId == null) return;
+            if (senderId == null || recipientId == null) return;
             // recipientId is null when chatroom is first created, until
             // a doctor joins then the recipientId becomes doctor's id
+            // for now when recipientId is null dont create chatroom
             try {
                 const response = await axiosInstance.get(
                     `/chat/room/${senderId}/${recipientId}`
@@ -138,7 +166,7 @@ function ChattingAdd() {
         const startTime = Date.now();
         const timer = setInterval(() => {
             const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-            const remainingTime = 30 - elapsedTime; // 300
+            const remainingTime = 60 - elapsedTime; // 300
             if (remainingTime <= 0) {
                 setIsChatExpired(true);
                 setCountdown(0);
@@ -213,22 +241,29 @@ function ChattingAdd() {
         connect();
     }, []);
 
-    // useEffect(() => {
-    //     const simulateMessages = async () => {
-    //         for (const [index, msg] of initialMessages.entries()) {
-    //             if (
-    //                 msg.type === "received" &&
-    //                 !simulatedMessages.includes(msg.id)
-    //             ) {
-    //                 const delay = 10000 * index; // 10 seconds interval between messages
-    //                 await new Promise((resolve) => setTimeout(resolve, delay));
-    //                 setMessages((prevMessages) => [...prevMessages, msg]);
-    //                 setSimulatedMessages((prev) => [...prev, msg.id]);
-    //             }
-    //         }
-    //     };
-    //     simulateMessages();
-    // }, []);
+    useEffect(() => {
+        const simulateMessages = async () => {
+            for (const [index, msg] of initialMessages.entries()) {
+                if (
+                    msg.type === "received" &&
+                    !simulatedMessages.includes(msg.id)
+                ) {
+                    const delay = 8000 * index; // 8 seconds interval between messages
+                    await new Promise((resolve) => setTimeout(resolve, delay));
+                    // setMessages((prevMessages) => [...prevMessages, msg]);
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        {
+                            ...msg,
+                            createdAt: parseKoreanTimestamp(msg.timestamp),
+                        },
+                    ]);
+                    setSimulatedMessages((prev) => [...prev, msg.id]);
+                }
+            }
+        };
+        simulateMessages();
+    }, []);
 
     useEffect(() => {
         if (isChatExpired) {
@@ -334,7 +369,7 @@ function ChattingAdd() {
             <div className="chat-body" ref={chatBodyRef}>
                 {!isChatExpired ? (
                     <div className="system-message">
-                        30초 이상 메시지가 없으면 채팅이 종료됩니다.(
+                        1분 이상 메시지가 없으면 채팅이 종료됩니다.(
                         {formatTime(countdown)})
                     </div>
                 ) : (
