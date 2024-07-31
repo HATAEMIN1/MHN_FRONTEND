@@ -7,14 +7,15 @@ import { useNavigate } from "react-router-dom";
 import ButtonBlack from "../../components/button/ButtonBlack";
 import PetDropDown from "../../components/PetDropDown";
 import ImageUploader from "../../components/ImageUploader";
-import axios from "axios";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function AccountPetAdd() {
     const navigate = useNavigate();
     const [hasValue, setHasValue] = useState(false);
     const [pet, setPet] = useState({ name: "", kind: "", age: 0 });
     const [petImage, setPetImage] = useState(null);
+    const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
     const handleImageChange = (file) => {
         setPetImage(file);
@@ -40,32 +41,28 @@ function AccountPetAdd() {
     // 펫 등록
     const handleAddPet = async () => {
         const formData = new FormData();
+        formData.append("memberId", memberId);
         formData.append("name", pet.name);
         formData.append("kind", pet.kind);
         formData.append("age", pet.age);
+
         if (petImage) {
-            formData.append("petImage", petImage);
+            formData.append("files", petImage);
         }
 
-        await axiosInstance
-            .post("pets/addpet", formData, {
+        try {
+            await axiosInstance.post("/pets", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            })
-            .then(() => {
-                console.log("펫 등록 완료 !!!!!!");
-                navigate("/account/pets");
-            })
-            .catch((error) => {
-                console.error("펫 등록 오류!@@@@@@", error);
             });
+            console.log("펫 등록 완료 !!!!!!");
+        } catch (error) {
+            console.error("펫 등록 오류!@@@@@@", error);
+        }
     };
 
-    const handleSubmit = (closeModal) => {
-        closeModal();
-        navigate("/account/pets");
-    };
+    const handleSubmit = (closeModal) => {};
 
     return (
         <form>
@@ -76,7 +73,9 @@ function AccountPetAdd() {
                         <ButtonBlack
                             handleClick={(e) => {
                                 e.preventDefault(); // 추가: 폼 제출 방지
-                                handleSubmit(closeModal);
+                                handleSubmit();
+                                closeModal();
+                                navigate("/account/pets");
                             }}
                             text1="확인"
                             className="body2"
@@ -108,7 +107,6 @@ function AccountPetAdd() {
             <div className="h-full flex flex-col items-center ">
                 {/* img s */}
                 <ImageUploader onImageChange={handleImageChange} />
-                {/* ... 다른 JSX */}
                 {/* img e */}
 
                 {/* input s */}
