@@ -8,6 +8,9 @@ function ChattingListForm({ filteredChatrooms }) {
     console.log("fileredChatRooms:", filteredChatrooms);
     const displayChatrooms =
         filteredChatrooms.length > 0 ? filteredChatrooms : chatrooms;
+
+    // 랜덤 병원 이미지 출력
+    const getRandomImageNumber = () => Math.floor(Math.random() * 17) + 1;
     return (
         <>
             {displayChatrooms.map((chatroom, idx) => {
@@ -21,7 +24,7 @@ function ChattingListForm({ filteredChatrooms }) {
                             <div className="flex flex-grow gap-[8px]">
                                 <div className="w-[80px] flex-shrink-0 ">
                                     <img
-                                        src="/assets/logoColor.png"
+                                        src={`/assets/images/hospitalImage${getRandomImageNumber()}.svg`}
                                         className="block w-full rounded-[4px]"
                                     />
                                 </div>

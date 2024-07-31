@@ -36,6 +36,9 @@ function DChattingReqList() {
         );
     }
 
+    // 채팅방 병원 랜덤이미지
+    const getRandomImageNumber = () => Math.floor(Math.random() * 17) + 1;
+
     return (
         <>
             <Header title="실시간 채팅 요청" />
@@ -50,7 +53,7 @@ function DChattingReqList() {
                             <div className="flex flex-grow gap-[8px]">
                                 <div className="w-[80px] flex-shrink-0 ">
                                     <img
-                                        src="/assets/logoColor.png"
+                                        src={`/assets/images/petImage${getRandomImageNumber()}.svg`}
                                         className="block w-full rounded-[4px]"
                                     />
                                 </div>
