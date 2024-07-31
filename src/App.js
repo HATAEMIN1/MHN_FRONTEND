@@ -44,6 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChatRooms } from "./store/chatRoomSlice";
 import axiosInstance from "./utils/axios";
 import DoctorRegisterPending from "./pages/registerPage/DoctorRegisterPending";
+import KakaoRedirectPage from "./pages/kakaoPage/KakaoRedirectPage";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -85,6 +86,10 @@ function App() {
                                 <Route
                                     path="/users/login"
                                     element={<UserLogin />}
+                                />
+                                <Route
+                                    path="/member/kakao"
+                                    element={<KakaoRedirectPage />}
                                 />
                                 <Route
                                     path="/doctors/login"
