@@ -8,16 +8,18 @@ import ButtonBlack from "../../components/button/ButtonBlack";
 import ImageUploader from "../../components/ImageUploader";
 import axios from "axios";
 import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function AccountPetList() {
     const navigate = useNavigate();
     const [image, setImage] = useState(null);
     const [pets, setPets] = useState([]);
+    const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
 
     // 모든 펫 정보 가져오기
     useEffect(() => {
         axiosInstance
-            .get("/pets/allpet")
+            .get(`/pets?memberId=${memberId}`)
             .then((response) => {
                 setPets(response.data);
             })
@@ -27,18 +29,33 @@ function AccountPetList() {
     }, []);
 
     // 펫 삭제
-    const handleDelete = (id, closeModal) => {
-        axiosInstance
-            .delete(`/pets/${id}`)
-            .then(() => {
-                setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));
-                closeModal();
-            })
-            .catch((error) => {
-                console.error(`Error deleting pet ${id}:`, error);
-            });
+    // const handleDelete = (id, closeModal) => {
+    //     axiosInstance
+    //         .delete(`/pets/${id}`)
+    //         .then(() => {
+    //             setPets((prevPets) => prevPets.filter((pet) => pet.id !== id));
+    //             closeModal();
+    //         })
+    //         .catch((error) => {
+    //             console.error(`Error deleting pet ${id}:`, error);
+    //         });
+    // };
+
+    // 펫삭제
+    const handleDeletePet = async (petId, closeModal) => {
+        console.log("펫 삭제할거임");
+
+        try {
+            const response = await axiosInstance.delete(`/pets?petId=${petId}`);
+            console.log(petId);
+            setPets((prevPets) => prevPets.filter((pet) => pet.id !== petId));
+            closeModal(); // 모달 닫기
+        } catch (error) {
+            console.error("삭제요청실패", error);
+        }
     };
-    //
+    console.log(pets);
+
     return (
         <>
             <Header title="펫 리스트" />
@@ -46,6 +63,7 @@ function AccountPetList() {
             <div className="flex flex-col items-center">
                 {pets.map((pet) => {
                     console.log("Pet Image URL:", pet.petImage);
+                    console.log("Pet Image URL:", pet.petImage[0].fileName);
 
                     return (
                         <div
@@ -53,9 +71,9 @@ function AccountPetList() {
                             className="w-full flex flex-col items-center gap-2 py-4 my-2 border-b border-gray-100"
                         >
                             <div className="w-24 h-24 mb-4">
-                                {pet.petImage ? (
+                                {pet.petImage && pet.petImage.length > 0 ? (
                                     <img
-                                        src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${pet.petImage}`}
+                                        src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${pet.petImage[0].fileName}`}
                                         alt={pet.name}
                                         className="w-full h-full object-cover rounded-full"
                                     />
@@ -70,6 +88,7 @@ function AccountPetList() {
                                     </div>
                                 )}
                             </div>
+
                             <p className="subtitle1 text-primary-300">
                                 {pet.name}
                             </p>
@@ -85,7 +104,7 @@ function AccountPetList() {
                                     <form
                                         onSubmit={(e) => {
                                             e.preventDefault();
-                                            handleDelete(pet.id, closeModal);
+                                            handleDeletePet(pet.id, closeModal);
                                         }}
                                     >
                                         <p className="mb-3">
