@@ -37,16 +37,3 @@ export const loginDoctor = createAsyncThunk(
         }
     }
 );
-export const kakaoLogin = createAsyncThunk(
-    "kakaoLogin",
-    async (memberInfo, thunkAPI) => {
-        try {
-            return memberInfo;
-        } catch (error) {
-            console.log(error);
-            return thunkAPI.rejectWithValue(
-                error.response?.data || error.message
-            );
-        }
-    }
-);

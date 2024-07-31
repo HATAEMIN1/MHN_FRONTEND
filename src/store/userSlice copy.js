@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getCookie, removeCookie, setCookie } from "../utils/cookieUtil";
-import { loginDoctor, loginUser, kakaoLogin } from "./thunkFunction"; // kakaoLogin 추가
+import { loginDoctor, loginUser } from "./thunkFunction";
 
 const initState = {
     id: "",
@@ -63,28 +63,6 @@ const userSlice = createSlice({
                 if (error) {
                     return error;
                 }
-            })
-            .addCase(kakaoLogin.fulfilled, (state, action) => {
-                // kakaoLogin 추가
-                const payload = action.payload;
-                if (payload.error) {
-                    return payload.error;
-                }
-                setCookie("member", JSON.stringify(payload));
-                console.log("kakaoLogin fulfilled");
-                return { ...state, ...payload };
-            })
-            .addCase(kakaoLogin.pending, (state, action) => {
-                console.log("kakaoLogin pending");
-                return state;
-            })
-            .addCase(kakaoLogin.rejected, (state, action) => {
-                removeCookie("member");
-                const error = action.error;
-                if (error) {
-                    return error;
-                }
-                return state;
             });
     },
 });
