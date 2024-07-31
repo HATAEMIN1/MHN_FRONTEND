@@ -8,10 +8,14 @@ import axiosInstance from "../../utils/axios";
 
 function Account() {
     const userId = useSelector((state) => state.userSlice.id);
+    const profileImageUrl2 = useSelector(
+        (state) => state.userSlice.profileImageUrl
+    );
     const [profile, setProfile] = useState({
         nickName: "",
         email: "",
-        profileImageUrl: "/assets/images/default_profile.png",
+        profileImageUrl: profileImageUrl2,
+        nextBillingDate: 0,
     });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -22,12 +26,25 @@ function Account() {
                 const response = await axiosInstance.get(`/members/edit`, {
                     params: { id: userId },
                 });
-                const { nickName, email, profileImageUrl } = response.data;
+                const { nickName, email, profileImageUrl, nextBillingDate } =
+                    response.data;
+                // 현재 날짜와 nextBillingDate 비교
+                const today = new Date();
+                const billingDate = new Date(nextBillingDate);
+
+                // 날짜 차이 계산 (밀리초 단위)
+                const timeDiff = billingDate.getTime() - today.getTime();
+
+                // 일수로 변환 (밀리초를 일로 변환하고 소수점 이하를 버림)
+                const daysLeft = Math.max(
+                    0,
+                    Math.floor(timeDiff / (1000 * 3600 * 24))
+                );
                 setProfile({
                     nickName,
                     email,
-                    profileImageUrl:
-                        profileImageUrl || "/assets/images/default_profile.png",
+                    profileImageUrl: profileImageUrl || profileImageUrl2,
+                    nextBillingDate: daysLeft || 0,
                 });
                 setLoading(false);
             } catch (error) {
@@ -57,7 +74,7 @@ function Account() {
                 <div className="flex justify-between">
                     <div className="flex items-center gap-[8px]">
                         <img
-                            src={`http://localhost:8080${profile.profileImageUrl}`}
+                            src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${profile.profileImageUrl}`}
                             className="w-[56px] h-[56px] rounded-[50px]"
                             alt="Profile"
                         />
@@ -75,7 +92,9 @@ function Account() {
                             src="/assets/images/authIcon.svg"
                             className="w-[20px] h-[20px]"
                         />
-                        <p className="body2 text-primary-300">D-24</p>
+                        <p className="body2 text-primary-300">
+                            D-{profile.nextBillingDate}
+                        </p>
                     </div>
                 </div>
                 <div className="ml-[56px] mb-[18px]">

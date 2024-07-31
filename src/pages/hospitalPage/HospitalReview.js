@@ -313,10 +313,18 @@ function HospitalReview() {
                         <div className="mb-[20px]">
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center w-full gap-[10px]">
-                                    <img
-                                        src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${item.member.profileImageUrl}`}
-                                        className="w-[50px] h-[50px] rounded-[50px]"
-                                    />
+                                    {item.member.profileImageUrl ? (
+                                        <img
+                                            src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${item.member.profileImageUrl}`}
+                                            className="w-[50px] h-[50px] rounded-[50px]"
+                                        />
+                                    ) : (
+                                        <img
+                                            src="/assets/images/testDog.svg"
+                                            className="w-[50px] h-[50px] rounded-[50px]"
+                                        />
+                                    )}
+
                                     <div>
                                         <p className="subtitle2 text-primary-300">
                                             {item.member.nickName}

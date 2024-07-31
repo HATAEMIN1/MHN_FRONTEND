@@ -66,7 +66,15 @@ function UserLogin() {
             <div className="w-[210px] mx-auto h-[152px] mb-16">
                 <img src="/assets/logoWhite.png" className="w-full" />
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {/*<form onSubmit={handleSubmit(onSubmit)}>*/}
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                onKeyPress={(e) => {
+                    if (e.key === "Enter") {
+                        handleSubmit(onSubmit)();
+                    }
+                }}
+            >
                 <input
                     type="text"
                     placeholder="Email"
@@ -81,7 +89,6 @@ function UserLogin() {
                         },
                     })}
                     className="border-b w-full p-4 mb-2 focus:outline-none focus:ring-0"
-                    onChange={() => setLoginError("")}
                 />
                 {errors.Email && (
                     <div className="text-red-500 text-xs w-full  p-4 ">
@@ -101,7 +108,6 @@ function UserLogin() {
                         },
                     })}
                     className="border-b w-full p-4 mb-2 focus:outline-none focus:ring-0"
-                    onChange={() => setLoginError("")}
                 />
                 {errors.Password && (
                     <div className="text-red-500 text-xs w-full p-4">
@@ -118,6 +124,7 @@ function UserLogin() {
                     text1="로그인"
                     width="100%"
                     height="45px"
+                    type="submit"
                 ></ButtonBlack>
                 <div className="mb-8"></div>
                 <div className="flex items-center justify-between max-w-lg mx-auto my-8 gap-4">

@@ -3,6 +3,7 @@ import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
 import { useParams } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
 function ChartView() {
     const [chartData, setChartData] = useState([]);
     const { chartId } = useParams();
@@ -55,20 +56,28 @@ function ChartView() {
                 </div>
                 {/*스와이퍼 들어가는 자리*/}
                 <div className="flex flex-wrap justify-center">
-                    {chartData.uploadFileNames &&
-                        chartData.uploadFileNames.map((item, idx) => {
-                            return (
-                                <div
-                                    key={idx}
-                                    className="p-2 w-[576px] h-[250px]"
-                                >
-                                    <img
-                                        src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item}`}
-                                        className="w-full rounded-md h-full"
-                                    />
-                                </div>
-                            );
-                        })}
+                    <Swiper
+                        spaceBetween={8}
+                        slidesPerView={"auto"}
+                        className="mySwiper"
+                    >
+                        {chartData.uploadFileNames &&
+                            chartData.uploadFileNames.map((item, idx) => {
+                                return (
+                                    <SwiperSlide key={item.id}>
+                                        <div
+                                            key={idx}
+                                            className="p-2 w-[576px] h-[250px]"
+                                        >
+                                            <img
+                                                src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item}`}
+                                                className="w-full rounded-md h-full"
+                                            />
+                                        </div>
+                                    </SwiperSlide>
+                                );
+                            })}
+                    </Swiper>
                 </div>
             </div>
             <NavBar />

@@ -9,7 +9,6 @@ import { SubscriptionComponent } from "../../components/subscription/Subscriptio
 function ChartList() {
     const navigate = useNavigate();
     const memberId = useSelector((state) => {
-        console.log(state.userSlice.id);
         return state.userSlice.id;
     });
     const [chartData, setChartData] = useState([]);
@@ -45,7 +44,6 @@ function ChartList() {
                 params,
             });
             setChartData(res.data);
-            console.log(res.data);
         } catch (error) {
             console.log(error);
         }
@@ -57,11 +55,12 @@ function ChartList() {
         } else {
             navigate("/users/login");
         }
-    }, []);
-    SubscriptionComponent();
+    }, [memberId]);
+
     return (
         <>
             <Header title="진료기록" write="charts/new" />
+            <SubscriptionComponent />
             <div className=" mt-10 ">
                 <div className="mb-8 flex gap-4 flex-wrap justify-center px-5 sm:justify-between flex-grow">
                     {chartData.map((item, index) => (
