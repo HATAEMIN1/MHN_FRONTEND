@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChatRooms } from "./store/chatRoomSlice";
 import axiosInstance from "./utils/axios";
 import { lazy } from "react";
+import KakaoRedirectPage from "./pages/kakaoPage/KakaoRedirectPage";
 const Intro = lazy(() => import("./pages/mainPage/Intro"));
 const UserLogin = lazy(() => import("./pages/loginPage/UserLogin"));
 const DoctorLogin = lazy(() => import("./pages/loginPage/DoctorLogin"));
@@ -268,6 +269,10 @@ function App() {
                                     <Route
                                         path="/admin/stats"
                                         element={<Stats />}
+                                    />
+                                    <Route
+                                        path="/member/kakao"
+                                        element={<KakaoRedirectPage />}
                                     />
                                 </Routes>
                             </Suspense>

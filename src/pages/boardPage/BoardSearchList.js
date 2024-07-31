@@ -131,90 +131,105 @@ function BoardSearchList() {
                     onOpenModal={handleModalOpen}
                 />
             </div>
-            <ul className="grid grid-cols-2 gap-2 w-full p-0 m-0 list-none">
-                {posts && posts.length > 0 ? (
-                    posts.map((post, index) => (
-                        <Link
-                            to={`/boards/${post.id}`}
-                            key={index}
-                            state={{ post }}
-                        >
-                            <li
+            <div className="flex-grow overflow-auto">
+                <ul className="grid grid-cols-2 gap-2 w-full p-0 m-0 list-none">
+                    {posts && posts.length > 0 ? (
+                        posts.map((post, index) => (
+                            <Link
+                                to={`/boards/${post.id}`}
                                 key={index}
-                                className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start h-64"
+                                state={{ post }}
                             >
-                                <div className="w-full h-40 mb-4 overflow-hidden">
-                                    {post.imageList &&
-                                        post.imageList.length > 0 && (
-                                            <img
-                                                src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${post.imageList[0].fileName}`}
-                                                alt="Post Image"
-                                                className="w-full h-full object-cover"
-                                            />
-                                        )}
-                                </div>
-                                <div className="flex justify-between items-center w-full">
-                                    <div className="font-bold text-base text-left text-black truncate">
-                                        {post.title}
+                                <li
+                                    key={index}
+                                    className="w-full border border-gray-300 shadow-sm p-4 rounded-lg flex flex-col items-start h-64"
+                                >
+                                    <div className="w-full h-40 mb-4 overflow-hidden">
+                                        {post.imageList &&
+                                            post.imageList.length > 0 && (
+                                                <img
+                                                    src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${post.imageList[0].fileName}`}
+                                                    alt="Post Image"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            )}
                                     </div>
-                                    <span className="text-sm text-gray-600 whitespace-nowrap">
-                                        {timeSince(post.createDate)}
-                                    </span>
-                                </div>
-                                <p className="text-sm text-left overflow-hidden truncate">
-                                    {post.content.substring(0, 10) +
-                                        (post.content.length > 10 ? "..." : "")}
-                                </p>
-                                <div className="flex gap-[4px]">
-                                    <p className="mini text-gray-300">
-                                        좋아요 {post.likeCount}
+                                    <div className="flex justify-between items-center w-full">
+                                        <div className="font-bold text-base text-left text-black truncate">
+                                            {post.title}
+                                        </div>
+                                        <span className="text-sm text-gray-600 whitespace-nowrap">
+                                            {timeSince(post.createDate)}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-left overflow-hidden truncate">
+                                        {post.content.substring(0, 10) +
+                                            (post.content.length > 10
+                                                ? "..."
+                                                : "")}
                                     </p>
-                                    <p className="mini text-gray-300">|</p>
-                                    <p className="mini text-gray-300">
-                                        댓글 {post.commentCount}
-                                    </p>
-                                </div>
-                            </li>
-                        </Link>
-                    ))
-                ) : (
-                    <div>No posts found.</div>
-                )}
-            </ul>
-            <div className="flex justify-center mt-4">
-                {pageRange[0] > 0 && (
-                    <button
-                        onClick={handlePrevRange}
-                        className="mx-1 px-3 py-1 border rounded bg-white"
-                    >
-                        &lt;
-                    </button>
-                )}
-                {Array.from(
-                    { length: pageRange[1] - pageRange[0] + 1 },
-                    (_, index) => {
-                        const pageIndex = pageRange[0] + index;
-                        return (
-                            <button
-                                key={pageIndex}
-                                onClick={() => handlePageChange(pageIndex)}
-                                className={`mx-1 px-3 py-1 border rounded ${currentPage === pageIndex ? "bg-gray-300" : "bg-white"}`}
-                            >
-                                {pageIndex + 1}
-                            </button>
-                        );
-                    }
-                )}
-                {pageRange[1] < totalPages - 1 && (
-                    <button
-                        onClick={handleNextRange}
-                        className="mx-1 px-3 py-1 border rounded bg-white"
-                    >
-                        &gt;
-                    </button>
-                )}
+                                    <div className="flex gap-[4px]">
+                                        <p className="mini text-gray-300">
+                                            좋아요 {post.likeCount}
+                                        </p>
+                                        <p className="mini text-gray-300">|</p>
+                                        <p className="mini text-gray-300">
+                                            댓글 {post.commentCount}
+                                        </p>
+                                    </div>
+                                </li>
+                            </Link>
+                        ))
+                    ) : (
+                        <div>No posts found.</div>
+                    )}
+                </ul>
             </div>
-            <NavBar />
+            <div className="flex h-full items-end justify-center">
+                <div className="sticky bottom-0 bg-white py-4 items-end">
+                    <div className="flex justify-center mt-4 ">
+                        {pageRange[0] > 0 && (
+                            <button
+                                onClick={handlePrevRange}
+                                className="mx-1 px-3 py-1 border rounded bg-white"
+                            >
+                                &lt;
+                            </button>
+                        )}
+                        {Array.from(
+                            {
+                                length: Math.min(
+                                    pageRange[1] - pageRange[0] + 1,
+                                    totalPages - pageRange[0]
+                                ),
+                            },
+                            (_, index) => {
+                                const pageIndex = pageRange[0] + index;
+                                return (
+                                    <button
+                                        key={pageIndex}
+                                        onClick={() =>
+                                            handlePageChange(pageIndex)
+                                        }
+                                        className={`mx-1 px-3 py-1 border rounded ${currentPage === pageIndex ? "bg-gray-300" : "bg-white"}`}
+                                    >
+                                        {pageIndex + 1}
+                                    </button>
+                                );
+                            }
+                        )}
+                        {pageRange[1] < totalPages - 1 && (
+                            <button
+                                onClick={handleNextRange}
+                                className="mx-1 px-3 py-1 border rounded bg-white"
+                            >
+                                &gt;
+                            </button>
+                        )}
+                    </div>
+                </div>
+                <NavBar />
+            </div>
         </div>
     );
 }
