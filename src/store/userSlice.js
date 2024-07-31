@@ -5,6 +5,7 @@ import { loginDoctor, loginUser } from "./thunkFunction";
 const initState = {
     id: "",
     email: "",
+    memberTypeList: [],
 };
 
 const loadMemberCookie = () => {
@@ -14,7 +15,13 @@ const loadMemberCookie = () => {
 const userSlice = createSlice({
     name: "userSlice",
     initialState: loadMemberCookie() || initState,
-    reducers: {},
+    reducers: {
+        updateUserStatus: (state, action) => {
+            state.memberTypeList = state.memberTypeList.filter(
+                (type) => type !== action.payload.newStatus
+            );
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
@@ -60,3 +67,4 @@ const userSlice = createSlice({
     },
 });
 export default userSlice.reducer;
+export const { updateUserStatus } = userSlice.actions;

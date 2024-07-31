@@ -86,7 +86,6 @@ function UserLogin() {
                         },
                     })}
                     className="border-b w-full p-4 mb-2 focus:outline-none focus:ring-0"
-                    // onChange={() => setLoginError("")}
                 />
                 {errors.Email && (
                     <div className="text-red-500 text-xs w-full  p-4 ">
