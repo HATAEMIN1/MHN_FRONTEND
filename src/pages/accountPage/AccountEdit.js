@@ -19,6 +19,7 @@ function AccountEdit() {
     const profileImageUrl2 = useSelector(
         (state) => state.userSlice.profileImageUrl
     );
+
     useEffect(() => {
         const fetchMemberInfo = async () => {
             try {
@@ -65,6 +66,21 @@ function AccountEdit() {
         return null;
     };
 
+    const validateTel = (tel) => {
+        const telPattern = /^\d{11}$/;
+        if (!telPattern.test(tel)) {
+            return "휴대폰 번호는 숫자 11자리여야 합니다.";
+        }
+        return null;
+    };
+
+    const validateName = (name) => {
+        if (name.length < 2 || name.length > 5) {
+            return "이름은 2글자 이상 5글자 이하로 입력해주세요.";
+        }
+        return null;
+    };
+
     const handleNickNameChange = (e) => {
         const value = e.target.value;
         setNickName(value);
@@ -78,6 +94,24 @@ function AccountEdit() {
         setPassword(value);
         if (errors.password) {
             setErrors((prevErrors) => ({ ...prevErrors, password: null }));
+        }
+    };
+
+    const handleTelChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value) && value.length <= 11) {
+            setTel(value);
+            if (errors.tel) {
+                setErrors((prevErrors) => ({ ...prevErrors, tel: null }));
+            }
+        }
+    };
+
+    const handleNameChange = (e) => {
+        const value = e.target.value;
+        setName(value);
+        if (errors.name) {
+            setErrors((prevErrors) => ({ ...prevErrors, name: null }));
         }
     };
 
@@ -175,6 +209,44 @@ function AccountEdit() {
         }
     };
 
+    const updateName = async () => {
+        const nameError = validateName(name);
+        if (nameError) {
+            setErrors({ name: nameError });
+            return;
+        }
+
+        try {
+            const params = new URLSearchParams();
+            params.append("memberId", userId);
+            params.append("name", name);
+            const response = await axiosInstance.put(`/updateName`, params);
+            alert("이름이 성공적으로 업데이트되었습니다.");
+        } catch (error) {
+            console.error("Error updating name:", error);
+            alert("이름 업데이트 중 오류가 발생했습니다.");
+        }
+    };
+
+    const updateTel = async () => {
+        const telError = validateTel(tel);
+        if (telError) {
+            setErrors({ tel: telError });
+            return;
+        }
+
+        try {
+            const params = new URLSearchParams();
+            params.append("memberId", userId);
+            params.append("tel", tel);
+            const response = await axiosInstance.put(`/updateTel`, params);
+            alert("휴대폰 번호가 성공적으로 업데이트되었습니다.");
+        } catch (error) {
+            console.error("Error updating tel:", error);
+            alert("휴대폰 번호 업데이트 중 오류가 발생했습니다.");
+        }
+    };
+
     return (
         <>
             <form>
@@ -207,15 +279,6 @@ function AccountEdit() {
                         </div>
                     </div>
                     <div className="flex flex-col w-full max-w-md border border-gray-200 rounded-lg px-5 py-4 gap-3 justify-center text-primary-300">
-                        {/* <div className="flex justify-between border-b border-gray-500 py-3 gap-2 items-center">
-                            <span className="subtitle1">회원번호</span>
-                            <input
-                                placeholder="회원번호**"
-                                className="body2 flex-grow text-sub-100 text-right focus:outline-none"
-                                value={userId}
-                                readOnly
-                            />
-                        </div> */}
                         <div className="flex flex-col justify-between border-b border-gray-500 py-3 gap-2">
                             <div className="flex items-center justify-between gap-2">
                                 <span className="subtitle1">닉네임</span>
@@ -270,37 +333,49 @@ function AccountEdit() {
                                 </div>
                             )}
                         </div>
-                        <div className="flex justify-between border-b border-gray-500 py-3 gap-2 items-center">
-                            <span className="subtitle1">이름</span>
-                            <div className="flex items-center gap-2">
+                        <div className="flex flex-col justify-between border-b border-gray-500 py-3 gap-2">
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="subtitle1">이름</span>
                                 <input
                                     placeholder="등록하기"
-                                    className="body2 flex-grow text-sub-100 text-right focus:outline-none"
+                                    className={`body2 flex-grow text-sub-100 text-right focus:outline-none ${errors.name ? "text-red-500" : ""}`}
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={handleNameChange}
                                 />
                                 <img
                                     src="/assets/images/editIcon.svg"
                                     className="cursor-pointer w-4 h-4"
+                                    onClick={updateName}
                                     alt="Edit"
                                 />
                             </div>
+                            {errors.name && (
+                                <div className="text-red-500 text-xs mt-1">
+                                    {errors.name}
+                                </div>
+                            )}
                         </div>
-                        <div className="flex justify-between border-b border-gray-500 py-3 gap-2 items-center">
-                            <span className="subtitle1">휴대폰</span>
-                            <div className="flex items-center gap-2">
+                        <div className="flex flex-col justify-between border-b border-gray-500 py-3 gap-2">
+                            <div className="flex items-center justify-between gap-2">
+                                <span className="subtitle1">휴대폰</span>
                                 <input
                                     placeholder="인증하기"
-                                    className="body2 flex-grow text-sub-100 text-right focus:outline-none"
+                                    className={`body2 flex-grow text-sub-100 text-right focus:outline-none ${errors.tel ? "text-red-500" : ""}`}
                                     value={tel}
-                                    onChange={(e) => setTel(e.target.value)}
+                                    onChange={handleTelChange}
                                 />
                                 <img
                                     src="/assets/images/editIcon.svg"
                                     className="cursor-pointer w-4 h-4"
+                                    onClick={updateTel}
                                     alt="Edit"
                                 />
                             </div>
+                            {errors.tel && (
+                                <div className="text-red-500 text-xs mt-1">
+                                    {errors.tel}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
