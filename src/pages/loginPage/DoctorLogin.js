@@ -58,7 +58,6 @@ function DoctorLogin() {
                         },
                     })}
                     className="border-b w-full p-4 mb-8 focus:outline-none focus:ring-0"
-                    onChange={() => setLoginError("")}
                 />
                 {errors.Email && (
                     <div className="text-red-500 text-xs w-full  p-4 ">
@@ -77,7 +76,6 @@ function DoctorLogin() {
                             message: "비밀번호가 맞지 않습니다.",
                         },
                     })}
-                    onChange={() => setLoginError("")}
                     className="border-b w-full p-4 mb-8 focus:outline-none focus:ring-0"
                 />
                 {errors.Password && (
