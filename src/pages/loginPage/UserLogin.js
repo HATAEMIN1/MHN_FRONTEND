@@ -5,9 +5,12 @@ import ButtonBlack from "../../components/button/ButtonBlack";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../store/thunkFunction";
+import { getKakaoLoginLink } from "../kakaoPage/kakaoApi";
 
 function UserLogin() {
     const navigate = useNavigate();
+    const link = getKakaoLoginLink();
+
     const {
         register,
         handleSubmit,
@@ -136,10 +139,12 @@ function UserLogin() {
                         />
                     </div>
                     <div>
-                        <img
-                            src="/assets/images/logo_kakao.svg"
-                            className="w-full block"
-                        />
+                        <Link to={link}>
+                            <img
+                                src="/assets/images/logo_kakao.svg"
+                                className="w-full block"
+                            />
+                        </Link>
                     </div>
                 </div>
                 <div className="flex justify-center items-center p-4">
