@@ -16,7 +16,9 @@ function AccountEdit() {
     const [password, setPassword] = useState("");
     const [file, setFile] = useState(null);
     const [errors, setErrors] = useState({});
-
+    const profileImageUrl2 = useSelector(
+        (state) => state.userSlice.profileImageUrl
+    );
     useEffect(() => {
         const fetchMemberInfo = async () => {
             try {
@@ -29,8 +31,9 @@ function AccountEdit() {
                 setEmail(email);
                 setNickName(nickName || "");
                 const absoluteProfileImageUrl = profileImageUrl
-                    ? `http://localhost:8080${profileImageUrl}`
-                    : "/assets/images/default_profile.png";
+                    ? `${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${profileImageUrl}`
+                    : `${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}` +
+                      profileImageUrl2;
                 setProfileImageUrl(absoluteProfileImageUrl);
                 setTel(tel || "");
                 setName(name || "");
