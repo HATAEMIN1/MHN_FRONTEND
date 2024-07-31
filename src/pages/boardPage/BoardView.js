@@ -117,7 +117,7 @@ function BoardView() {
     }
 
     return (
-        <div className="pt-5 pb-7">
+        <div className="pt-[2px] pb-8">
             <Header title="자유게시판" />
             <div className="flex items-center mb-5">
                 <div>{post.member.nickName}</div>

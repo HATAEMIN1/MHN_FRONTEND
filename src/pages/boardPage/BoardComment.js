@@ -287,7 +287,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                 {comments.slice(0, visibleComments).map((comment, index) => {
                     const profileImageUrl = comment.profileImage
                         ? `${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${comment.profileImage}`
-                        : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
+                        : "/assets/images/testDog.svg";
 
                     return (
                         <div key={index} className="mb-4">

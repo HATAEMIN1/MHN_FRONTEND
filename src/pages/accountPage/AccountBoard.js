@@ -130,7 +130,7 @@ function AccountBoard() {
                     ))}
                 </ul>
             </div>
-            <div className="sticky bottom-0 bg-white py-4 shadow-md">
+            <div className="sticky bottom-0 bg-white py-4 ">
                 <div className="flex justify-center">
                     {pageRange[0] > 0 && (
                         <button
