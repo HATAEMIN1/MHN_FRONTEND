@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./assets/css/tStyle.scss";
 import "./assets/css/style.scss";
 import UserRegister from "./pages/registerPage/UserRegister";
@@ -48,6 +48,7 @@ import DoctorRegisterPending from "./pages/registerPage/DoctorRegisterPending";
 function App() {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
+    const location = useLocation();
     // const chatrooms = useSelector((state) => state.chatRoomSlice.chatRooms);
 
     const fetchChatrooms = async () => {
@@ -66,12 +67,16 @@ function App() {
     const handleAddPost = (newPost) => {
         setPosts([...posts, newPost]);
     };
+
+    const isMainPage = location.pathname === "/";
     return (
         <>
             <div className="sm:bg-gray-50 w-[100%] h-[100vh] flex justify-center items-center">
                 <div className="bg-gray-600 w-[100%] h-[100%] sm:w-[576px]  sm:h-screen relative flex flex-col overflow-hidden border">
                     <div className="flex-grow overflow-hidden">
-                        <div className="h-full overflow-y-auto bg-white pr-4 px-[16px] py-[85px] no-scrollbar">
+                        <div
+                            className={`h-full overflow-y-auto bg-white ${isMainPage ? "" : "px-[16px]"} py-[85px] no-scrollbar`}
+                        >
                             <Routes>
                                 <Route
                                     path="/intro"
@@ -98,7 +103,14 @@ function App() {
                                     element={<DoctorRegisterPending />}
                                 />
 
-                                <Route path="/" element={<Main />} />
+                                <Route
+                                    path="/"
+                                    element={
+                                        <div className="px-0">
+                                            <Main />
+                                        </div>
+                                    }
+                                />
                                 {/*채팅*/}
                                 <Route path="/chat" element={<ChatRoom />} />
                                 <Route
