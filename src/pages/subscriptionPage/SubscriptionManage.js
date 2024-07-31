@@ -54,6 +54,27 @@ function SubscriptionManage(props) {
     return (
         <>
             <Header title="구독 내역"></Header>
+            <div className="bg-white top-0 z-50 w-[100%]  top-0 left-0 right-0 absolute h-[65px] px-[16px] flex items-center justify-between">
+                <div className="h-[100%] flex items-center">
+                    <img
+                        src="/assets/images/backIcon.svg"
+                        alt=""
+                        className="w-[30px] h-[30px] cursor-pointer"
+                        onClick={() => {
+                            navigate("/account");
+                        }}
+                    />
+                </div>
+
+                <div className="h-[100%] flex items-center">
+                    <img
+                        src="/assets/images/backIcon.svg"
+                        alt=""
+                        className="w-[30px] h-[30px] invisible"
+                    />
+                </div>
+                {/* 테스트 아이콘36 / 헤더폰트 20px / */}
+            </div>
             <div className="subtitle1 p-4 mt-8">이용중</div>
             <div className="p-4 border-b">
                 전문가 1:1 채팅상담 + 진료 기록 내역 조회
@@ -113,9 +134,7 @@ function SubscriptionManage(props) {
                                 text1="자동 결제 해지"
                                 height="45px"
                                 width="80%"
-                                // handleClick={handleSubscriptionPaused}
                                 handleClick={openModal}
-                                // 이거 눌렀을 때 모달이 나와야하고, 모달에서 예 버튼을 눌렀을 때 handleSubscriptionPaused 함수가 실행되어야 함.
                             ></ButtonBlack>
                         )}
                     </ModalManager>
