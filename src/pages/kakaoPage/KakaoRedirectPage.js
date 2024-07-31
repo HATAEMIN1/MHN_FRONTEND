@@ -9,7 +9,11 @@ function KakaoRedirectPage() {
     const authCode = searchParam.get("code");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const Loading = () => (
+        <div className="flex justify-center items-center h-full">
+            <img src="/assets/loading.gif" alt="Loading" />
+        </div>
+    );
     useEffect(() => {
         if (authCode) {
             const fetchTokenAndLogin = async () => {
@@ -40,16 +44,7 @@ function KakaoRedirectPage() {
         }
     }, [authCode, dispatch, navigate]);
 
-    return (
-        <div>
-            <div>KakaoRedirectPage</div>
-            {authCode ? (
-                <div>인증 코드: {authCode}</div>
-            ) : (
-                <div>인증 코드가 없습니다.</div>
-            )}
-        </div>
-    );
+    return <div>{Loading}</div>;
 }
 
 export default KakaoRedirectPage;
