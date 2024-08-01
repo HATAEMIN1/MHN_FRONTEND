@@ -22,10 +22,10 @@ function ChattingListForm({ filteredChatrooms }) {
                     >
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">
-                                <div className="w-[80px] flex-shrink-0 ">
+                                <div className="w-[80px] h-[80px] flex-shrink-0 ">
                                     <img
                                         src={`/assets/images/hospitalImage${getRandomImageNumber()}.svg`}
-                                        className="block w-full rounded-[4px]"
+                                        className="block w-full rounded-[4px] h-full object-cover "
                                     />
                                 </div>
                                 <div>
@@ -41,7 +41,9 @@ function ChattingListForm({ filteredChatrooms }) {
                                 <div>
                                     <img src="/assets/images/likeIcon_color.svg" />
                                 </div>
-                                <div>{chatroom.likes}</div>
+                                <div className="mini text-gray-300">
+                                    {chatroom.likes}
+                                </div>
                             </div>
                         </div>
                     </Link>

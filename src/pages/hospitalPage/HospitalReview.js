@@ -146,9 +146,11 @@ function HospitalReview() {
             <div className="py-[16px]">
                 <ul className="flex justify-around gap-[2px]">
                     <Link to={`/hospitals/${hpId}`} className="border-b w-full">
-                        <li className=" text-center body2">병원정보</li>
+                        <li className=" text-center body2 pb-[8px] ">
+                            병원정보
+                        </li>
                     </Link>
-                    <li className="border-b-2 w-full text-center body2">
+                    <li className="border-b-2 w-full text-center body2 pb-[8px] ">
                         진료후기
                     </li>
                 </ul>

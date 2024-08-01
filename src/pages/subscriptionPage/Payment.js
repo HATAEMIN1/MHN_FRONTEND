@@ -165,18 +165,20 @@ function Payment() {
             <Header></Header>
             <form>
                 <div className="flex justify-between items-center p-4 border-b ">
-                    <h2 className="subtitle1">주문 고객</h2>
+                    <h2 className="subtitle1 text-primary-300">주문 고객</h2>
                     <div className="flex">
-                        <p className="body2">{userName}</p>
-                        <p className="body2">({tel})</p>
+                        <p className="body2 text-sub-200">{userName}</p>
+                        <p className="body2 text-sub-100">({tel})</p>
                     </div>
                 </div>
                 <div>
                     <div className="flex justify-between items-center p-4 ">
-                        <h2 className="subtitle1">멤버십 정보</h2>
+                        <h2 className="subtitle1 text-primary-300">
+                            멤버십 정보
+                        </h2>
                         <div className="flex">
-                            <p>1개월 / </p>
-                            <p>8,900원</p>
+                            <p className="body2 text-sub-200">1개월 / </p>
+                            <p className="body2 text-sub-200">8,900원</p>
                         </div>
                     </div>
 
@@ -187,43 +189,58 @@ function Payment() {
                                 className="w-full block rounded-md"
                             />
                         </div>
-                        <p className="subtitle2">멍햄냥 멤버십(구독형)</p>
+                        <p className="subtitle2 text-primary-300 ">
+                            멍햄냥 멤버십(구독형)
+                        </p>
                     </div>
                 </div>
-                <div className="subtitle1 p-4 ">정기 결제수단</div>
+                <div className="subtitle1 text-primary-300 p-4 ">
+                    정기 결제수단
+                </div>
                 <div className="px-4 border-b pb-4">
                     <select className="w-full p-2 border-2 rounded-md">
                         <option value="kakaopay">카카오 페이</option>
                     </select>
                 </div>
-                <div className="subtitle1 p-2 px-4  ">멤버십 기간</div>
+                <div className="subtitle1 text-primary-300 p-2 px-4  ">
+                    멤버십 기간
+                </div>
                 <div className="px-4 flex justify-between items-center">
-                    <div className="subtitle2">혜택 기간</div>
+                    <div className="subtitle2 text-primary-300">혜택 기간</div>
                     <div className="flex">
-                        <p>{currentDate()}</p>
-                        <p>~</p>
-                        <p>{nextPaymentDate()}</p>
+                        <p className="body2 text-sub-200">{currentDate()}</p>
+                        <p className="body2 text-sub-200">~</p>
+                        <p className="body2 text-sub-200">
+                            {nextPaymentDate()}
+                        </p>
                     </div>
                 </div>
-                <div className="p-4 font-semibold border-b pb-8">
+                {/* <div className="p-4 font-semibold border-b pb-8 text-primary-300"> */}
+                <div className="p-4 text-center body1 border-b pb-8 text-primary-300">
                     가입일 기준으로 매월 자동 결제 되며,언제든지 해제
                     가능합니다.
                 </div>
-                <div className="subtitle1 p-2 px-4  ">결제 정보</div>
+                <div className="subtitle1 text-primary-300 p-2 px-4  ">
+                    결제 정보
+                </div>
                 <div className="flex justify-between items-center px-4">
-                    <div className=" subtitle2">결제 금액</div>
-                    <p className="body2">8,900원</p>
+                    <div className=" subtitle2 text-primary-300">결제 금액</div>
+                    <p className="body2 text-sub-200">8,900원</p>
                 </div>
                 <div className="flex p-4 justify-between items-center border-b">
-                    <div className="subtitle2">다음 결제 예정일</div>
-                    <p className="body2">{nextPaymentDate()}</p>
+                    <div className="subtitle2 text-primary-300">
+                        다음 결제 예정일
+                    </div>
+                    <p className="body2 text-sub-200">{nextPaymentDate()}</p>
                 </div>
                 <div className="flex p-4 justify-between items-center border-b">
-                    <div className="subtitle2">최종 결제 금액</div>
-                    <p className="body2">8,900원</p>
+                    <div className="subtitle1 text-primary-300">
+                        최종 결제 금액
+                    </div>
+                    <p className="body2 text-sub-200">8,900원</p>
                 </div>
                 <div className="p-4 justify-center flex">
-                    <p>
+                    <p className="text-primary-300 mini">
                         위 내용을 확인하였으며, 멍햄냥 멤버십 가입에 동의합니다.
                     </p>
                 </div>

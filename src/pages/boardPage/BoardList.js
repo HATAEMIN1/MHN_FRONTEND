@@ -133,11 +133,11 @@ function BoardList() {
             <div className="py-[16px]">
                 <ul className="flex justify-around gap-[2px]">
                     <Link to="/chatboards" className="w-full">
-                        <li className="text-center body2 border-b w-full">
+                        <li className="text-center body2 pb-[8px] border-b w-full">
                             1:1 채팅 게시판
                         </li>
                     </Link>
-                    <li className="border-b-2 w-full text-center body2">
+                    <li className="border-b-2 w-full pb-[8px]  text-center body2">
                         자유 게시판
                     </li>
                 </ul>
@@ -177,14 +177,16 @@ function BoardList() {
                                         )}
                                 </div>
                                 <div className="flex justify-between items-center w-full">
-                                    <div className="font-bold text-base text-left text-black truncate">
+                                    {/* <div className="font-bold text-base text-left text-black truncate"> */}
+                                    <div className="subtitle3 text-primary-300 truncate">
                                         {post.title}
                                     </div>
-                                    <span className="text-sm text-gray-200 whitespace-nowrap">
+                                    <span className="mini text-gray-300 whitespace-nowrap">
                                         {timeSince(post.createDate)}
                                     </span>
                                 </div>
-                                <p className="text-sm text-left overflow-hidden truncate">
+                                {/* <p className="text-sm text-left overflow-hidden truncate"> */}
+                                <p className="body2 text-sub-200 overflow-hidden truncate">
                                     {post.content.substring(0, 10) +
                                         (post.content.length > 10 ? "..." : "")}
                                 </p>

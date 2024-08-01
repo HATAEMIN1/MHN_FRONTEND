@@ -99,14 +99,16 @@ function HospitalView() {
                 {/* 정보/후기 선택탭 s */}
                 <div className="py-[16px]">
                     <ul className="flex justify-around gap-[2px]">
-                        <li className="border-b-2 w-full text-center body2">
+                        <li className="border-b-2 w-full pb-[8px] text-center body2">
                             병원정보
                         </li>
                         <Link
                             to={`/hospitals/review/${hpId}`}
                             className="border-b w-full"
                         >
-                            <li className=" text-center body2">진료후기</li>
+                            <li className=" text-center pb-[8px] body2">
+                                진료후기
+                            </li>
                         </Link>
                     </ul>
                 </div>
@@ -155,7 +157,9 @@ function HospitalView() {
                                     </div>
                                 )} */}
                             </div>
-                            <p className="subtitle2">{hospitalInfo.name}</p>
+                            <p className="subtitle1 text-primary-300">
+                                {hospitalInfo.name}
+                            </p>
                         </div>
                         <div className="pl-[24px]">
                             <p className="body2 text-sub-200">
@@ -187,7 +191,7 @@ function HospitalView() {
                     </div>
                 </div>
                 <div>
-                    <p className="subtitle1">병원 지도</p>
+                    <p className="subtitle1 text-primary-300">병원 지도</p>
                     <KakaoMapView
                         width="90%"
                         height="200px"

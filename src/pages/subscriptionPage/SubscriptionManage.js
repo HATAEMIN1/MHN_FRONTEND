@@ -75,34 +75,38 @@ function SubscriptionManage(props) {
                 </div>
                 {/* 테스트 아이콘36 / 헤더폰트 20px / */}
             </div>
-            <div className="subtitle1 p-4 mt-8">이용중</div>
+            <div className=" p-4 mt-8">
+                <p className="subtitle1 text-primary-300">이용중</p>
+            </div>
             <div className="p-4 border-b">
-                전문가 1:1 채팅상담 + 진료 기록 내역 조회
+                <p className="body2 text-sub-200">
+                    전문가 1:1 채팅상담 + 진료 기록 내역 조회
+                </p>
             </div>
             <div className="p-4 flex justify-between items-center px-16 ">
-                <div className="subtitle2">
+                <div className="subtitle2 text-primary-100">
                     {mySubscription && getStatusText(mySubscription.status)}
                 </div>
                 <div>
                     <div className="flex gap-4 justify-between p-2">
-                        <div className="body2">결제일</div>
-                        <div className="body2">
+                        <div className="body2 text-primary-300">결제일</div>
+                        <div className="body2 text-sub-100">
                             {mySubscription && mySubscription.paymentDate}
                         </div>
                     </div>
                     <div className="flex gap-4 justify-between p-2">
-                        <div className="body2">만료일</div>
-                        <div className="body2">
+                        <div className="body2 text-primary-300">만료일</div>
+                        <div className="body2 text-sub-100">
                             {mySubscription && mySubscription.nextBillingDate}
                         </div>
                     </div>
                     <div className="flex gap-4 justify-between p-2">
-                        <div className="body2">결제금액</div>
-                        <div className="body2">8,900원</div>
+                        <div className="body2 text-primary-300">결제금액</div>
+                        <div className="body2 text-sub-100">8,900원</div>
                     </div>
                     <div className="flex gap-4 justify-between p-2">
-                        <div className="body2">결제방법</div>
-                        <div className="body2">카카오 페이</div>
+                        <div className="body2 text-primary-300">결제방법</div>
+                        <div className="body2 text-sub-100">카카오페이</div>
                     </div>
                 </div>
             </div>
