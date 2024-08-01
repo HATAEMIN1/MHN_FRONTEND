@@ -115,7 +115,7 @@ function BoardSearchList() {
             </div>
             <div className="flex items-center gap-[8px] mb-[20px]">
                 <Searchbar onSearch={handleSearch} />
-                <FilterModalManager
+                {/* <FilterModalManager
                     modalOpen={
                         <div
                             onClick={handleModalOpen}
@@ -129,7 +129,7 @@ function BoardSearchList() {
                         </div>
                     }
                     onOpenModal={handleModalOpen}
-                />
+                /> */}
             </div>
             <div className="flex-grow overflow-auto">
                 <ul className="grid grid-cols-2 gap-2 w-full p-0 m-0 list-none">
