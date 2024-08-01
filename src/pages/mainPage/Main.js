@@ -67,7 +67,9 @@ function Main() {
             if (location) {
                 try {
                     const response = await axiosInstance.get(
-                        `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+                        // `/hospitals?latitude=${location.lat}&longitude=${location.lon}`
+
+                        "/hospitals?latitude=37.3938325&longitude=126.960293"
                     );
                     const hospitals = response.data;
 
