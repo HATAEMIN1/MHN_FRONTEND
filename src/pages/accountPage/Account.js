@@ -70,12 +70,12 @@ function Account() {
     return (
         <>
             <Header title="마이페이지" />
-            <div className="border-b mb-[20px] h-[120px] py-[16px]">
+            <div className="my-[60px] h-[120px] py-[16px]">
                 <div className="flex justify-between">
-                    <div className="flex items-center gap-[8px]">
+                    <div className="flex items-center gap-[8px] ">
                         <img
                             src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}${profile.profileImageUrl}`}
-                            className="w-[56px] h-[56px] rounded-[50px]"
+                            className="w-[80px] h-[80px] rounded-[50px]"
                             alt="Profile"
                         />
                         <div>
@@ -97,16 +97,17 @@ function Account() {
                         </p>
                     </div>
                 </div>
-                <div className="ml-[56px] mb-[18px]">
+                <div className="ml-[88px] mb-[30px]">
                     <Link to="/account/edit">
                         <ButtonBlack text1="프로필 수정" />
                     </Link>
                 </div>
             </div>
+            <hr className="mb-[16px]" />
             {/* 마이페이지 메뉴 시작 */}
             <ul>
                 <Link to="/subscription">
-                    <li className="w-full flex justify-between py-[16px]">
+                    <li className="w-full flex justify-between py-[24px]">
                         <p className="body2 text-primary-300">
                             구독 관리 페이지
                         </p>
@@ -114,13 +115,13 @@ function Account() {
                     </li>
                 </Link>
                 <Link to="/account/chatting">
-                    <li className="w-full flex justify-between py-[16px]">
+                    <li className="w-full flex justify-between py-[24px]">
                         <p className="body2 text-primary-300">1:1 채팅내역</p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
                 <Link to="/account/hospitals">
-                    <li className="w-full flex justify-between py-[16px]">
+                    <li className="w-full flex justify-between py-[24px]">
                         <p className="body2 text-primary-300">
                             즐겨찾기 한 병원
                         </p>
@@ -128,7 +129,7 @@ function Account() {
                     </li>
                 </Link>
                 <Link to="/account/boards">
-                    <li className="w-full flex justify-between py-[16px]">
+                    <li className="w-full flex justify-between py-[24px]">
                         <p className="body2 text-primary-300">
                             내가 쓴 글 목록
                         </p>
@@ -136,7 +137,7 @@ function Account() {
                     </li>
                 </Link>
                 <Link to="/account/pets">
-                    <li className="w-full flex justify-between py-[16px]">
+                    <li className="w-full flex justify-between py-[24px]">
                         <p className="body2 text-primary-300">펫 리스트</p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
