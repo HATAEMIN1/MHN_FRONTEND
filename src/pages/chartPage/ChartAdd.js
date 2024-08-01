@@ -135,24 +135,27 @@ function ChartAdd() {
                 </ModalManager>
                 {/*<Header title="진료기록 등록" button="작성하기" />*/}
                 <div className="px-2">
+                    <p className="subtitle1 text-primary-300 mt-8 pb-4">
+                        병원이름
+                    </p>
                     <input
                         type="text"
                         placeholder="병원이름"
-                        className="border-b pb-[8px] w-full px-4 focus:outline-none focus:ring-0"
+                        className="h-[52px] subtitle1 text-primary-300 border border-gray-400 rounded-md w-full px-4 focus:outline-none focus:ring-0 focus:border-blue-100 hover:border-blue-200 hover:shadow-md transition duration-300"
                         onChange={handleChange}
                         name="hospital"
                     />
                 </div>
 
                 <div className="py-8">
-                    <div className="p-2 ">
-                        <p className="py-2 subtitle1 text-primary-300">
+                    <div className="px-2 pb-6">
+                        <p className="pb-4 subtitle1 text-primary-300">
                             펫 선택
                         </p>
 
                         <div className="relative">
                             <select
-                                className="h-[52px] w-full rounded-md border-2 px-4 appearance-none focus:outline-none focus:ring-0"
+                                className="h-[52px] w-full rounded-md border border-gray-400 px-4 appearance-none focus:outline-none focus:ring-0 focus:border-blue-100 hover:border-blue-200 hover:shadow-md transition duration-300"
                                 value={formData.selectedPet}
                                 onChange={(e) => {
                                     const selectedPetName = e.target.value;
@@ -210,8 +213,8 @@ function ChartAdd() {
                                 ))}
                         </select> */}
                     </div>
-                    <div className="p-2 relative">
-                        <p className="py-2 subtitle1 text-primary-300">
+                    <div className="px-2 pb-6 relative">
+                        <p className="pb-4 subtitle1 text-primary-300">
                             진료 일자
                         </p>
                         {/* <DatePicker
@@ -235,7 +238,7 @@ function ChartAdd() {
                                     }))
                                 }
                                 dateFormat="yyyy-MM-dd"
-                                className="h-[52px] w-full rounded-md border-2 p-4 pr-10" // 오른쪽 패딩 추가
+                                className="h-[52px] w-full rounded-md border border-gray-400 p-4 pr-10 focus:border-blue-100 hover:border-blue-200 hover:shadow-md transition duration-300" // 오른쪽 패딩 추가
                             />
                             <img
                                 src="/assets/images/calendarIcon.svg"
@@ -244,19 +247,19 @@ function ChartAdd() {
                             />
                         </div>
                     </div>
-                    <div className="p-2">
-                        <p className="py-2 subtitle1 text-primary-300">병명</p>
+                    <div className="px-2 pb-5">
+                        <p className="pb-4 subtitle1 text-primary-300">병명</p>
                         <input
                             type="text"
                             placeholder="병명"
-                            className="h-[52px] w-full rounded-md border-2 cursor-auto px-4 focus:outline-none focus:ring-0 "
+                            className="h-[52px] w-full rounded-md border border-gray-400 cursor-auto px-4 focus:outline-none focus:ring-0 focus:border-blue-100 hover:border-blue-200 hover:shadow-md transition duration-300"
                             onChange={handleChange}
                             name="dig"
                         />
                     </div>
-                    <div className="p-2 mb-4">
+                    <div className="px-2 mb-4">
                         <div className="flex justify-between items-center">
-                            <p className="py-2 subtitle1 text-primary-300">
+                            <p className="pb-4 subtitle1 text-primary-300">
                                 설명
                             </p>
                             <div className="flex">
@@ -270,7 +273,7 @@ function ChartAdd() {
                                     htmlFor="image-upload"
                                     className="flex items-center cursor-pointer"
                                 >
-                                    <p className="body2 text-sub-200">
+                                    <p className="body2 text-sub-100">
                                         파일 첨부
                                     </p>
                                 </label>
@@ -286,7 +289,7 @@ function ChartAdd() {
                         </div>
 
                         <textarea
-                            className="h-[184px] w-full rounded-md border-2 p-4 focus:outline-none focus:ring-0 resize-none"
+                            className="h-[280px] w-full rounded-md border border-gray-400 p-4 focus:outline-none focus:ring-0 resize-none focus:border-blue-100 hover:border-blue-200 hover:shadow-md transition duration-300"
                             onChange={handleChange}
                             name="description"
                         />
