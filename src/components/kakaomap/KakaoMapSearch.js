@@ -239,7 +239,7 @@ function KakaoMapSearch({ ...props }) {
                     <p className="subtitle1">내위치로 이동하기</p>
                 </button>
             </div>
-            <p className="body2">
+            <p className="body2 mt-[8px]">
                 총{" "}
                 <span className="text-sub-100 subtitle2">
                     {props.hospitalList.length}

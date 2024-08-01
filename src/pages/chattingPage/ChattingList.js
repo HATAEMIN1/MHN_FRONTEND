@@ -44,11 +44,11 @@ function ChattingList() {
             {/* tab메뉴 */}
             <div className="py-[16px]">
                 <ul className="flex justify-around gap-[2px]">
-                    <li className=" text-center body2 border-b-2 w-full">
+                    <li className=" text-center body2 border-b-2 pb-[8px] w-full">
                         1:1 채팅 게시판
                     </li>
                     <Link to="/boards" className=" w-full">
-                        <li className="border-b w-full text-center body2">
+                        <li className="border-b w-full pb-[8px] text-center body2">
                             자유 게시판
                         </li>
                     </Link>

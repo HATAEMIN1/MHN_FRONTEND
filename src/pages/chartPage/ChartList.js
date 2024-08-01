@@ -72,19 +72,25 @@ function ChartList() {
                                 className="cardWrap w-full "
                                 key={item.createdAt}
                             >
-                                <div className="w-[230px] h-[180px] ">
+                                <div className="w-[230px] h-[230px] ">
                                     <img
                                         src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item.imgUrl}`}
-                                        className="w-[100%] h-[100%] rounded-[4px] block "
+                                        className="w-[100%] h-[100%] rounded-[4px] block object-cover"
                                     />
                                 </div>
                                 <div className="p-2">
-                                    <h2>{item.petName}</h2>
+                                    <p className="subtitle3 text-primary-300">
+                                        {item.petName}
+                                    </p>
                                     <div className="flex gap-2">
                                         {/*<p>{item.kind}</p>*/}
-                                        <p>{item.diagnosis}</p>
+                                        <p className="body2 text-sub-200">
+                                            {item.diagnosis}
+                                        </p>
                                     </div>
-                                    <p>{getTimeAgo(item.createdAt)}</p>
+                                    <p className="mini text-gray-300">
+                                        {getTimeAgo(item.createdAt)}
+                                    </p>
                                 </div>
                             </div>
                         </Link>

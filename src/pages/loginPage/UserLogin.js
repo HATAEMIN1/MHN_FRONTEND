@@ -79,7 +79,7 @@ function UserLogin() {
             >
                 <input
                     type="text"
-                    placeholder="Email"
+                    placeholder="email"
                     {...register("Email", {
                         required: {
                             value: true,
@@ -99,7 +99,7 @@ function UserLogin() {
                 )}
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="password"
                     {...register("Password", {
                         max: 15,
                         min: 8,
@@ -130,9 +130,9 @@ function UserLogin() {
                 ></ButtonBlack>
                 <div className="mb-8"></div>
                 <div className="flex items-center justify-between max-w-lg mx-auto my-8 gap-4">
-                    <hr className="w-full " />
-                    <span className="px-3 ">or</span>
-                    <hr className="w-full " />
+                    <hr className="w-full" />
+                    <span className="px-3 text-gray-200 body2">or</span>
+                    <hr className="w-full" />
                 </div>
                 <div className="flex justify-center items-center w-full gap-10">
                     <div>
@@ -156,7 +156,7 @@ function UserLogin() {
                         </Link>
                     </div>
                 </div>
-                <div className="flex justify-center items-center p-4">
+                <div className="flex justify-center items-center p-4 mini text-sub-100">
                     <Link to="/users/register" className="">
                         이메일로 가입하기
                     </Link>

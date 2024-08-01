@@ -33,8 +33,12 @@ function HospitalListFormForDoctor({ ...props }) {
                                         />
                                     </div>
                                     <div>
-                                        <p className="subtitle1">{item.name}</p>
-                                        <p className="body2">{item.address}</p>
+                                        <p className="subtitle1 text-primary-300 ">
+                                            {item.name}
+                                        </p>
+                                        <p className="body2 text-sub-100">
+                                            {item.address}
+                                        </p>
                                         <div className="flex gap-[4px]">
                                             <p className="mini text-gray-300">
                                                 {item.phone}

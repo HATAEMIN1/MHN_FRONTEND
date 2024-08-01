@@ -34,19 +34,19 @@ function FilterModal({ onClose, onFilterChange, ...props }) {
             >
                 <ul className="flex flex-col justify-around items-center h-full">
                     <li
-                        className="text-center w-full cursor-pointer"
+                        className="text-center w-full cursor-pointer text-primary-300 body2"
                         onClick={() => handleFilterSelection("latest")} // 수정된 부분: 최신순 필터 선택 시 동작
                     >
                         최신순
                     </li>
                     <li
-                        className="text-center cursor-pointer w-full"
+                        className="text-center cursor-pointer w-full text-primary-300 body2"
                         onClick={() => handleFilterSelection("likes")} // 수정된 부분: 좋아요순 필터 선택 시 동작
                     >
                         좋아요순
                     </li>
                     <li
-                        className="text-center cursor-pointer w-full"
+                        className="text-center cursor-pointer w-full text-primary-300 body2"
                         onClick={() => handleFilterSelection("oldest")} // 수정된 부분: 오래된순 필터 선택 시 동작
                     >
                         오래된순

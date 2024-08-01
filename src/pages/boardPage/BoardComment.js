@@ -13,15 +13,15 @@ function timeAgo(date) {
         return `${Math.floor(secondsPast / 60)}분 전`;
     }
     if (secondsPast < 86400) {
-        return `${Math.floor(secondsPast / 3600)}시간 전}`;
+        return `${Math.floor(secondsPast / 3600)}시간 전`;
     }
     if (secondsPast < 2592000) {
-        return `${Math.floor(secondsPast / 86400)}일 전}`;
+        return `${Math.floor(secondsPast / 86400)}일 전`;
     }
     if (secondsPast < 31536000) {
-        return `${Math.floor(secondsPast / 2592000)}개월 전}`;
+        return `${Math.floor(secondsPast / 2592000)}개월 전`;
     }
-    return `${Math.floor(secondsPast / 31536000)}년 전}`;
+    return `${Math.floor(secondsPast / 31536000)}년 전`;
 }
 
 const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
@@ -211,36 +211,46 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
         return replies.map((reply, index) => {
             const profileImageUrl = reply.profileImage
                 ? `http://localhost:8080${reply.profileImage}`
-                : `${process.env.PUBLIC_URL}/assets/images/default_profile.png`;
+                : "/assets/images/testDog.svg";
 
             return (
                 <div
                     key={index}
-                    className="ml-8 mb-4 flex justify-between items-center reply"
+                    className="py-4 flex justify-between items-center reply"
                 >
-                    <div className="flex">
-                        <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                            <img
-                                src={profileImageUrl}
-                                alt="profile"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div>
-                            <div className="font-bold">{reply.nickName}</div>{" "}
-                            {/* 닉네임 표시 */}
-                            <div className="text-sm">{reply.content}</div>
-                            <div className="text-xs text-gray-500 flex items-center">
-                                {timeAgo(reply.createDate)}
+                    <div className="flex items-center gap-[8px]">
+                        <img
+                            src="/assets/images/recommentIcon.svg"
+                            className="w-[16px]"
+                        />
+                        <div className="flex items-center">
+                            <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
+                                <img
+                                    src={profileImageUrl}
+                                    alt="profile"
+                                    className="w-full h-full object-cover"
+                                />
+                            </div>
+                            <div>
+                                <div className="subtitle2 text-primary-300">
+                                    {reply.nickName}
+                                </div>{" "}
+                                {/* 닉네임 표시 */}
+                                <div className="body2 text-sub-200">
+                                    {reply.content}
+                                </div>
+                                <div className="mini text-gray-300 flex items-center">
+                                    {timeAgo(reply.createDate)}
+                                </div>
                             </div>
                         </div>
                     </div>
                     {reply.memberId === memberId && (
                         <button
                             onClick={() => handleDeleteReply(reply.id)}
-                            className="border-none bg-transparent text-gray-500 cursor-pointer"
+                            className="border-none cursor-pointer"
                         >
-                            삭제
+                            <p className="text-xl text-gray-200">×</p>
                         </button>
                     )}
                 </div>
@@ -254,9 +264,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
 
     return (
         <div className="mt-4">
-            <h3 className="text-sm text-gray-500">
-                {comments.length}개의 댓글
-            </h3>
+            <p className="mini text-gray-300">{comments.length}개의 댓글</p>
             <div
                 ref={commentsRef}
                 className="comment-scroll max-h-80 overflow-y-auto"
@@ -278,8 +286,8 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                         scrollbar-color: #888 transparent;
                     }
                     .reply {
-                        background-color: #f9f9f9;
-                        border-left: 2px solid #ddd;
+                        // background-color: #f9f9f9;
+                        // border-left: 2px solid #ddd;
                         padding-left: 8px;
                     }
                     `}
@@ -301,17 +309,17 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                                         />
                                     </div>
                                     <div>
-                                        <div className="font-bold">
+                                        <div className="subtitle2 text-primary-300">
                                             {comment.nickName}{" "}
                                             {/* 닉네임 표시 */}
                                         </div>
-                                        <div className="text-sm">
+                                        <div className="body2 text-primary-300">
                                             {comment.content}
                                         </div>
-                                        <div className="text-xs text-gray-500 flex items-center">
+                                        <div className="mini text-gray-300 flex items-center">
                                             {timeAgo(comment.createDate)}
                                             <button
-                                                className="ml-2 border-none bg-transparent text-gray-500 cursor-pointer"
+                                                className="ml-2 border-none bg-transparent mini text-gray-300 cursor-pointer"
                                                 onClick={() =>
                                                     handleReplyClick(comment.id)
                                                 }
@@ -326,9 +334,11 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                                         onClick={() =>
                                             handleDeleteComment(comment.id)
                                         }
-                                        className="border-none bg-transparent text-gray-500 cursor-pointer"
+                                        className="border-none bg-transparent cursor-pointer"
                                     >
-                                        삭제
+                                        <p className="text-xl text-gray-300">
+                                            ×
+                                        </p>
                                     </button>
                                 )}
                             </div>
@@ -355,6 +365,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                                     </button>
                                 </div>
                             )}
+                            {/* 대댓글 */}
                             {comment.replies && renderReplies(comment.replies)}
                         </div>
                     );
@@ -363,7 +374,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
             {visibleComments < comments.length && (
                 <button
                     onClick={handleLoadMoreComments}
-                    className="border-none bg-transparent text-gray-500 cursor-pointer block mx-auto my-4"
+                    className="border-none bg-transparent text-gray-300 mini cursor-pointer block mx-auto my-4"
                 >
                     댓글 더보기
                 </button>
@@ -371,7 +382,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
             {showFoldButton && visibleComments >= comments.length && (
                 <button
                     onClick={handleFoldComments}
-                    className="border-none bg-transparent text-gray-500 cursor-pointer block mx-auto my-4"
+                    className="border-none bg-transparent text-gray-300 mini  cursor-pointer block mx-auto my-4"
                 >
                     댓글 접기
                 </button>
@@ -389,7 +400,7 @@ const BoardComment = ({ freeBoardId, memberId, onCommentsUpdate }) => {
                             value={commentText}
                             onChange={handleCommentTextChange}
                             placeholder="댓글을 입력하세요"
-                            className={`flex-1 mr-4 border-none outline-none p-2 box-border ${commentError ? "border-red-500" : ""}`}
+                            className={`flex-1 mr-4 border-none outline-none p-[4px] box-border ${commentError ? "border-red-500" : ""}`}
                         />
                         <button
                             onClick={handleCommentSubmit}

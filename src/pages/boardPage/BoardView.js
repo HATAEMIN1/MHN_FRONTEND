@@ -119,9 +119,14 @@ function BoardView() {
     return (
         <div className="pt-[2px] pb-8">
             <Header title="자유게시판" />
-            <div className="flex items-center mb-5">
-                <div>{post.member.nickName}</div>
-                <div style={{ marginLeft: "10px" }}>
+            <div className="flex items-center mb-5 pt-[16px]">
+                <div className="subtitle1 text-primary-300">
+                    {post.member.nickName}
+                </div>
+                <div
+                    className="body2 text-sub-100"
+                    style={{ marginLeft: "10px" }}
+                >
                     {timeAgo(post.createDate)}
                 </div>
             </div>
@@ -154,20 +159,20 @@ function BoardView() {
                 <div className="flex items-center">
                     <button
                         onClick={handleLike}
-                        className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-gray-200"
+                        className="flex items-center mr-2 border-none bg-transparent cursor-pointer text-primary-300 mini"
                     >
                         <img
                             src={
                                 liked
                                     ? `${process.env.PUBLIC_URL}/assets/images/likeIcon_color.svg`
-                                    : `${process.env.PUBLIC_URL}/assets/images/likeIcon_clear.svg`
+                                    : `${process.env.PUBLIC_URL}/assets/images/likeIcon_black.svg`
                             }
                             alt="like"
-                            className="w-5 h-5 mr-1"
+                            className="w-5 h-5 mr-1 "
                         />
                         좋아요 {liked ? "취소" : ""} {likes}
                     </button>
-                    <div className="flex items-center">
+                    <div className="flex items-center text-primary-300 mini">
                         <img
                             src={`${process.env.PUBLIC_URL}/assets/images/commentIcon.svg`}
                             alt="comment"
@@ -179,16 +184,18 @@ function BoardView() {
                 {post.member.id === memberId && (
                     <button
                         onClick={handleDelete}
-                        className="flex items-center border-none bg-transparent cursor-pointer text-gray-200"
+                        className="flex items-center border-none bg-transparent cursor-pointer text-gray-200 mini"
                     >
                         삭제
                     </button>
                 )}
             </div>
             <div className="mb-5">
-                <h2 className="text-lg font-bold">{post.title}</h2>
+                <p className="subtitle1 text-primary-300">{post.title}</p>
             </div>
-            <div className="text-base">{post.content}</div>
+            <div className="body2 text-primary-300 border-b pb-[8px]">
+                {post.content}
+            </div>
 
             {/* BoardComment 컴포넌트를 추가하고 필요한 props 전달 */}
             <BoardComment

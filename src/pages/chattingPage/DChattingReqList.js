@@ -54,7 +54,7 @@ function DChattingReqList() {
                                 <div className="w-[80px] flex-shrink-0 ">
                                     <img
                                         src={`/assets/images/petImage${getRandomImageNumber()}.svg`}
-                                        className="block w-full rounded-[4px]"
+                                        className="block w-full rounded-[50px]"
                                     />
                                 </div>
                                 <div>
@@ -66,12 +66,12 @@ function DChattingReqList() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center flex-shrink-0 gap-[4px]">
+                            {/* <div className="flex items-center flex-shrink-0 gap-[4px]">
                                 <div>
                                     <img src="/assets/images/likeIcon_color.svg" />
                                 </div>
                                 <div>{chatroom.likes || 0}</div>
-                            </div>
+                            </div> */}
                         </div>
                     </Link>
                 );

@@ -107,31 +107,37 @@ function Account() {
             <ul>
                 <Link to="/subscription">
                     <li className="w-full flex justify-between py-[16px]">
-                        <p>구독 관리 페이지</p>
+                        <p className="body2 text-primary-300">
+                            구독 관리 페이지
+                        </p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
                 <Link to="/account/chatting">
                     <li className="w-full flex justify-between py-[16px]">
-                        <p>1:1 채팅내역</p>
+                        <p className="body2 text-primary-300">1:1 채팅내역</p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
                 <Link to="/account/hospitals">
                     <li className="w-full flex justify-between py-[16px]">
-                        <p>즐겨찾기 한 병원</p>
+                        <p className="body2 text-primary-300">
+                            즐겨찾기 한 병원
+                        </p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
                 <Link to="/account/boards">
                     <li className="w-full flex justify-between py-[16px]">
-                        <p>내가 쓴 글 목록</p>
+                        <p className="body2 text-primary-300">
+                            내가 쓴 글 목록
+                        </p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
                 <Link to="/account/pets">
                     <li className="w-full flex justify-between py-[16px]">
-                        <p>펫 리스트</p>
+                        <p className="body2 text-primary-300">펫 리스트</p>
                         <img src="/assets/images/nextIcon.svg" />
                     </li>
                 </Link>
