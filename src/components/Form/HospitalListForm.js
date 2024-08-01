@@ -15,13 +15,23 @@ function HospitalListForm({ ...props }) {
                                         {/* <img src="여기에 나중에 프롭스해온 병원정보값을 이미지로 출력할 예정입니다." /> */}
                                         <img
                                             src={`/assets/images/hospitalImage${getRandomImageNumber()}.svg`}
-                                            className="rounded-[4px] block w-full"
+                                            className="rounded-[4px] block w-full h-full object-cover"
                                         />
                                     </div>
                                     <div>
-                                        <p className="subtitle1">{item.name}</p>
-                                        <p className="body2">{item.address}</p>
+                                        <p className="subtitle1 text-primary-300">
+                                            {item.name}
+                                        </p>
+                                        <p className="body2 text-sub-100">
+                                            {item.address}
+                                        </p>
                                         <div className="flex gap-[4px]">
+                                            {item.distance ? (
+                                                <p className="mini text-gray-300">
+                                                    {item.distance} |
+                                                </p>
+                                            ) : null}
+
                                             <p className="mini text-gray-300">
                                                 {item.phone}
                                             </p>

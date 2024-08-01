@@ -46,7 +46,7 @@ function DoctorLogin() {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input
                     type="text"
-                    placeholder="Email"
+                    placeholder="email"
                     {...register("Email", {
                         required: {
                             value: true,
@@ -66,7 +66,7 @@ function DoctorLogin() {
                 )}
                 <input
                     type="password"
-                    placeholder="Password"
+                    placeholder="password"
                     {...register("Password", {
                         max: 15,
                         min: 8,
@@ -91,14 +91,14 @@ function DoctorLogin() {
 
                 {/*<input type="submit" />*/}
                 <ButtonBlack
-                    text1="수의사로 로그인"
+                    text1="로그인"
                     width="100%"
                     height="45px"
                 ></ButtonBlack>
                 <div className="mb-8"></div>
                 <div className="flex items-center justify-between max-w-lg mx-auto my-8 gap-4">
                     <hr className="w-full " />
-                    <span className="px-3 ">or</span>
+                    <span className="px-3 text-gray-200 body2">or</span>
                     <hr className="w-full " />
                 </div>
                 <div className="flex justify-center items-center w-full gap-10">
@@ -108,7 +108,7 @@ function DoctorLogin() {
                             className="w-full block"
                         />
                     </div>
-                    <div>
+                    {/* <div>
                         <img
                             src="/assets/images/logo_naver.svg"
                             className="w-full block"
@@ -119,9 +119,9 @@ function DoctorLogin() {
                             src="/assets/images/logo_kakao.svg"
                             className="w-full block"
                         />
-                    </div>
+                    </div> */}
                 </div>
-                <div className="flex justify-center items-center p-4">
+                <div className="flex justify-center items-center p-4 text-sub-100 mini">
                     <Link to="/doctors/register" className="">
                         이메일로 가입하기
                     </Link>

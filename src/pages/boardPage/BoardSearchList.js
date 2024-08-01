@@ -103,19 +103,19 @@ function BoardSearchList() {
             <div className="py-[16px] ">
                 <ul className="flex justify-around gap-[2px]">
                     <Link to="/chatboards" className=" w-full">
-                        <li className=" text-center body2 border-b w-full">
+                        <li className=" text-center body2 pb-[8px]  border-b w-full">
                             1:1 채팅 게시판
                         </li>
                     </Link>
 
-                    <li className="border-b-2 w-full text-center body2">
+                    <li className="border-b-2 w-full pb-[8px] text-center body2">
                         자유 게시판
                     </li>
                 </ul>
             </div>
             <div className="flex items-center gap-[8px] mb-[20px]">
                 <Searchbar onSearch={handleSearch} />
-                <FilterModalManager
+                {/* <FilterModalManager
                     modalOpen={
                         <div
                             onClick={handleModalOpen}
@@ -129,7 +129,7 @@ function BoardSearchList() {
                         </div>
                     }
                     onOpenModal={handleModalOpen}
-                />
+                /> */}
             </div>
             <div className="flex-grow overflow-auto">
                 <ul className="grid grid-cols-2 gap-2 w-full p-0 m-0 list-none">

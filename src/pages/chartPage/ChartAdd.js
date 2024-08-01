@@ -122,7 +122,7 @@ function ChartAdd() {
                         <div>
                             <Header
                                 title="진료기록 등록"
-                                button="작성하기"
+                                button="완료"
                                 handleClick={(e) => {
                                     e.preventDefault(); // 추가: 폼 제출 방지
                                     if (validateImages()) {
@@ -138,7 +138,7 @@ function ChartAdd() {
                     <input
                         type="text"
                         placeholder="병원이름"
-                        className="border-b w-full px-4 focus:outline-none focus:ring-0"
+                        className="border-b pb-[8px] w-full px-4 focus:outline-none focus:ring-0"
                         onChange={handleChange}
                         name="hospital"
                     />
@@ -146,8 +146,45 @@ function ChartAdd() {
 
                 <div className="py-8">
                     <div className="p-2 ">
-                        <h2 className="py-2">펫 선택</h2>
-                        <select
+                        <p className="py-2 subtitle1 text-primary-300">
+                            펫 선택
+                        </p>
+
+                        <div className="relative">
+                            <select
+                                className="h-[52px] w-full rounded-md border-2 px-4 appearance-none focus:outline-none focus:ring-0"
+                                value={formData.selectedPet}
+                                onChange={(e) => {
+                                    const selectedPetName = e.target.value;
+                                    const selectedPet = pet.find(
+                                        (p) => p.name === selectedPetName
+                                    );
+                                    setFormData((prevData) => ({
+                                        ...prevData,
+                                        selectedPet: selectedPetName,
+                                        petId: selectedPet
+                                            ? selectedPet.id
+                                            : "",
+                                    }));
+                                }}
+                            >
+                                <option value="" disabled>
+                                    펫을 선택하세요
+                                </option>
+                                {pet &&
+                                    pet.map((pet) => (
+                                        <option key={pet.name} value={pet.name}>
+                                            {pet.name}
+                                        </option>
+                                    ))}
+                            </select>
+                            <img
+                                src="/assets/images/moreIcon.svg"
+                                alt="calendar"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none"
+                            />
+                        </div>
+                        {/* <select
                             className="h-[52px] w-full rounded-md border-2 px-4 appearance-none focus:outline-none focus:ring-0"
                             value={formData.selectedPet}
                             onChange={(e) => {
@@ -171,11 +208,13 @@ function ChartAdd() {
                                         {pet.name}
                                     </option>
                                 ))}
-                        </select>
+                        </select> */}
                     </div>
                     <div className="p-2 relative">
-                        <h2 className="py-2">진료 일자</h2>
-                        <DatePicker
+                        <p className="py-2 subtitle1 text-primary-300">
+                            진료 일자
+                        </p>
+                        {/* <DatePicker
                             selected={formData.startDate}
                             onChange={(date) =>
                                 setFormData((prevData) => ({
@@ -185,10 +224,28 @@ function ChartAdd() {
                             }
                             dateFormat="yyyy-MM-dd"
                             className="h-[52px] w-full rounded-md border-2 p-4"
-                        />
+                        /> */}
+                        <div className="relative">
+                            <DatePicker
+                                selected={formData.startDate}
+                                onChange={(date) =>
+                                    setFormData((prevData) => ({
+                                        ...prevData,
+                                        startDate: date,
+                                    }))
+                                }
+                                dateFormat="yyyy-MM-dd"
+                                className="h-[52px] w-full rounded-md border-2 p-4 pr-10" // 오른쪽 패딩 추가
+                            />
+                            <img
+                                src="/assets/images/calendarIcon.svg"
+                                alt="calendar"
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none"
+                            />
+                        </div>
                     </div>
                     <div className="p-2">
-                        <h2 className="py-2">병명</h2>
+                        <p className="py-2 subtitle1 text-primary-300">병명</p>
                         <input
                             type="text"
                             placeholder="병명"
@@ -199,7 +256,9 @@ function ChartAdd() {
                     </div>
                     <div className="p-2 mb-4">
                         <div className="flex justify-between items-center">
-                            <h2 className="py-2">설명</h2>
+                            <p className="py-2 subtitle1 text-primary-300">
+                                설명
+                            </p>
                             <div className="flex">
                                 <div className="flex justify-center items-center w-[24px] h-[24px]">
                                     <img
@@ -211,7 +270,9 @@ function ChartAdd() {
                                     htmlFor="image-upload"
                                     className="flex items-center cursor-pointer"
                                 >
-                                    <p>파일 첨부</p>
+                                    <p className="body2 text-sub-200">
+                                        파일 첨부
+                                    </p>
                                 </label>
                                 <input
                                     id="image-upload"

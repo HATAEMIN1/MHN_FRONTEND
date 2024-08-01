@@ -105,14 +105,15 @@ function AccountBoard() {
                                         )}
                                 </div>
                                 <div className="flex justify-between items-center w-full">
-                                    <div className="font-bold text-base text-left text-black truncate">
+                                    {/* <div className="font-bold text-base text-left text-black truncate"> */}
+                                    <div className="subtitle3 text-left text-primary-300 truncate">
                                         {post.title}
                                     </div>
-                                    <span className="text-sm text-gray-200 whitespace-nowrap">
+                                    <span className="mini text-gray-300 whitespace-nowrap">
                                         {timeSince(post.createDate)}
                                     </span>
                                 </div>
-                                <p className="text-sm text-left overflow-hidden truncate">
+                                <p className="body2 text-sub-200 text-left overflow-hidden truncate">
                                     {post.content.substring(0, 10) +
                                         (post.content.length > 10 ? "..." : "")}
                                 </p>
