@@ -146,21 +146,21 @@ function HospitalReview() {
             <div className="py-[16px]">
                 <ul className="flex justify-around gap-[2px]">
                     <Link to={`/hospitals/${hpId}`} className="border-b w-full">
-                        <li className=" text-center body2 pb-[8px] ">
+                        <li className=" text-center body2 pb-[10px] text-primary-300">
                             병원정보
                         </li>
                     </Link>
-                    <li className="border-b-2 w-full text-center body2 pb-[8px] ">
+                    <li className="border-b-2 w-full text-center body2 pb-[10px] text-primary-300 ">
                         진료후기
                     </li>
                 </ul>
             </div>
             <form onSubmit={handleCommentSubmit}>
-                <div className="flex items-center mb-[20px] gap-[4px]">
+                <div className="flex items-center mb-[20px] gap-[14px]">
                     <p className="mini text-gray-300">
                         {comments.length}개의 후기
                     </p>
-                    <div className="border flex">
+                    <div className="border border-gray-100 rounded-[5px] flex">
                         {rating.map((item, idx) => {
                             return item ? (
                                 <img

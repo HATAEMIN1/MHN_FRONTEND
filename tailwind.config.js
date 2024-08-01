@@ -88,5 +88,7 @@ module.exports = {
     //   hover: "#D9D9D9",
     // },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/aspect-ratio"), // aspect-ratio 플러그인을 추가
+  ],
 };

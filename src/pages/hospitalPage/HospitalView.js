@@ -99,14 +99,14 @@ function HospitalView() {
                 {/* 정보/후기 선택탭 s */}
                 <div className="py-[16px]">
                     <ul className="flex justify-around gap-[2px]">
-                        <li className="border-b-2 w-full pb-[8px] text-center body2">
+                        <li className="border-b-2 w-full pb-[10px] text-center body2 text-primary-300">
                             병원정보
                         </li>
                         <Link
                             to={`/hospitals/review/${hpId}`}
                             className="border-b w-full"
                         >
-                            <li className=" text-center pb-[8px] body2">
+                            <li className=" text-center pb-[10px] body2 text-primary-300">
                                 진료후기
                             </li>
                         </Link>
