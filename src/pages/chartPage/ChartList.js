@@ -61,7 +61,7 @@ function ChartList() {
         <>
             <Header title="진료기록" write="charts/new" />
             <SubscriptionComponent />
-            <div className=" mt-10 ">
+            <div className="mt-10">
                 <div className="mb-8 flex gap-4 flex-wrap justify-center px-5 sm:justify-between flex-grow">
                     {chartData.map((item, index) => (
                         <Link
@@ -69,7 +69,7 @@ function ChartList() {
                             className="col-span-1 justify-self-start"
                         >
                             <div
-                                className="cardWrap w-full "
+                                className="cardWrap w-full border rounded-md border-gray-500 mb-5 hover:shadow-md transition duration-300"
                                 key={item.createdAt}
                             >
                                 <div className="w-[230px] h-[230px] ">
@@ -78,19 +78,19 @@ function ChartList() {
                                         className="w-[100%] h-[100%] rounded-[4px] block object-cover"
                                     />
                                 </div>
-                                <div className="p-2">
-                                    <p className="subtitle3 text-primary-300">
+                                <div className="px-2 py-3">
+                                    <p className="body1 text-primary-300 pb-1">
                                         {item.petName}
                                     </p>
-                                    <div className="flex gap-2">
+                                    <div className="flex flex-col gap-1">
                                         {/*<p>{item.kind}</p>*/}
-                                        <p className="body2 text-sub-200">
+                                        <p className="body1 text-sub-200">
                                             {item.diagnosis}
                                         </p>
+                                        <p className="body2 text-gray-300">
+                                            {getTimeAgo(item.createdAt)}
+                                        </p>
                                     </div>
-                                    <p className="mini text-gray-300">
-                                        {getTimeAgo(item.createdAt)}
-                                    </p>
                                 </div>
                             </div>
                         </Link>
