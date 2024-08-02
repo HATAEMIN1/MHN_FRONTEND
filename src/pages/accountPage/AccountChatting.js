@@ -17,12 +17,14 @@ function AccountChatting() {
     return (
         <>
             <Header title="1:1 채팅 내역" />
-            {filteredChatrooms.length == 0 && (
-                <div className="text-sm font-bold flex justify-center">
+            {filteredChatrooms.length == 0 ? (
+                <div className="text-sm mt-5 font-bold flex justify-center">
                     아직 채팅 내역이 없습니다.
                 </div>
+            ) : (
+                <ChattingListForm filteredChatrooms={filteredChatrooms} />
             )}
-            <ChattingListForm filteredChatrooms={filteredChatrooms} />
+
             <NavBar />
         </>
     );
