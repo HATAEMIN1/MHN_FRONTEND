@@ -1,74 +1,51 @@
-![1:1 chat after 5 mins](public/assets/images/chatEnd.png)
-![during 1:1 chat](public/assets/images/duringChat.png)
+# 반려동물 건강 케어의 모든 것, 멍햄냥
 
+## 팀원 소개
+<table border="1" cellspacing="0" cellpadding="0" width="100%">
+    <tr width="100%">
+        <td width="20%" align="center"><a href= "https://github.com/ked1125">김으뜸</a></td>
+        <td width="20%" align="center"><a href= "https://github.com/changhun95">신창훈</a></td>
+        <td width="20%" align="center"><a href= "https://github.com/HATAEMIN1">하태민</a></td>
+        <td width="20%" align="center"><a href= "https://github.com/jjh099">조재희</a></td>
+        <td width="20%" align="center"><a href= "https://github.com/chloeyeo">여채령</a></td>
+    </tr>
+    <tr width="100%">
+        <td align="center"><img src = "https://github.com/ked1125.png"></td>
+        <td align="center"><img src = "https://github.com/changhun95.png"/></td>
+        <td align="center"><img src = "https://github.com/HATAEMIN1.png"/></td>
+        <td align="center"><img src = "https://github.com/jjh099.png"/></td>
+        <td align="center"><img src = "https://github.com/chloeyeo.png"/></td>
+    </tr>
+    <tr width="100%">
+        <td width="20%" align="center">
+        [병원] 병원 데이터 카카오 지도 연동<br>  
+        [병원] 병원 리스트,뷰 조회<br>
+        [병원] 병원 검색<br>  
+        [병원] 북마크 등록,삭제<br>
+        [병원] 진료후기 등록,조회,삭제<br>
+        [병원] 별점 등록<br>
+        [수의사] 회원 가입,로그인<br>
+        [관리자] 수의사 가입요청 조회,수락   
+        </td>
+        <td width="20%" align="center">
+        [홈] 홈 조회<br>
+        </td>
+        <td width="20%" align="center">
+        [유저] 회원 가입, 이메일과 닉네임 중복 확인 기능, 임시 비밀번호 이메일 발송 기능<br>
+        </td>
+        <td width="20%" align="center">
+        [유저] 유저 정보 수정, 비밀번호 변경 기능<br>
+        <br>
+        </td>
+   </tr>
+</table>
 
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 개요
+## 주요 기능
+## 기술 스택
+## 요구사항 정의
+## 일정
+## ERD
+## API 명세서
+## 벡엔드 깃허브
+<a href="">
