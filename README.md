@@ -65,9 +65,24 @@
 ## 개요
 ## 주요 기능
 ## 기술 스택
+-협업 툴
+</div>
+-Front-end  <div style="display: flex; justify-content: center; align-items: center; height: 100vh;"><img src="https://img.shields.io/badge/html5-E34F26?style=plastic&logo=html5&logoColor=white"> 
+  <img src="https://img.shields.io/badge/css-1572B6?style=plastic&logo=css3&logoColor=white"> 
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=plastic&logo=javascript&logoColor=black"></div> <br>
+-Back-end <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+  <img src="https://img.shields.io/badge/java-007396?style=plastic&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=plastic&logo=springboot&logoColor=white"/> 
+  <img src="https://img.shields.io/badge/SpringSecurity-6DB33F?style=plastic&logo=springsecurity&logoColor=white"/> 
+  <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=plastic&logo=jpa&logoColor=white"/> 
+  <img src="https://img.shields.io/badge/Spring Webflux-6DB33F?style=plastic&logo=springwebflux&logoColor=white"/>     
+    
+    
+  
+-Infra <br>
 ## 요구사항 정의
 ## 일정
 ## ERD
 ## API 명세서
+### [📎Link](https://www.notion.so/API-869bf1352e134a13bc37e23e94c09ecc)
 ## 벡엔드 깃허브
 <a href="https://github.com/HATAEMIN1/MHN_BACKEND">
