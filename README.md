@@ -107,7 +107,11 @@
 ## 요구사항 정의
 ## 일정
 ## ERD
+<img width ="712" src = "https://github.com/user-attachments/assets/64659fd3-cc34-47c8-a9ff-796b77c47478"><br>
+<div>[📎Link]&nbsp<a href="https://dbdiagram.io/d/newnewMHN-668e51ff9939893dae8a482b">ERD</a></div>
+
 ## API 명세서
-### [📎Link](https://www.notion.so/API-869bf1352e134a13bc37e23e94c09ecc)
+<div>[📎Link]&nbsp<a href="https://www.notion.so/API-869bf1352e134a13bc37e23e94c09ecc">API 명세서</a></div>
+
 ## 벡엔드 깃허브
-<a href="https://github.com/HATAEMIN1/MHN_BACKEND">
+<div>[📎Link]&nbsp<a href="https://github.com/HATAEMIN1/MHN_BACKEND">백엔드</a></div>
