@@ -63,7 +63,11 @@
 </table>
 
 ## 개요
+
+
 ## 주요 기능
+
+
 ## 기술 스택
 -협업 툴 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
   <img src="https://img.shields.io/badge/Figma-F24E1E?style=plastic&logo=figma&logoColor=white">
@@ -105,13 +109,19 @@
 <div/>
 
 ## 요구사항 정의
+<div>🔗[Link]&nbsp<a href="https://beneficial-lupin-8b1.notion.site/2c672559d7784740828b9bbdaf6f2960?pvs=74">요구사항 정의</a></div>
+
+##피그마
+<div>🔗[Link]&nbsp<a href="https://www.figma.com/design/Mb0Dbpe7NrPrvkUrUKW4AK/mhn?node-id=0-1&t=DRLml39HPPaAcea9-0">피그마</a></div>
+
 ## 일정
+<img width ="712" src = "https://github.com/user-attachments/assets/51e3345f-88c3-43db-b813-66c72c551876"><br>
 ## ERD
 <img width ="712" src = "https://github.com/user-attachments/assets/64659fd3-cc34-47c8-a9ff-796b77c47478"><br>
-<div>[📎Link]&nbsp<a href="https://dbdiagram.io/d/newnewMHN-668e51ff9939893dae8a482b">ERD</a></div>
+<div>🔗[Link]&nbsp<a href="https://dbdiagram.io/d/newnewMHN-668e51ff9939893dae8a482b">ERD</a></div>
 
 ## API 명세서
-<div>[📎Link]&nbsp<a href="https://www.notion.so/API-869bf1352e134a13bc37e23e94c09ecc">API 명세서</a></div>
+<div>🔗[Link]&nbsp<a href="https://www.notion.so/API-869bf1352e134a13bc37e23e94c09ecc">API 명세서</a></div>
 
 ## 벡엔드 깃허브
-<div>[📎Link]&nbsp<a href="https://github.com/HATAEMIN1/MHN_BACKEND">백엔드</a></div>
+<div>🔗[Link]&nbsp<a href="https://github.com/HATAEMIN1/MHN_BACKEND">백엔드</a></div>
