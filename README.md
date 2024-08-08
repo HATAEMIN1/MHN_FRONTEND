@@ -111,7 +111,7 @@
 ## 요구사항 정의
 <div>🔗[Link]&nbsp<a href="https://beneficial-lupin-8b1.notion.site/2c672559d7784740828b9bbdaf6f2960?pvs=74">요구사항 정의</a></div>
 
-##피그마
+## 피그마
 <div>🔗[Link]&nbsp<a href="https://www.figma.com/design/Mb0Dbpe7NrPrvkUrUKW4AK/mhn?node-id=0-1&t=DRLml39HPPaAcea9-0">피그마</a></div>
 
 ## 일정
