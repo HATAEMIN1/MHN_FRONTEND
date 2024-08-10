@@ -12,6 +12,7 @@ import { setChatRooms } from "./store/chatRoomSlice";
 import axiosInstance from "./utils/axios";
 import { lazy } from "react";
 import KakaoRedirectPage from "./pages/kakaoPage/KakaoRedirectPage";
+
 const Intro = lazy(() => import("./pages/mainPage/Intro"));
 const UserLogin = lazy(() => import("./pages/loginPage/UserLogin"));
 const DoctorLogin = lazy(() => import("./pages/loginPage/DoctorLogin"));
@@ -61,6 +62,7 @@ const Payment = lazy(() => import("./pages/subscriptionPage/Payment"));
 const SubscriptionManage = lazy(
     () => import("./pages/subscriptionPage/SubscriptionManage")
 );
+const Appointment = lazy(() => import("./pages/hospitalPage/Appointment"));
 const Loading = () => (
     <div className="flex justify-center items-center h-full">
         <img src="/assets/loading.gif" alt="Loading" />
@@ -192,6 +194,12 @@ function App() {
                                         path="/hospitals/review/:hpId"
                                         element={<HospitalReview />}
                                     />
+                                    {/* 진료예약 */}
+                                    <Route
+                                        path="/hospitals/appointment/:hpId"
+                                        element={<Appointment />}
+                                    />
+
                                     {/*진료기록*/}
                                     <Route
                                         path="/charts"
