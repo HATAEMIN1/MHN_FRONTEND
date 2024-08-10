@@ -10,8 +10,6 @@ function Report() {
 
     const [reportedBoardList, setReportedBoardList] = useState(null);
 
-    const [refreshTrigger, setRefreshTrigger] = useState(0);
-
     async function getAllBoardReportList() {
         try {
             const res = await axiosInstance.get("/admin/boardreports/list");
@@ -24,24 +22,14 @@ function Report() {
 
     useEffect(() => {
         getAllBoardReportList();
-    }, [refreshTrigger]);
+    }, []);
 
-    const handleDeleteClick = async (e, boardId, memberId) => {
+    const handleDeleteClick = (e, boardId) => {
         e.preventDefault(); // 이벤트 전파를 중단시켜 링크 이동을 방지합니다.
         e.stopPropagation();
         // 여기에 게시글 삭제 로직을 구현합니다.
-        try {
-            const response = await axiosInstance.delete(
-                `/boards/view?freeBoardId=${boardId}&memberId=${memberId}`
-            );
-            // alert(`게시글 ${boardId} 삭제 버튼이 클릭되었습니다.`);
-            console.log(`게시글 ${boardId} 삭제했습니다.`);
-            setRefreshTrigger((prev) => prev + 1);
-        } catch (error) {
-            console.error("삭제요청실패", error);
-        }
+        alert(`게시글 ${boardId} 삭제 버튼이 클릭되었습니다.`);
     };
-
     return (
         <>
             {loginState &&
@@ -114,10 +102,7 @@ function Report() {
                                                         handleDeleteClick(
                                                             e,
                                                             reportedBoard
-                                                                .freeBoard.id,
-                                                            reportedBoard
-                                                                .freeBoard
-                                                                .member.id
+                                                                .freeBoard.id
                                                         )
                                                     }
                                                 >
