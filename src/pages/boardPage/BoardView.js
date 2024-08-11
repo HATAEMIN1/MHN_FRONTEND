@@ -9,6 +9,9 @@ import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
 import BoardComment from "./BoardComment";
 import { useSelector } from "react-redux";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonClear from "../../components/button/ButtonClear";
+import Modal from "../../components/modal/Modal";
 
 function timeAgo(date) {
     const now = new Date();
@@ -40,6 +43,7 @@ function BoardView() {
     const [error, setError] = useState(null);
     const [likes, setLikes] = useState(0);
     const [liked, setLiked] = useState(false);
+    const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
     const memberId = useSelector((state) => state.userSlice.id); // Redux 스토어에서 사용자 ID 가져오기
     useEffect(() => {
         const fetchPost = async () => {
@@ -116,18 +120,89 @@ function BoardView() {
         return <div>게시물을 가져오는 데 문제가 발생했습니다.</div>;
     }
 
+    const handleReport = async () => {
+        // e.preventDefault();
+        const body = {
+            memberId: memberId,
+            freeBoardId: bdId,
+        };
+
+        try {
+            await axiosInstance.post(`/boards/report`, body);
+            setIsSecondModalOpen(true); // 신고 성공 후 두 번째 모달 열기
+        } catch (error) {
+            console.error("에러 발생:", error);
+        }
+    };
+
+    const openSecondModal = () => {
+        setIsSecondModalOpen(true);
+    };
+
+    const closeSecondModal = () => {
+        setIsSecondModalOpen(false);
+    };
+
     return (
         <div className="pt-[2px] pb-8">
             <Header title="자유게시판" />
-            <div className="flex items-center mb-5 pt-[16px]">
-                <div className="subtitle1 text-primary-300">
-                    {post.member.nickName}
+            <div className="flex justify-between">
+                <div className="flex items-center mb-5 pt-[16px]">
+                    <div className="subtitle1 text-primary-300">
+                        {post.member.nickName}
+                    </div>
+                    <div
+                        className="body2 text-sub-100"
+                        style={{ marginLeft: "10px" }}
+                    >
+                        {timeAgo(post.createDate)}
+                    </div>
                 </div>
-                <div
-                    className="body2 text-sub-100"
-                    style={{ marginLeft: "10px" }}
-                >
-                    {timeAgo(post.createDate)}
+                <div className="flex items-center">
+                    <ModalManager
+                        modalContent={({ closeModal }) => (
+                            <div>
+                                <p className="mb-[8px]">
+                                    해당 게시글을 신고할까요?
+                                </p>
+                                <ButtonClear
+                                    text1="네"
+                                    text2="아니요"
+                                    handleClick={() => {
+                                        handleReport();
+                                        closeModal();
+                                    }}
+                                    handleClick2={closeModal}
+                                />
+                            </div>
+                        )}
+                    >
+                        {({ openModal }) => (
+                            <button type="button" onClick={openModal}>
+                                <img
+                                    src="/assets/images/reportIcon.svg"
+                                    alt="신고"
+                                />
+                            </button>
+                        )}
+                    </ModalManager>
+
+                    {/* 두 번째 모달 */}
+                    {isSecondModalOpen && (
+                        <div className="fixed inset-0 z-50">
+                            <Modal onClose={closeSecondModal}>
+                                <div>
+                                    <p className="mb-[8px]">
+                                        신고가 접수되었습니다.
+                                    </p>
+                                    <ButtonClear
+                                        text1="확인"
+                                        handleClick={closeSecondModal}
+                                    />
+                                </div>
+                            </Modal>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="mb-5">
