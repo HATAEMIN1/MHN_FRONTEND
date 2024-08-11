@@ -115,59 +115,73 @@ function HospitalView() {
                 {/* 병원정보 s */}
                 <div className="px-[16px]">
                     <div className="mb-[24px]">
-                        <div className="flex gap-[2px]">
-                            {/* <div onClick={handleOnclick}> */}
+                        <div className="flex justify-between">
                             <div>
-                                {loginState.email ? (
-                                    bookmarkState ? (
-                                        <div onClick={deleteBMK}>
-                                            <img
-                                                src="/assets/images/bmkIcon_color.svg"
-                                                alt="Remove Bookmark"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div onClick={addBMK}>
+                                <div className="flex gap-[2px]">
+                                    {/* <div onClick={handleOnclick}> */}
+                                    <div>
+                                        {loginState.email ? (
+                                            bookmarkState ? (
+                                                <div onClick={deleteBMK}>
+                                                    <img
+                                                        src="/assets/images/bmkIcon_color.svg"
+                                                        alt="Remove Bookmark"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div onClick={addBMK}>
+                                                    <img
+                                                        src="/assets/images/bmkIcon_clear.svg"
+                                                        alt="Add Bookmark"
+                                                    />
+                                                </div>
+                                            )
+                                        ) : (
                                             <img
                                                 src="/assets/images/bmkIcon_clear.svg"
                                                 alt="Add Bookmark"
+                                                className="invisible"
                                             />
-                                        </div>
-                                    )
-                                ) : (
-                                    <img
-                                        src="/assets/images/bmkIcon_clear.svg"
-                                        alt="Add Bookmark"
-                                        className="invisible"
-                                    />
-                                )}
-                                {/* {bookmarkState ? (
-                                    <div onClick={deleteBMK}>
-                                        <img
-                                            src="/assets/images/bmkIcon_color.svg"
-                                            alt="Remove Bookmark"
-                                        />
+                                        )}
+                                        {/* {bookmarkState ? (
+                                            <div onClick={deleteBMK}>
+                                                <img
+                                                    src="/assets/images/bmkIcon_color.svg"
+                                                    alt="Remove Bookmark"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div onClick={addBMK}>
+                                                <img
+                                                    src="/assets/images/bmkIcon_clear.svg"
+                                                    alt="Add Bookmark"
+                                                />
+                                            </div>
+                                        )} */}
                                     </div>
-                                ) : (
-                                    <div onClick={addBMK}>
-                                        <img
-                                            src="/assets/images/bmkIcon_clear.svg"
-                                            alt="Add Bookmark"
-                                        />
-                                    </div>
-                                )} */}
+                                    <p className="subtitle1 text-primary-300">
+                                        {hospitalInfo.name}
+                                    </p>
+                                </div>
+                                <div className="pl-[24px]">
+                                    <p className="body2 text-sub-200">
+                                        {hospitalInfo.address}
+                                    </p>
+                                    <p className="body2 text-sub-100">
+                                        {hospitalInfo.phone}
+                                    </p>
+                                </div>
                             </div>
-                            <p className="subtitle1 text-primary-300">
-                                {hospitalInfo.name}
-                            </p>
-                        </div>
-                        <div className="pl-[24px]">
-                            <p className="body2 text-sub-200">
-                                {hospitalInfo.address}
-                            </p>
-                            <p className="body2 text-sub-100">
-                                {hospitalInfo.phone}
-                            </p>
+                            <div className="body2 text-primary-300 border px-[8px] rounded-[4px]  bg-sub-200">
+                                <Link
+                                    to={`/hospitals/appointment/${hpId}`}
+                                    className="w-full h-full flex items-center"
+                                >
+                                    <p className="text-gray-100 text-center">
+                                        진료예약
+                                    </p>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     <div
