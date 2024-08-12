@@ -5,6 +5,8 @@ import ButtonBlack from "../../components/button/ButtonBlack";
 import ModalManager from "../../components/modal/ModalManager";
 import ButtonClear from "../../components/button/ButtonClear";
 import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../../utils/axios";
+import { useSelector } from "react-redux";
 
 function Appointment() {
     const [selectedDay, setSelectedDay] = useState(null);
@@ -14,6 +16,9 @@ function Appointment() {
     const [showSecondModal, setShowSecondModal] = useState(false);
     const { hpId } = useParams();
     const navigate = useNavigate();
+    const loginState = useSelector((state) => {
+        return state.userSlice;
+    });
 
     const currentDate = new Date();
     const formattedDate = currentDate.toISOString().split("T")[0];
@@ -83,9 +88,9 @@ function Appointment() {
         setShowSecondModal(false);
     };
 
-    const createAppointment = () => {
-        setShowSecondModal(true);
-    };
+    // const createAppointment = () => {
+    //     setShowSecondModal(true);
+    // };
 
     useEffect(() => {
         if (selectedDay !== null) {
@@ -95,6 +100,23 @@ function Appointment() {
         }
     }, [selectedDay]);
     console.log(localDateTime);
+
+    const createAppointment = async () => {
+        const body = {
+            appointmentDateTime: localDateTime,
+            memberId: loginState.id,
+            hospitalId: hpId,
+        };
+
+        try {
+            await axiosInstance.post(`/hospital/appointment`, body);
+            console.log(localDateTime);
+
+            setShowSecondModal(true);
+        } catch (error) {
+            console.error("에러 발생:", error);
+        }
+    };
 
     return (
         <>
