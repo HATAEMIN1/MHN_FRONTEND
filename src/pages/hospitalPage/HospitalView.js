@@ -89,7 +89,7 @@ function HospitalView() {
                         className="m-auto w-full mb-[24px]"
                     />
                 </div> */}
-                <div className="w-full aspect-[542.67/397.07] mb-[24px] overflow-hidden">
+                <div className="w-full aspect-[542.67/397.07] mb-[24px] overflow-hidden pt-[16px]">
                     <img
                         src={`/assets/images/hospitalImage${randomImageNumber}.svg`}
                         className="w-full h-full object-cover"
@@ -177,7 +177,7 @@ function HospitalView() {
                                     to={`/hospitals/appointment/${hpId}`}
                                     className="w-full h-full flex items-center"
                                 >
-                                    <p className="text-gray-100 text-center">
+                                    <p className="text-gray-100 text-center flex-shrink-0 ">
                                         진료예약
                                     </p>
                                 </Link>
