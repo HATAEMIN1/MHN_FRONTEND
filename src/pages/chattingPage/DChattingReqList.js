@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Header from "../../layouts/header/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import DoctorNav from "../../layouts/nav/DoctorNav";
 
 function DChattingReqList() {
     // Redux store에서 loginState를 가져옵니다.
@@ -51,10 +52,10 @@ function DChattingReqList() {
                     >
                         <div className="flex justify-between items-center my-[16px]">
                             <div className="flex flex-grow gap-[8px]">
-                                <div className="w-[80px] flex-shrink-0 ">
+                                <div className="w-[80px] h-[80px] flex-shrink-0 ">
                                     <img
                                         src={`/assets/images/petImage${getRandomImageNumber()}.svg`}
-                                        className="block w-full rounded-[50px]"
+                                        className="block w-full h-full rounded-[50px] object-cover"
                                     />
                                 </div>
                                 <div>
@@ -76,6 +77,7 @@ function DChattingReqList() {
                     </Link>
                 );
             })}
+            <DoctorNav />
         </>
     );
 }
