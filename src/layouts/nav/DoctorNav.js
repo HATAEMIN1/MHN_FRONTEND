@@ -1,7 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
 function DoctorNav() {
+    const loginState = useSelector((state) => state.userSlice);
+    console.log(loginState);
     const location = useLocation();
     const navMenu = [
         {
@@ -12,7 +15,7 @@ function DoctorNav() {
         },
         {
             title: "예약관리페이지",
-            route: "/doctors/appointment/:hpId",
+            route: `/doctors/appointment/${loginState.hospital.id}`,
             grayIcon: "appointmentIcon_clear",
             blackIcon: "appointmentIcon_black",
         },

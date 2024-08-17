@@ -6,6 +6,8 @@ const initState = {
     id: "",
     email: "",
     memberTypeList: [],
+    name: "", // 이름 필드 추가
+    tel: "", // 전화번호 필드 추가
 };
 
 const loadMemberCookie = () => {
@@ -20,6 +22,26 @@ const userSlice = createSlice({
             state.memberTypeList = state.memberTypeList.filter(
                 (type) => type !== action.payload.newStatus
             );
+        },
+        // 새로운 리듀서 추가: 이름 업데이트
+        updateUserName: (state, action) => {
+            state.name = action.payload;
+            // 쿠키 업데이트
+            const updatedMember = {
+                ...loadMemberCookie(),
+                name: action.payload,
+            };
+            setCookie("member", JSON.stringify(updatedMember));
+        },
+        // 새로운 리듀서 추가: 전화번호 업데이트
+        updateUserTel: (state, action) => {
+            state.tel = action.payload;
+            // 쿠키 업데이트
+            const updatedMember = {
+                ...loadMemberCookie(),
+                tel: action.payload,
+            };
+            setCookie("member", JSON.stringify(updatedMember));
         },
     },
     extraReducers: (builder) => {
@@ -89,4 +111,5 @@ const userSlice = createSlice({
     },
 });
 export default userSlice.reducer;
-export const { updateUserStatus } = userSlice.actions;
+export const { updateUserStatus, updateUserName, updateUserTel } =
+    userSlice.actions;

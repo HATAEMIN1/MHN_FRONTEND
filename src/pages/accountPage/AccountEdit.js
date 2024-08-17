@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../utils/axios";
 import NavBar from "../../layouts/nav/NavBar";
 import Header from "../../layouts/header/Header";
+import { updateUserName, updateUserTel } from "../../store/userSlice";
 
 function AccountEdit() {
     const userId = useSelector((state) => state.userSlice.id);
@@ -19,6 +20,7 @@ function AccountEdit() {
     const profileImageUrl2 = useSelector(
         (state) => state.userSlice.profileImageUrl
     );
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchMemberInfo = async () => {
@@ -221,6 +223,7 @@ function AccountEdit() {
             params.append("memberId", userId);
             params.append("name", name);
             const response = await axiosInstance.put(`/updateName`, params);
+            dispatch(updateUserName(name));
             alert("이름이 성공적으로 업데이트되었습니다.");
         } catch (error) {
             console.error("Error updating name:", error);
@@ -240,6 +243,7 @@ function AccountEdit() {
             params.append("memberId", userId);
             params.append("tel", tel);
             const response = await axiosInstance.put(`/updateTel`, params);
+            dispatch(updateUserTel(tel));
             alert("휴대폰 번호가 성공적으로 업데이트되었습니다.");
         } catch (error) {
             console.error("Error updating tel:", error);

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import KakaoMapView from "../../components/kakaomap/KakaoMapView";
 import axiosInstance from "../../utils/axios";
 import { useSelector } from "react-redux";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonClear from "../../components/button/ButtonClear";
 
 function HospitalView() {
     // const [bookmark, setBookmark] = useState(false);
@@ -14,6 +16,7 @@ function HospitalView() {
     //     setBookmark(!bookmark);
     //     console.log(bookmark);
     // }
+    const navigate = useNavigate();
 
     const loginState = useSelector((state) => {
         console.log(state.userSlice);
@@ -173,14 +176,64 @@ function HospitalView() {
                                 </div>
                             </div>
                             <div className="body2 text-primary-300 border px-[8px] rounded-[4px]  bg-sub-200">
-                                <Link
-                                    to={`/hospitals/appointment/${hpId}`}
-                                    className="w-full h-full flex items-center"
-                                >
-                                    <p className="text-gray-100 text-center flex-shrink-0 ">
-                                        진료예약
-                                    </p>
-                                </Link>
+                                {loginState.email && (
+                                    <ModalManager
+                                        modalContent={({ closeModal }) => (
+                                            <div>
+                                                <p className="mb-[8px] body2">
+                                                    진료 예약은{" "}
+                                                    <span className="text-red-500">
+                                                        이름
+                                                    </span>
+                                                    과{" "}
+                                                    <span className="text-red-500">
+                                                        전화번호
+                                                    </span>
+                                                    가 필요합니다.
+                                                    <br />
+                                                    프로필을 업데이트
+                                                    하시겠습니까?
+                                                </p>
+                                                <ButtonClear
+                                                    text1="네"
+                                                    text2="아니요"
+                                                    handleClick={(e) => {
+                                                        navigate(
+                                                            "/account/edit"
+                                                        );
+                                                        closeModal();
+                                                    }}
+                                                    handleClick2={(e) => {
+                                                        closeModal();
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                    >
+                                        {({ openModal }) =>
+                                            loginState.name &&
+                                            loginState.tel ? (
+                                                <Link
+                                                    to={`/hospitals/appointment/${hpId}`}
+                                                    className="w-full h-full flex items-center"
+                                                >
+                                                    <p className="text-gray-100 text-center flex-shrink-0">
+                                                        진료예약
+                                                    </p>
+                                                </Link>
+                                            ) : (
+                                                <div
+                                                    onClick={openModal}
+                                                    className="w-full h-full flex items-center cursor-pointer"
+                                                >
+                                                    <p className="text-gray-100 text-center flex-shrink-0">
+                                                        진료예약
+                                                    </p>
+                                                </div>
+                                            )
+                                        }
+                                    </ModalManager>
+                                )}
                             </div>
                         </div>
                     </div>
