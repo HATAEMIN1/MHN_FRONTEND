@@ -175,8 +175,8 @@ function HospitalView() {
                                     </p>
                                 </div>
                             </div>
-                            <div className="body2 text-primary-300 border px-[8px] rounded-[4px]  bg-sub-200">
-                                {loginState.email && (
+                            {loginState.email && (
+                                <div className="body2 text-primary-300 border px-[8px] rounded-[4px]  bg-sub-200">
                                     <ModalManager
                                         modalContent={({ closeModal }) => (
                                             <div>
@@ -233,8 +233,8 @@ function HospitalView() {
                                             )
                                         }
                                     </ModalManager>
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div

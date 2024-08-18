@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 function Appointment() {
     const [selectedDay, setSelectedDay] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+    const [appointmentList, setAppointmentList] = useState(null);
     const [localDateTime, setLocalDateTime] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showSecondModal, setShowSecondModal] = useState(false);
@@ -47,18 +48,6 @@ function Appointment() {
         }
     }, [selectedTime]);
 
-    // useEffect(() => {
-    //     if (selectedDay !== null && selectedTime !== null) {
-    //         const year = currentDate.getFullYear();
-    //         const month = currentDate.getMonth();
-    //         const [hours, minutes] = selectedTime.split(":").map(Number);
-    //         const dateTime = new Date(year, month, selectedDay, hours, minutes);
-    //         const formattedDateTime = dateTime.toISOString().slice(0, 19);
-    //         setLocalDateTime(formattedDateTime);
-    //         console.log("LocalDateTime 형식:", formattedDateTime);
-    //     }
-    // }, [selectedDay, selectedTime]);
-
     useEffect(() => {
         if (selectedDay !== null && selectedTime !== null) {
             const year = currentDate.getFullYear();
@@ -74,9 +63,23 @@ function Appointment() {
             const [hours, minutes] = time.split(":").map(Number);
             const selectedDateTime = new Date(currentDate);
             selectedDateTime.setHours(hours, minutes, 0, 0);
-            return selectedDateTime <= currentDate;
+            if (selectedDateTime <= currentDate) return true;
         }
-        return false;
+
+        // 이미 예약된 상태인지 확인
+        if (appointmentList && appointmentList.length > 0) {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth() + 1;
+            const formattedDateTime = `${year}-${String(month).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}T${time}:00`;
+
+            return appointmentList.some(
+                (appointment) =>
+                    appointment.appointmentDateTime === formattedDateTime &&
+                    appointment.status === "APPROVED"
+            );
+        }
+
+        return false; // appointmentList가 null이거나 비어있으면 시간을 활성화 상태로 유지
     };
 
     const openModal = () => {
@@ -88,18 +91,28 @@ function Appointment() {
         setShowSecondModal(false);
     };
 
-    // const createAppointment = () => {
-    //     setShowSecondModal(true);
-    // };
-
     useEffect(() => {
         if (selectedDay !== null) {
             console.log("선택된 날짜는", selectedDay);
             setSelectedTime(null); // 날짜가 변경되면 선택된 시간 초기화
             setLocalDateTime(null);
+            getAllAppointmentList();
         }
     }, [selectedDay]);
     console.log(localDateTime);
+
+    async function getAllAppointmentList() {
+        // 해당 병원의 예약 리스트 전체 가져오기.
+        try {
+            const res = await axiosInstance.get(
+                `/hospital/appointment?hospitalId=${hpId}`
+            );
+            console.log(res.data);
+            setAppointmentList(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const createAppointment = async () => {
         const body = {
