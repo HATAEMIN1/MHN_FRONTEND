@@ -63,11 +63,16 @@ const SubscriptionManage = lazy(
     () => import("./pages/subscriptionPage/SubscriptionManage")
 );
 const Appointment = lazy(() => import("./pages/hospitalPage/Appointment"));
+const AppointmentApproval = lazy(
+    () => import("./pages/hospitalPage/AppointmentApproval")
+);
+
 const Loading = () => (
     <div className="flex justify-center items-center h-full">
         <img src="/assets/loading.gif" alt="Loading" />
     </div>
 );
+
 function App() {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
@@ -198,6 +203,10 @@ function App() {
                                     <Route
                                         path="/hospitals/appointment/:hpId"
                                         element={<Appointment />}
+                                    />
+                                    <Route
+                                        path="/doctors/appointment/:hpId"
+                                        element={<AppointmentApproval />}
                                     />
 
                                     {/*진료기록*/}

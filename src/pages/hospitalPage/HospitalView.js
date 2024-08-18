@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import KakaoMapView from "../../components/kakaomap/KakaoMapView";
 import axiosInstance from "../../utils/axios";
 import { useSelector } from "react-redux";
+import ModalManager from "../../components/modal/ModalManager";
+import ButtonClear from "../../components/button/ButtonClear";
 
 function HospitalView() {
     // const [bookmark, setBookmark] = useState(false);
@@ -14,6 +16,7 @@ function HospitalView() {
     //     setBookmark(!bookmark);
     //     console.log(bookmark);
     // }
+    const navigate = useNavigate();
 
     const loginState = useSelector((state) => {
         console.log(state.userSlice);
@@ -89,7 +92,7 @@ function HospitalView() {
                         className="m-auto w-full mb-[24px]"
                     />
                 </div> */}
-                <div className="w-full aspect-[542.67/397.07] mb-[24px] overflow-hidden">
+                <div className="w-full aspect-[542.67/397.07] mb-[24px] overflow-hidden pt-[16px]">
                     <img
                         src={`/assets/images/hospitalImage${randomImageNumber}.svg`}
                         className="w-full h-full object-cover"
@@ -115,59 +118,123 @@ function HospitalView() {
                 {/* 병원정보 s */}
                 <div className="px-[16px]">
                     <div className="mb-[24px]">
-                        <div className="flex gap-[2px]">
-                            {/* <div onClick={handleOnclick}> */}
+                        <div className="flex justify-between">
                             <div>
-                                {loginState.email ? (
-                                    bookmarkState ? (
-                                        <div onClick={deleteBMK}>
-                                            <img
-                                                src="/assets/images/bmkIcon_color.svg"
-                                                alt="Remove Bookmark"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div onClick={addBMK}>
+                                <div className="flex gap-[2px]">
+                                    {/* <div onClick={handleOnclick}> */}
+                                    <div>
+                                        {loginState.email ? (
+                                            bookmarkState ? (
+                                                <div onClick={deleteBMK}>
+                                                    <img
+                                                        src="/assets/images/bmkIcon_color.svg"
+                                                        alt="Remove Bookmark"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div onClick={addBMK}>
+                                                    <img
+                                                        src="/assets/images/bmkIcon_clear.svg"
+                                                        alt="Add Bookmark"
+                                                    />
+                                                </div>
+                                            )
+                                        ) : (
                                             <img
                                                 src="/assets/images/bmkIcon_clear.svg"
                                                 alt="Add Bookmark"
+                                                className="invisible"
                                             />
-                                        </div>
-                                    )
-                                ) : (
-                                    <img
-                                        src="/assets/images/bmkIcon_clear.svg"
-                                        alt="Add Bookmark"
-                                        className="invisible"
-                                    />
-                                )}
-                                {/* {bookmarkState ? (
-                                    <div onClick={deleteBMK}>
-                                        <img
-                                            src="/assets/images/bmkIcon_color.svg"
-                                            alt="Remove Bookmark"
-                                        />
+                                        )}
+                                        {/* {bookmarkState ? (
+                                            <div onClick={deleteBMK}>
+                                                <img
+                                                    src="/assets/images/bmkIcon_color.svg"
+                                                    alt="Remove Bookmark"
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div onClick={addBMK}>
+                                                <img
+                                                    src="/assets/images/bmkIcon_clear.svg"
+                                                    alt="Add Bookmark"
+                                                />
+                                            </div>
+                                        )} */}
                                     </div>
-                                ) : (
-                                    <div onClick={addBMK}>
-                                        <img
-                                            src="/assets/images/bmkIcon_clear.svg"
-                                            alt="Add Bookmark"
-                                        />
-                                    </div>
-                                )} */}
+                                    <p className="subtitle1 text-primary-300">
+                                        {hospitalInfo.name}
+                                    </p>
+                                </div>
+                                <div className="pl-[24px]">
+                                    <p className="body2 text-sub-200">
+                                        {hospitalInfo.address}
+                                    </p>
+                                    <p className="body2 text-sub-100">
+                                        {hospitalInfo.phone}
+                                    </p>
+                                </div>
                             </div>
-                            <p className="subtitle1 text-primary-300">
-                                {hospitalInfo.name}
-                            </p>
-                        </div>
-                        <div className="pl-[24px]">
-                            <p className="body2 text-sub-200">
-                                {hospitalInfo.address}
-                            </p>
-                            <p className="body2 text-sub-100">
-                                {hospitalInfo.phone}
-                            </p>
+                            {loginState.email && (
+                                <div className="body2 text-primary-300 border px-[8px] rounded-[4px]  bg-sub-200">
+                                    <ModalManager
+                                        modalContent={({ closeModal }) => (
+                                            <div>
+                                                <p className="mb-[8px] body2">
+                                                    진료 예약은{" "}
+                                                    <span className="text-red-500">
+                                                        이름
+                                                    </span>
+                                                    과{" "}
+                                                    <span className="text-red-500">
+                                                        전화번호
+                                                    </span>
+                                                    가 필요합니다.
+                                                    <br />
+                                                    프로필을 업데이트
+                                                    하시겠습니까?
+                                                </p>
+                                                <ButtonClear
+                                                    text1="네"
+                                                    text2="아니요"
+                                                    handleClick={(e) => {
+                                                        navigate(
+                                                            "/account/edit"
+                                                        );
+                                                        closeModal();
+                                                    }}
+                                                    handleClick2={(e) => {
+                                                        closeModal();
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+                                    >
+                                        {({ openModal }) =>
+                                            loginState.name &&
+                                            loginState.tel ? (
+                                                <Link
+                                                    to={`/hospitals/appointment/${hpId}`}
+                                                    className="w-full h-full flex items-center"
+                                                >
+                                                    <p className="text-gray-100 text-center flex-shrink-0">
+                                                        진료예약
+                                                    </p>
+                                                </Link>
+                                            ) : (
+                                                <div
+                                                    onClick={openModal}
+                                                    className="w-full h-full flex items-center cursor-pointer"
+                                                >
+                                                    <p className="text-gray-100 text-center flex-shrink-0">
+                                                        진료예약
+                                                    </p>
+                                                </div>
+                                            )
+                                        }
+                                    </ModalManager>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div
