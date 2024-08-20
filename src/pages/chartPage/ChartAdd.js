@@ -187,47 +187,11 @@ function ChartAdd() {
                                 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none"
                             />
                         </div>
-                        {/* <select
-                            className="h-[52px] w-full rounded-md border-2 px-4 appearance-none focus:outline-none focus:ring-0"
-                            value={formData.selectedPet}
-                            onChange={(e) => {
-                                const selectedPetName = e.target.value;
-                                const selectedPet = pet.find(
-                                    (p) => p.name === selectedPetName
-                                );
-                                setFormData((prevData) => ({
-                                    ...prevData,
-                                    selectedPet: selectedPetName,
-                                    petId: selectedPet ? selectedPet.id : "",
-                                }));
-                            }}
-                        >
-                            <option value="" disabled>
-                                펫을 선택하세요
-                            </option>
-                            {pet &&
-                                pet.map((pet) => (
-                                    <option key={pet.name} value={pet.name}>
-                                        {pet.name}
-                                    </option>
-                                ))}
-                        </select> */}
                     </div>
                     <div className="px-2 pb-6 relative">
                         <p className="pb-4 subtitle1 text-primary-300">
                             진료 일자
                         </p>
-                        {/* <DatePicker
-                            selected={formData.startDate}
-                            onChange={(date) =>
-                                setFormData((prevData) => ({
-                                    ...prevData,
-                                    startDate: date,
-                                }))
-                            }
-                            dateFormat="yyyy-MM-dd"
-                            className="h-[52px] w-full rounded-md border-2 p-4"
-                        /> */}
                         <div className="relative">
                             <DatePicker
                                 selected={formData.startDate}
