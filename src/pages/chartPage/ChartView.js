@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../layouts/header/Header";
 import NavBar from "../../layouts/nav/NavBar";
 import axiosInstance from "../../utils/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import DatePicker from "react-datepicker";
 import ButtonBlack from "../../components/button/ButtonBlack";
@@ -11,6 +11,7 @@ import "../../assets/css/datepicker.scss";
 
 function ChartView() {
     const { chartId } = useParams();
+    const navigate = useNavigate();
     const [chartData, setChartData] = useState({});
     const [editData, setEditData] = useState({});
     const [submitError, setSubmitError] = useState("");
@@ -35,7 +36,6 @@ function ChartView() {
             setSubmitError("차트 데이터를 불러오는데 실패했습니다.");
         }
     };
-    console.log(editData);
     const handleEdit = () => {
         setIsEditing(true);
         setEditData({ ...chartData });
@@ -110,22 +110,19 @@ function ChartView() {
         setSubmitError("");
         return true;
     };
+
+    const handleDelete = async () => {
+        const params = { id: chartId };
+        await axiosInstance.delete("/charts/view", { params });
+        navigate("/charts");
+    };
+
     useEffect(() => {
         chartDataInfo();
     }, [isEditing]);
 
     return (
         <>
-            {isEditing && (
-                <div className="p-4 flex justify-center">
-                    <button
-                        onClick={handleCancel}
-                        className="bg-gray-300 px-4 py-2 rounded"
-                    >
-                        취소
-                    </button>
-                </div>
-            )}
             <ModalManager
                 modalContent={({ closeModal }) => (
                     <div>
@@ -155,10 +152,32 @@ function ChartView() {
                                     handleEdit();
                                 }
                             }}
-                        />
+                        ></Header>
                     </div>
                 )}
             </ModalManager>
+            <div className="flex justify-between">
+                {isEditing && (
+                    <div className="p-4 flex justify-center ">
+                        <button
+                            onClick={handleCancel}
+                            className="bg-primary-300 rounded-[8px] px-[16px] text-white text-center whitespace-nowrap subtitle1 w-full"
+                        >
+                            취소
+                        </button>
+                    </div>
+                )}
+                {isEditing && (
+                    <div className="p-4 flex justify-center">
+                        <button
+                            onClick={handleDelete}
+                            className="bg-primary-300 rounded-[8px] px-[16px] text-white text-center whitespace-nowrap subtitle1 w-full"
+                        >
+                            삭제
+                        </button>
+                    </div>
+                )}
+            </div>
             <div className="border-b p-2">
                 {isEditing ? (
                     <input
@@ -201,7 +220,9 @@ function ChartView() {
                         <div className="border-2 rounded-md h-[52px] flex items-center px-4 relative">
                             <p>
                                 {chartData.treatmentDate &&
-                                    chartData.treatmentDate.toLocaleDateString()}
+                                    chartData.treatmentDate
+                                        .toLocaleDateString()
+                                        .replace(/\.$/, "")}
                             </p>
                             <div className="absolute right-5">
                                 <img
@@ -315,7 +336,7 @@ function ChartView() {
                                             >
                                                 <img
                                                     src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item}`}
-                                                    className="w-full rounded-md h-full"
+                                                    className="w-full rounded-md h-full object-contain"
                                                     alt={`uploaded ${idx}`}
                                                 />
                                             </div>

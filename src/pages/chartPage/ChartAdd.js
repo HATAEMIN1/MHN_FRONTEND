@@ -45,7 +45,6 @@ function ChartAdd() {
         if (!validateImages()) {
             return;
         }
-
         const formDataList = new FormData();
         formDataList.append("petId", formData.petId);
         console.log(formData.petId);

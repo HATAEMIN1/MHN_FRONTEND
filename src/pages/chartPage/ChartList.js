@@ -12,8 +12,9 @@ function ChartList() {
         return state.userSlice.id;
     });
     const [chartData, setChartData] = useState([]);
-
-    function getTimeAgo(dateString) {
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const getTimeAgo = (dateString) => {
         const now = new Date();
         const past = new Date(dateString);
         const diffInSeconds = Math.floor((now - past) / 1000);
@@ -36,26 +37,54 @@ function ChartList() {
             const years = Math.floor(diffInSeconds / 31536000);
             return `${years}년 전`;
         }
-    }
-    const chartDataInfo = async () => {
+    };
+
+    const handlePageChange = (page) => {
+        if (page >= 0 && page < totalPages) {
+            setCurrentPage(page);
+        }
+    };
+
+    const chartDataInfo = async (page) => {
         try {
-            const params = { memberId };
+            const params = { memberId, page };
             const res = await axiosInstance.get("/charts", {
                 params,
             });
-            setChartData(res.data);
+            console.log(res.data);
+            setChartData(res.data.content);
+            setTotalPages(res.data.totalPages);
         } catch (error) {
             console.log(error);
         }
     };
+    // 페이지 번호 생성 함수
+    const getPageNumbers = () => {
+        const pageNumbers = [];
+        const maxPageNumbers = 5; // 한 번에 표시할 최대 페이지 번호 수
+        let startPage = Math.max(
+            0,
+            currentPage - Math.floor(maxPageNumbers / 2)
+        );
+        let endPage = Math.min(totalPages - 1, startPage + maxPageNumbers - 1);
 
+        if (endPage - startPage + 1 < maxPageNumbers) {
+            startPage = Math.max(0, endPage - maxPageNumbers + 1);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
+
+        return pageNumbers;
+    };
     useEffect(() => {
         if (memberId) {
-            chartDataInfo();
+            chartDataInfo(currentPage);
         } else {
             navigate("/users/login");
         }
-    }, [memberId]);
+    }, [memberId, currentPage]);
 
     return (
         <>
@@ -67,15 +96,14 @@ function ChartList() {
                         <Link
                             to={`/charts/${item.id}`}
                             className="col-span-1 justify-self-start"
+                            key={item.id}
                         >
-                            <div
-                                className="cardWrap w-full border rounded-md border-gray-500 mb-5 hover:shadow-md transition duration-300"
-                                key={item.createdAt}
-                            >
+                            <div className="cardWrap w-full border rounded-md border-gray-500 mb-5 hover:shadow-md transition duration-300">
                                 <div className="w-[230px] h-[230px] ">
                                     <img
                                         src={`${process.env.REACT_APP_SPRING_SERVER_UPLOAD_URL}/upload/${item.imgUrl}`}
                                         className="w-[100%] h-[100%] rounded-[4px] block object-cover"
+                                        alt={item.petName}
                                     />
                                 </div>
                                 <div className="px-2 py-3">
@@ -96,7 +124,40 @@ function ChartList() {
                         </Link>
                     ))}
                 </div>
+                <div className="flex justify-center mt-4">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 0}
+                        className="mx-1 px-3 py-1 border rounded bg-white disabled:bg-gray-200"
+                    >
+                        이전
+                    </button>
+                    {/*<span className="mx-2">*/}
+                    {/*    {currentPage + 1} / {totalPages}*/}
+                    {/*</span>*/}
+                    {getPageNumbers().map((pageNumber) => (
+                        <button
+                            key={pageNumber}
+                            onClick={() => handlePageChange(pageNumber)}
+                            className={`mx-1 px-3 py-1 border rounded ${
+                                currentPage === pageNumber
+                                    ? "bg-gray-300"
+                                    : "bg-white"
+                            }`}
+                        >
+                            {pageNumber + 1}
+                        </button>
+                    ))}
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages - 1}
+                        className="mx-1 px-3 py-1 border rounded bg-white disabled:bg-gray-200"
+                    >
+                        다음
+                    </button>
+                </div>
             </div>
+
             <NavBar />
         </>
     );
