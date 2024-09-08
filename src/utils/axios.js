@@ -2,8 +2,8 @@ import axios from "axios";
 import { getCookie, setCookie } from "./cookieUtil";
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
-    // baseURL: process.env.REACT_APP_NODE_SERVER_URL,
+    // baseURL: "http://localhost:8080/api/v1",
+    baseURL: process.env.REACT_APP_SPRING_SERVER,
 });
 
 const refreshJWT = async (accessToken, refreshToken) => {
