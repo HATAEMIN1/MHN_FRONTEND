@@ -14,7 +14,25 @@ function ChartList() {
     const [chartData, setChartData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const getTimeAgo = (dateString) => {
+    const formatDateArray = (dateArray) => {
+        // dateArray 형식: [년, 월(0-11), 일, 시, 분, 초, 나노초]
+        const [year, month, day, hour, minute, second, nanosecond] = dateArray;
+        // JavaScript의 Date 객체는 나노초를 지원하지 않으므로 밀리초로 변환
+        const millisecond = Math.floor(nanosecond / 1000000);
+
+        // month는 0부터 시작하므로 1을 더해줍니다.
+        return new Date(
+            year,
+            month - 1,
+            day,
+            hour,
+            minute,
+            second,
+            millisecond
+        ).toISOString();
+    };
+    const getTimeAgo = (dateArray) => {
+        const dateString = formatDateArray(dateArray);
         const now = new Date();
         const past = new Date(dateString);
         const diffInSeconds = Math.floor((now - past) / 1000);
