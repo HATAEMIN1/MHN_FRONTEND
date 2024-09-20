@@ -275,7 +275,7 @@ function AccountEdit() {
                                 className="bg-primary-300 w-8 h-8 rounded-full flex items-center justify-center absolute bottom-[-5px] right-[-10px] cursor-pointer"
                             >
                                 <img
-                                    src="/assets/images/camera_W.svg"
+                                    src="/assets/images/camera_w.svg"
                                     className="w-5 h-5"
                                     alt="Edit"
                                 />
