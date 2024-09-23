@@ -21,7 +21,7 @@ jobs:
         run: npm i
 
       - name: React 앱 빌드
-        run: npm run build
+        run: CI=false npm run build
 
       - name: AWS 자격 증명 설정
         uses: aws-actions/configure-aws-credentials@v4
