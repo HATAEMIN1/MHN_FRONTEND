@@ -126,6 +126,7 @@ function Payment() {
                 buyerTel: buyer_tel,
                 nextBillingDate: nextPaymentDate(),
             };
+            console.log('Request body:', body);
             const res = await axiosInstance.post("/subscriptions", body);
             console.log(res.data, "디비저장완료");
         } catch (e) {
