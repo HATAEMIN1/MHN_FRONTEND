@@ -57,3 +57,4 @@ jobs:
             docker network create mhn-network || true
             docker run -d --name mhnfrontend --network mhn-network -p 80:80 ${{ steps.login-ecr.outputs.registry }}/mhnfrontend:latest
             docker network connect mhn-network mhnapiserver || true
+#
