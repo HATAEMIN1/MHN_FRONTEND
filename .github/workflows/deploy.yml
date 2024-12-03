@@ -76,4 +76,4 @@ jobs:
               -e REACT_APP_SERVER=${{ secrets.REACT_APP_SERVER }} \
               ${{ steps.login-ecr.outputs.registry }}/mhnfrontend:latest
             docker network connect mhn-network mhnapiserver || true
-##############
+################
